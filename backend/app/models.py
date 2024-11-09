@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, GetJsonSchemaHandler
+from pydantic import BaseModel, Field, GetJsonSchemaHandler, field_serializer
 from typing import List, Optional
 from datetime import datetime
 from bson import ObjectId
@@ -31,7 +31,7 @@ class PyObjectId(ObjectId):
         return str(self)
 
 class Provider(BaseModel):
-    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    id: Optional[PyObjectId] = Field(default_factory=PyObjectId, alias="_id")
     name: str
     address: str
     specialty: str
@@ -42,6 +42,11 @@ class Provider(BaseModel):
     class Config:
         json_encoders = {ObjectId: str}
         populate_by_name = True
+        arbitrary_types_allowed = True
+
+    @field_serializer('id')
+    def serialize_id(self, id: Optional[PyObjectId], _info):
+        return str(id) if id else None
 
 class IllnessEntry(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
@@ -57,4 +62,28 @@ class IllnessEntry(BaseModel):
 
 class IllnessCreate(BaseModel):
     symptoms: str
-    user_id: str 
+    user_id: str
+
+class User(BaseModel):
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    first_name: str
+    last_name: str
+    zipcode: str
+    address: str
+    city: str
+    state: str
+    insurance_type: str
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+    class Config:
+        json_encoders = {ObjectId: str}
+        populate_by_name = True
+
+class UserCreate(BaseModel):
+    first_name: str
+    last_name: str
+    zipcode: str
+    address: str
+    city: str
+    state: str
+    insurance_type: str

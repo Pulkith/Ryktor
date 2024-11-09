@@ -1,5 +1,5 @@
 import pandas as pd
-from generate import create_copayment
+from backend.app.services.generate import create_copayment
 
 df = pd.DataFrame(columns = ['Hospital', 'Treatment', 'Value'])
 

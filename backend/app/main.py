@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .database import connect_to_mongodb, close_mongodb_connection
 from .config import settings
-from .routes import illness
+from .routes import illness, user
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -31,6 +31,9 @@ async def shutdown_db_client():
 
 # Include the illness router
 app.include_router(illness.router, prefix="/api", tags=["Illness"])
+
+# Include the user router
+app.include_router(user.router, prefix="/api", tags=["Users"])
 
 # Root endpoint
 @app.get("/", tags=["Root"])

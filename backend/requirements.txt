@@ -3,4 +3,7 @@ uvicorn>=0.15.0
 motor>=3.0.0
 pydantic>=2.0.0
 pydantic-settings>=2.0.0
-python-dotenv>=0.19.0 
+python-dotenv>=0.19.0
+pymongo[srv]>=4.0.0
+tornado
+openai>=1.47.0

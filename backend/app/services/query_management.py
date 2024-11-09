@@ -71,35 +71,24 @@ treatments = [
 ]
 
 def process_query(docs: list, query):
+    global treatments
+    
     PROMPT = """
     You are an expert in medical information retrieval.
-
+    
     The below text is a question either typed or spoken by a user. The user is describing their
     symptoms and current condition, and is looking for information on what they should do next.
-
-    The system will provide a list of over a 1000 possible treatment options provided by hospitals in the user's area.
-
-    The system will also provide a summary of the user's medical history including past 
-    hospital visits, medications, and chronic conditions. This also includes demographic information and 
-    personal iformation.
-
+    
     Based on the user's symptoms and medical history, provide a list of 5 possible treatment options, 
-    ranked from most likely to least likely. Be realistic and logical (for example, if the user has a simple 
-    cold, do not suggest surgery or expensive treatments or scans).
-
-    Act like a doctor would in a real-life situation, and provide the best possible advice based on the
-    information provided. The user is looking for a professional opinion on what they should do next. Based on your recommendations, 
-    we will provide the user with a list of hospitals with the cheapest cost for the treatment options you provide. For each treatment,
-    provide a weight, with the weights summing to 1.0. These weights are essentially your confidence in the treatment option 
-    relative to the other options, so that we can minimize the expected cost for the user.
-
+    ranked from most likely to least likely. Be realistic and logical.
+    
     Output your response as JSON and only JSON as it will be used directly by an automated system. Use the following format:
     [
-        {
+        {{
             "treatment": "name",
             "reason": "reason for treatment",
             "weight": 0.2
-        }
+        }}
     ]
 
     Below is the information.
@@ -112,13 +101,13 @@ def process_query(docs: list, query):
     {docs}
     </Medical History Information>
     """
-
+    
     PROMPT = PROMPT.format(treatments=treatments, docs=docs)
-
-    treatments = LLM_INSTANCE(PROMPT, query)
-
-    treatments_list = json.loads(treatments)
-
+    
+    response = LLM_INSTANCE(PROMPT, query)
+    
+    treatments_list = json.loads(response)
+    
     return treatments_list
     
 

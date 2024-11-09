@@ -1,35 +1,33 @@
-import openai
-import dotenv
+import whisper
 import json
+import tempfile
+from pydub import AudioSegment
+import os
 
-dotenv.load_dotenv()
+from gen_compute import LLM_INSTANCE
 
-def LLM_INSTANCE(prompt, text):
-    model = "gpt-3.5-turbo-0125"
+whisper_model = whisper.load_model("base")
 
-    client = openai.Client()
-
-    chat_completion = client.chat.completions.create(
-        messages=[
-            {
-                "role": "system",
-                "content": prompt,
-            },
-            {
-                "role": "user",
-                "content": text,
-            },
-        ],
-        temperature=0,
-        model=model
-    )
-
-    return chat_completion.choices[0].message.content
     
 
-def process_audio():
-    # pulith API RAHHH
-    pass
+def process_audio(audio_file):
+    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+        tmp_file.write(audio_file.read())
+        tmp_file_path = tmp_file.name
+
+    audio = AudioSegment.from_file(tmp_file_path)
+    wav_path = 'uploaded_recording.wav'
+    audio.export(wav_path, format='wav')
+    transcription = send_transcript(wav_path)
+    print(transcription)
+    os.remove(wav_path)
+    os.remove(tmp_file_path)
+
+def send_transcript(file):
+    result = whisper_model.transcribe(file)
+    transcription = result["text"]
+    return transcription
+
 
 def process_text(language, text):
     docs = get_patient_docs()

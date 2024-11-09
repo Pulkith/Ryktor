@@ -4,7 +4,7 @@ import tempfile
 from pydub import AudioSegment
 import os
 
-from gen_compute import LLM_INSTANCE
+from .gen_compute import LLM_INSTANCE
 
 whisper_model = whisper.load_model("base")
 

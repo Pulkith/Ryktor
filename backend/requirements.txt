@@ -11,3 +11,6 @@ pandas>=2.2.0
 numpy>=1.26.0
 scikit-learn>=1.5.0
 python-multipart>=0.0.9
+whisper>=1.1.10
+pydub>=0.25.1
+geopy>=2.4.1

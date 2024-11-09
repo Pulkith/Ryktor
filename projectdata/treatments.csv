@@ -1,0 +1,1001 @@
+Service,Lower Bound,Upper Bound
+Primary Care Visit,20,40
+Specialist Visit,30,60
+Emergency Room Visit,100,250
+Urgent Care Visit,50,100
+Physical Therapy Session,20,50
+Mental Health Counseling,20,50
+Chiropractic Visit,20,50
+Dermatology Visit,30,60
+Cardiology Consultation,30,60
+Orthopedic Consultation,30,60
+Gastroenterology Consultation,30,60
+Neurology Consultation,30,60
+Obstetrics/Gynecology Visit,20,50
+Pediatrician Visit,20,40
+Ophthalmology Visit,30,60
+Optometry Visit,20,40
+Dental Cleaning,20,50
+Dental Filling,50,100
+Dental Extraction,50,150
+Routine Blood Test,10,30
+Rheumatology Consultation,30,60
+Acupuncture Session,20,50
+Acupressure Therapy,15,40
+Hypnotherapy Session,30,60
+Hydrotherapy Session,20,50
+Dialectical Behavior Therapy (DBT),20,60
+Intensive Outpatient Program (IOP),50,150
+Partial Hospitalization Program (PHP),80,200
+Immunotherapy Injection,50,120
+IV Vitamin Therapy,30,80
+Chelation Therapy,50,150
+PRP (Platelet-Rich Plasma) Injection,100,200
+Trigger Point Injection,30,60
+Epidural Steroid Injection,50,150
+Botox Injection for Migraines,50,120
+Ketamine Infusion Therapy,100,300
+Biofeedback Session,20,60
+Electromagnetic Therapy,30,80
+Chiropractic Adjustment,20,40
+Naturopathy Consultation,20,60
+Integrative Medicine Consultation,20,60
+Ayurvedic Treatment Consultation,20,50
+Reiki Session,20,40
+Craniosacral Therapy Session,20,50
+Prolotherapy Injection,50,150
+Ozone Therapy Session,30,80
+Physical Medicine Injection Therapy,30,70
+Diabetic Foot Care,20,50
+Diabetic Retinopathy Screening,10,30
+Cardiac Risk Assessment,10,30
+Cholesterol Panel,10,20
+HIV Prevention (PrEP),0,40
+HIV Treatment (PEP),0,50
+Homeopathic Treatment Consultation,20,50
+Hormone Imbalance Consultation,20,60
+Men’s Health Consultation,20,50
+Women’s Health Consultation,20,50
+Pediatric Immunotherapy,20,60
+Pediatric Developmental Therapy,20,60
+Pediatric Feeding Therapy,20,60
+Infant Physical Therapy,20,50
+Neonatal Intensive Care Consultation,50,150
+Pediatric Sleep Medicine Consultation,30,70
+Child Psychiatry Consultation,30,70
+Adolescent Medicine Consultation,20,50
+Travel Vaccination Consultation,20,40
+Rabies Vaccine Series,50,150
+Malaria Prevention Consultation,10,40
+Occupational Medicine Consultation,20,60
+Substance Use Disorder Assessment,30,80
+"Physical Medicine Procedure (e.g., electrotherapy)",30,80
+Urinary Incontinence Therapy,20,60
+Kidney Stone Removal (Outpatient),50,150
+Erectile Dysfunction Therapy,30,80
+Gender-Affirming Hormone Therapy,20,60
+Transplant Follow-Up Consultation,50,100
+Bone Marrow Donation Consultation,30,80
+Sickle Cell Disease Consultation,30,80
+Hemophilia Treatment,50,150
+Cancer Genetic Counseling,30,80
+Breast Reconstruction Consultation,50,100
+Reconstructive Surgery Consultation,50,100
+Vein Ablation Therapy,50,150
+Aortic Aneurysm Screening,20,50
+Peripheral Arterial Disease Screening,20,50
+Chronic Pain Evaluation,30,80
+Migraine Prevention Consultation,20,50
+Spinal Cord Stimulation Therapy,50,150
+Gout Management Consultation,20,50
+Lupus Care Consultation,30,60
+Fibromyalgia Treatment Consultation,20,50
+Autoimmune Disorder Counseling,20,50
+Psoriatic Arthritis Management,30,70
+IBD (Inflammatory Bowel Disease) Treatment,30,70
+Colorectal Cancer Screening,10,30
+Genetic Testing for Cancer,50,150
+Insulin Resistance Management,20,50
+Cognitive Rehabilitation,30,60
+Alzheimer’s Disease Assessment,20,60
+Parkinson’s Disease Therapy,20,60
+Multiple Sclerosis (MS) Management,30,70
+ALS (Lou Gehrig’s Disease) Consultation,30,80
+Alzheimer’s Family Counseling,20,50
+Stroke Rehabilitation Therapy,30,80
+Traumatic Brain Injury (TBI) Consultation,30,80
+Language and Speech Evaluation,20,60
+ADHD Medication Management,20,50
+PTSD Therapy Session,20,50
+Anxiety Management Session,20,50
+Pediatric Speech Therapy,20,50
+Pediatric Mobility Training,20,50
+Autism Occupational Therapy,20,60
+Feeding and Swallowing Therapy,20,60
+Pediatric Social Skills Training,20,60
+Adult ADHD Management,20,50
+Post-Concussion Evaluation,20,50
+High-Risk Pregnancy Consultation,30,80
+Reproductive Endocrinology Consultation,30,80
+Genetic Carrier Screening,30,80
+Fetal Echocardiogram,50,150
+Telepsychiatry Consultation,15,45
+Genetic Testing for Cardiomyopathy,50,150
+Hyperbaric Oxygen Therapy,50,120
+Holter Monitoring Analysis,40,90
+Cardiac Stress Test (Nuclear),70,150
+Radiofrequency Ablation for Arrhythmias,100,250
+Telecardiology Consultation,30,70
+Pediatric Oncology Consultation,50,100
+Pediatric Cardiac Surgery Consultation,50,150
+Pediatric Oncology Follow-up,40,100
+Palliative Chemotherapy Consultation,50,120
+Home Visit by Registered Nurse,20,60
+Wound Debridement,30,70
+Diagnostic Laparoscopy,50,150
+Liposuction Consultation,50,100
+Sclerotherapy for Varicose Veins,30,80
+Bone Marrow Transplant Counseling,50,150
+Peritoneal Dialysis Training,30,70
+Pediatric Infectious Disease Consultation,50,100
+Pediatric Genetic Counseling,30,80
+Genetic Testing for Cystic Fibrosis,50,120
+Genetic Counseling for Metabolic Disorders,40,90
+Long-Term HIV Treatment,30,80
+Chronic Hepatitis Management,20,60
+Hemochromatosis Screening,20,50
+Emergency Dental Service,50,100
+Pediatric Asthma Treatment,20,60
+Homeopathic Remedy Consultation,20,50
+Preventive Dental Sealants for Children,10,30
+Invisalign Consultation,50,150
+Orthognathic Surgery Consultation,50,150
+Sedation Dentistry,30,100
+Airway Management Consultation,20,60
+Orthopedic Bracing Consultation,20,50
+Rheumatoid Arthritis Injection,40,100
+Hepatitis B Vaccine,10,30
+Pediatric Orthopedic Follow-up,20,60
+Neonatal Follow-up,20,60
+Pediatric Pulmonology Consultation,50,100
+Teledermatology Consultation,20,50
+Lyme Disease Treatment,30,80
+Pediatric Gastroenterology Consultation,50,120
+Allergy Panel Testing,20,60
+Food Allergy Desensitization Therapy,50,150
+Anti-Malarial Treatment,20,50
+Zika Virus Screening,20,50
+Dental Night Guard Fitting,50,150
+Pediatric Diabetes Management,30,80
+Clinical Nutrition Counseling,20,60
+End-of-Life Planning Consultation,20,60
+Spiritual Counseling,10,30
+Pediatric Endocrinology Consultation,50,120
+Thyroid Ultrasound,30,80
+Thyroid Biopsy,50,150
+Parathyroid Scan,30,70
+Urology Ultrasound,30,80
+Bladder Cancer Screening,20,50
+Prostate Cancer Genetic Screening,30,80
+Men’s Fertility Counseling,30,80
+Assisted Reproductive Technology Consultation,50,150
+Breastfeeding Support Program,10,30
+Lactation Follow-up,10,30
+Postpartum Physical Therapy,20,60
+Chronic Migraine Therapy,30,70
+Pelvic Floor Therapy,20,60
+Pediatric Psychiatry Telemedicine,30,70
+Palliative Endocrinology,20,50
+Sickle Cell Treatment Consultation,30,80
+Counseling for Thalassemia,30,80
+Genetic Testing for Hemophilia,50,150
+Septic Arthritis Treatment,30,100
+Cranial Nerve Testing,20,50
+Ocular Motility Exam,20,50
+Vestibular Evaluation,30,70
+Traumatic Brain Injury Physical Therapy,30,80
+Pre-Operative Counseling,20,50
+Bariatric Surgery Follow-Up,30,100
+Functional Endoscopic Sinus Surgery Consultation,50,150
+Eyelid Surgery Consultation,50,150
+Pediatric Ophthalmology Screening,20,60
+Rehabilitative Vision Therapy,20,60
+Cochlear Implant Consultation,50,150
+Tinnitus Treatment,20,50
+Auditory Processing Disorder Assessment,20,50
+Neuropsychological Testing,50,150
+Pain Crisis Intervention for Sickle Cell,50,120
+Genetic Counseling for Neurological Disorders,50,150
+Neurofibromatosis Screening,50,120
+Pediatric Surgery Consultation,50,120
+Fetal Anomaly Scan,50,150
+Preconception Genetic Counseling,20,70
+Therapeutic Phlebotomy,20,60
+Bariatric Nutrition Counseling,20,60
+Stress Echocardiogram,50,150
+Pediatric Bone Density Testing,30,70
+Oncological Dermatology Consultation,50,120
+Podiatric Nail Surgery,30,70
+Platelet Function Test,20,50
+Cryotherapy for Skin Lesions,30,80
+Home Sleep Apnea Testing,40,100
+Pediatric Rheumatology Consultation,50,120
+Adult Congenital Heart Disease Consultation,50,150
+Pacemaker Programming and Adjustment,50,120
+Pre-Operative Cardiac Clearance,40,100
+Pulmonary Rehabilitation Counseling,20,60
+Spinal Fusion Surgery Consultation,50,150
+Nutritional IV Infusion Therapy,30,80
+Pediatric Epilepsy Consultation,50,120
+Fetal Genetic Testing,60,150
+HPV-Associated Cancer Screening,20,50
+Parenteral Nutrition Training,30,80
+Palliative Physical Therapy,20,60
+Phototherapy for Psoriasis,30,80
+Genetic Counseling for Rare Diseases,50,150
+Chronic Fatigue Syndrome Consultation,20,60
+Pediatric Pain Management,30,80
+Pediatric Orthodontic Consultation,20,50
+Holistic Pain Management,20,60
+Diabetic Eye Examination,20,50
+Customized Diet Plan for Renal Disease,20,60
+Hormone Therapy for Osteoporosis,30,70
+Mammary Ductogram,40,90
+Cancer Survivorship Counseling,20,50
+Radiation Dose Calculation,30,80
+Radiofrequency Ablation for Chronic Pain,50,150
+Advanced Lipid Testing,20,60
+Occupational Health Vision Screening,20,40
+Post-Bariatric Nutrition Follow-up,20,60
+Nerve Pain Block Injection,50,150
+Pediatric Trauma Counseling,20,50
+Advanced Caries Removal,30,70
+Temporomandibular Joint Disorder (TMJ) Therapy,20,60
+Comprehensive Pediatric Vision Exam,20,60
+Neurogenic Bladder Management,30,80
+Bioidentical Hormone Therapy,30,80
+Osteopathic Manipulative Treatment,20,50
+Adrenal Fatigue Evaluation,20,50
+Stroke Speech Rehabilitation,30,70
+Pain Catastrophizing Therapy,20,60
+Trauma-Sensitive Yoga,20,50
+Integrative Oncology Consultation,30,80
+PrEP Adherence Counseling,10,40
+Virtual Physical Therapy,10,40
+Monoclonal Antibody Therapy,60,200
+Spinal Cord Injury Rehabilitation,40,120
+Concussion Baseline Testing,20,50
+Functional Capacity Evaluation,30,70
+Surgical Oncology Follow-Up,40,100
+Gait Training,20,50
+Renal Dialysis Access Creation,60,150
+Diagnostic Angiography,50,150
+Pediatric Concussion Management,30,80
+Applied Behavior Analysis (ABA) for Autism,40,100
+Functional Movement Assessment,20,50
+Pelvic Pain Management,20,60
+Anti-VEGF Therapy for Macular Degeneration,50,150
+Pancreatic Cancer Screening,30,80
+Mindfulness-Based Stress Reduction,20,50
+Preoperative Anesthesia Assessment,20,50
+Carpal Tunnel Release Surgery Consultation,30,80
+Pediatric Seizure Monitoring,50,120
+Transcranial Doppler Ultrasound,40,90
+Retinal Laser Treatment,40,100
+Bone Fracture Healing Monitoring,20,60
+Lactose Intolerance Testing,20,50
+MRI with Contrast,100,250
+Thrombophilia Testing,40,90
+Speech Augmentation Device Training,20,60
+Parkinson’s Disease Deep Brain Stimulation Programming,50,150
+Aortic Stenosis Screening,30,70
+Bioimpedance Body Composition Analysis,20,50
+Cardiac Event Monitoring,50,150
+Pediatric Eating Disorder Counseling,30,70
+Custom Compression Garment Fitting,20,60
+Oral Chemotherapy Education,20,60
+Sports Injury Ultrasound,30,70
+Liver Function Monitoring for Hepatitis,20,60
+Stem Cell Therapy Consultation,50,150
+Trauma Resilience Counseling,20,60
+PTSD Screening for Veterans,20,50
+Family Caregiver Training,20,50
+Dermatology Skin Patch Testing,20,50
+Insulin Pump Tuning,20,60
+Stereotactic Body Radiation Therapy,100,300
+Advanced Metabolic Testing,20,70
+Low Vision Rehabilitation,20,50
+Advanced Heart Failure Management,50,150
+Huntington’s Disease Screening,50,150
+Pediatric Anemia Treatment,20,60
+Developmental Coordination Disorder Therapy,20,60
+Behavioral Pain Intervention,20,60
+Chemical Dependency Assessment,30,80
+Precision Medicine Consultation,50,150
+Transitional Care Coordination,20,50
+Anterior Cruciate Ligament (ACL) Rehabilitation,30,80
+Meniscus Tear Rehabilitation,30,80
+Spinal Disc Herniation Treatment,40,100
+Tendon Repair Surgery Consultation,50,150
+Concussion Cognitive Therapy,30,70
+Surgical Scar Revision,50,100
+Pediatric Dietary Counseling for Food Allergies,20,50
+Adult Hypertension Management Program,20,60
+Preconception Carrier Screening,30,80
+Botox for Spasticity Management,50,120
+Stem Cell Injection for Joint Repair,100,200
+Customized Exercise Program for Obesity,20,60
+Surgical Consultation for Varicose Veins,40,90
+Foot Ulcer Treatment for Diabetics,20,60
+Growth Hormone Therapy for Children,30,100
+Screening for Osteopenia,20,50
+Counseling for Genetic Disorders in Pregnancy,30,80
+Specific Allergy Immunotherapy for Animal Allergies,40,90
+IV Iron Therapy for Anemia,30,80
+Sleep Hygiene Education,10,40
+Specialized Physical Therapy for Runners,20,60
+Surgical Correction of Hammer Toe,40,100
+Wound Dressing Change for Severe Burns,30,80
+Orthodontic Treatment Consultation for Jaw Correction,50,120
+Laser Therapy for Acne Scars,30,80
+Cryosurgery for Warts,20,60
+Behavioral Therapy for OCD,30,70
+Ophthalmologic Surgery for Glaucoma,50,150
+Chronic Lyme Disease Counseling,30,80
+Specialized Nutrition Counseling for Cancer Patients,20,70
+Cardiac Valve Replacement Surgery Consultation,50,150
+Pre-Transplant Psychological Evaluation,40,90
+Sensory Integration Therapy for Autism,20,60
+Therapeutic Massage for Chronic Pain,20,60
+Tele-Consultation for Chronic Skin Conditions,20,50
+Hearing Aid Adjustment,20,50
+Postpartum Mental Health Support,20,50
+Dental Implant Consultation,50,150
+Advanced Cardiac Rehabilitation,40,100
+Bone Marrow Donor Counseling,30,80
+Pre-Surgical Lab Work and Preparation,20,50
+Functional Medicine Consultation for Hormonal Imbalance,30,80
+Neonatal Circumcision,20,50
+Pediatric Pre-Surgery Counseling,20,60
+Pediatric Scoliosis Screening,20,50
+Hand Therapy for Carpal Tunnel,20,60
+Voice Therapy for Hoarseness,20,60
+In-Office Tooth Whitening,50,150
+Screening for Celiac Disease,20,50
+Allergy Desensitization Therapy for Food Allergies,50,150
+Liver Biopsy for Fatty Liver Disease,50,150
+Childhood Sleep Disorder Counseling,20,50
+Behavioral Parent Training for ADHD,20,60
+ADHD Behavioral Interventions in Schools,20,60
+Biologic Therapy for Psoriasis,50,120
+Cognitive Stimulation Therapy for Dementia,30,70
+Diabetes Support Group,0,20
+Pulmonary Rehabilitation for COPD,30,80
+Specialized Rehabilitation for Spinal Cord Injury,40,120
+Lung Cancer Screening with Low-Dose CT,40,90
+Chronic Migraine Pain Management Program,30,80
+Gastrointestinal Cancer Genetic Screening,50,120
+Thoracic Surgery Consultation,50,150
+Prostate Cancer Immunotherapy,60,150
+Virtual Cognitive Behavioral Therapy (CBT),20,50
+Occupational Health Counseling for PTSD,20,60
+Occupational Health Lung Function Screening,20,50
+Occupational Asthma Management,30,70
+Customized Nutritional Support for Crohn's Disease,30,70
+Postpartum Pelvic Health Counseling,20,50
+Treatment Planning for Stage 4 Cancer,50,150
+Thyroid Cancer Ultrasound Follow-Up,20,50
+Cervical Cancer Vaccine Counseling,0,20
+Comprehensive Balance Assessment,30,80
+Cancer Pain Management Program,30,70
+Nutrition Therapy for High Cholesterol,20,50
+Sleep Study Interpretation and Counseling,20,60
+Cancer Nutrition Management,30,80
+Custom-Made Orthotics for Foot Pain,30,100
+Swallowing Therapy for Stroke Patients,20,60
+Rapid HIV Testing and Counseling,0,20
+Medication Management for Alzheimer's Disease,30,70
+Post-ICU Rehabilitation Program,30,80
+Virtual Care Coordination for Chronic Illness,20,50
+Emergency Contraception Counseling,0,20
+Pulmonary Function Training for Athletes,20,50
+Concussion Assessment and Rehabilitation,20,60
+Neurofeedback Therapy for ADHD,30,80
+Radiation Therapy Follow-Up for Breast Cancer,50,150
+High-Risk Pregnancy Nutrition Counseling,30,70
+Home-Based Physical Therapy for Seniors,20,60
+Post-Operative Wound Assessment,20,50
+Low Testosterone Screening,20,50
+Men's Health and Wellness Counseling,20,50
+Pediatric Weight Management Counseling,20,60
+Support Group for Bereavement,0,20
+Biometric Screening for Corporate Wellness,10,40
+Chronic Pain Support Group,0,20
+Reconstructive Surgery Consultation for Burn Victims,50,150
+Orthotic Fitting for Flat Feet,30,80
+Chronic Disease Self-Management Workshop,0,20
+Telemonitoring for Heart Failure,30,80
+Cancer Rehabilitation Counseling,30,80
+IV Therapy for Dehydration,30,80
+Heart Health Screening for Athletes,20,50
+Bronchiectasis Management Program,30,70
+Personalized Exercise Planning for COPD,20,60
+Trauma Counseling for Abuse Victims,20,60
+Risk Assessment for Breast Cancer,20,50
+Inhalation Therapy for Respiratory Conditions,20,50
+Pediatric Nutrition for Special Needs,20,60
+Personalized Diet Counseling for Athletes,20,50
+Advanced Cardiovascular Imaging,60,150
+Pain Coping Skills Training,20,60
+Oncology Social Work Counseling,20,50
+Foot and Ankle Pain Assessment,20,50
+Pelvic Pain Therapy,30,70
+Chiropractic Adjustment for Lower Back Pain,20,50
+Blood Pressure Self-Monitoring Training,10,30
+In-Office Dental Fluoride Application,20,50
+Customized Nutritional Counseling for IBS,20,60
+Sports Physicals for High School Athletes,10,30
+Home Health Monitoring for Diabetes,20,50
+Cardiac Risk Counseling for Smokers,20,50
+Pre-Travel Vaccination Counseling,10,30
+Lung Function Test for Asthma,20,50
+Nutritional Support for HIV Patients,20,60
+Smoking Cessation Telehealth Program,10,30
+Personalized Cancer Risk Assessment,30,80
+Therapeutic Ultrasound for Muscle Pain,20,60
+Personalized Physical Therapy for Low Back Pain,30,80
+Advanced Glucose Monitoring for Diabetes,20,60
+Vascular Surgery Consultation,50,150
+Electrocardiogram Interpretation,20,50
+Pain Management for Neuropathy,20,60
+Cryotherapy for Actinic Keratosis,20,60
+Digital Retinal Imaging,20,60
+Breast Health Genetic Counseling,30,80
+Customized Home Exercise Plan for Seniors,10,40
+Personalized Diet Counseling for Heart Disease,20,50
+Anxiety Management for Children,20,60
+Post-Operative Occupational Therapy,20,60
+Compression Garment Fitting for Edema,20,60
+Inpatient Rehabilitation for Stroke,50,150
+Chronic Disease Management for COPD,20,60
+Home-Based Cancer Rehabilitation,20,60
+Chronic Kidney Disease Dietary Management,20,60
+Skin Patch Testing for Contact Dermatitis,20,60
+Advanced Wound Care for Pressure Ulcers,30,80
+Specialized Therapy for PTSD,30,80
+Chronic Fatigue Syndrome Support Group,0,20
+Pediatric Early Intervention Services,20,50
+Home Safety Assessment for Elderly,10,40
+Oral Health Screening for Pregnant Women,10,30
+Balance Therapy for Vertigo,20,60
+Palliative Counseling for Caregivers,20,50
+Support Group for Caregivers of Alzheimer's Patients,0,20
+Nutritional Counseling for Hypertension,20,50
+Occupational Therapy for Hand Injuries,20,60
+Heart Health Check-Up for Women,20,50
+Occupational Hearing Conservation Program,10,40
+Vision Therapy for Dyslexia,20,60
+Pediatric Obesity Counseling,20,50
+Eye Movement Desensitization for Trauma,20,60
+Cancer Prehabilitation Program,20,60
+Oncology Rehabilitation for Lymphedema,20,60
+Diabetes Self-Management Education,10,30
+Weight Loss Counseling for Obesity,20,60
+Perimenopause Symptom Management,20,50
+Arthritis Pain Self-Management Workshop,10,30
+Custom Hearing Protection Fitting,20,60
+Corporate Health Wellness Counseling,10,40
+Hepatitis C Medication Management,20,50
+Advanced Cholesterol Panel,20,60
+Assisted Walking Device Training,10,40
+Sleep Medicine Consultation for Insomnia,20,60
+Telemedicine Pain Consultation,20,50
+Stroke Prevention Screening,20,50
+Postpartum Support Group,0,20
+Orthopedic Follow-Up for Joint Replacement,30,80
+Custom Shoe Orthotics for Heel Pain,30,80
+Pre-Employment Physical Exam,20,50
+Pediatric Vaccination for Influenza,0,20
+Lung Health Screening for Smokers,20,50
+Telehealth Screening for Anxiety,10,40
+Virtual Occupational Therapy Consultation,20,60
+In-Home Concussion Recovery Support,20,60
+Advanced Physical Therapy for Spinal Fusion Recovery,40,100
+Personalized Exercise Therapy for Scoliosis,30,80
+Advanced Nutrition Therapy for Pediatric Cancer Patients,30,80
+Post-Operative Pain Management for ACL Reconstruction,30,90
+Cardiovascular Fitness Program for Heart Failure,20,70
+Pelvic Floor Therapy for Postpartum Recovery,20,60
+In-Office Tooth Decay Prevention for Pediatric Patients,10,30
+Diet Counseling for Adolescents with Diabetes,20,60
+Teletherapy for Generalized Anxiety Disorder,20,50
+Cognitive Behavioral Therapy for Insomnia,20,50
+Breast Cancer Screening Follow-Up,30,70
+Pulmonary Rehabilitation for Lung Cancer Patients,30,80
+Specialized Allergy Shots for Environmental Allergies,40,90
+Behavioral Therapy for Social Anxiety,20,60
+Lactation Counseling for Working Mothers,10,40
+Physical Therapy for Rotator Cuff Injuries,30,80
+Occupational Therapy for Stroke Rehabilitation,30,70
+Dietitian Support for Gluten-Free Meal Planning,10,30
+Smoking Cessation Therapy with Nicotine Replacement,10,30
+Blood Pressure Monitoring for Hypertension Patients,10,30
+Neuropsychological Evaluation for Brain Injury,50,150
+Home-Based Therapy for Children with Autism,20,60
+Nutritional Counseling for Chronic Kidney Disease,20,50
+Pre-Operative Assessment for Diabetic Patients,20,50
+Neurology Follow-Up for Migraine Prevention,20,60
+Nutrition Planning for High-Risk Pregnancies,20,50
+Customized Exercise for Arthritis Management,20,50
+Menopause Symptom Counseling,20,50
+Oncology Counseling for Tobacco Cessation,10,40
+Telehealth Counseling for Substance Abuse,20,50
+Diabetic Retinopathy Laser Treatment,40,100
+Dental Sealants for Preventing Cavities,20,50
+Screening for High Cholesterol in Youth,10,30
+Home-Based Exercises for Osteoporosis Prevention,10,30
+Specialized Foot Care for Diabetics,20,60
+Heart Health Counseling for Sedentary Adults,10,30
+Child Nutrition Program for Underweight Children,10,40
+Emergency Asthma Treatment for Children,20,60
+In-Office Wart Removal,20,50
+Behavioral Counseling for ADHD,20,50
+Physical Activity Counseling for Cancer Survivors,10,30
+High-Risk Breast Cancer Surveillance,20,70
+Rehabilitation Exercises for Total Knee Replacement,30,90
+Orthopedic Consultation for Hip Dysplasia,40,100
+Dietitian Support for Chronic Migraines,20,50
+Blood Testing for Immunodeficiency,30,70
+Respiratory Therapy for Chronic Cough,20,60
+Diet and Lifestyle Coaching for Prediabetes,10,40
+Sports Nutrition Counseling for Athletes,20,60
+Osteoporosis Screening for Elderly Men,20,50
+Telemonitoring for COPD Management,20,50
+Genetic Screening for Inherited Neurological Disorders,50,150
+Personalized Counseling for ADHD in Adults,20,50
+Preconception Health Check for Women,20,50
+Therapeutic Massage for Fibromyalgia,20,60
+Anxiety Group Therapy,0,20
+Pelvic Pain Rehabilitation Therapy,20,60
+Pediatric Dietary Support for Obesity,20,60
+Chronic Disease Management Program for Seniors,20,60
+Hearing Screening for Preschoolers,10,30
+Allergy Testing for Pets,20,50
+Urinary Tract Infection (UTI) Follow-Up,20,50
+In-Office Bleaching for Sensitive Teeth,30,80
+Family Therapy for Addiction Recovery,20,60
+Monitoring and Adjustment for Pacemaker Patients,40,90
+Post-Transplant Nutrition Counseling,20,60
+Pain Management Counseling for Neuropathy,20,60
+Advanced Balance Training for Seniors,20,60
+Personalized Exercise Program for Sciatica Relief,20,60
+Customized Home Care Plans for Stroke Patients,20,60
+Rehabilitation Therapy for ACL Injury,30,80
+Pediatric Vaccination for HPV Prevention,0,20
+Family Planning Consultation for High-Risk Couples,20,60
+Telepsychiatry for Rural Communities,20,60
+Speech Therapy for Voice Disorders,20,60
+Medication Management for Epilepsy Patients,20,50
+Nutrition Counseling for Breastfeeding Mothers,20,60
+Cognitive Therapy for Schizophrenia,30,70
+Community-Based Diabetes Education,10,30
+School-Based Health Counseling,10,30
+Pregnancy Counseling for Women with Epilepsy,30,70
+Nutritional Support for Hyperthyroidism,20,50
+Therapeutic Exercises for Rotator Cuff Repair,20,60
+Chronic Pain Management for Fibromyalgia,20,60
+Behavioral Support for Weight Management,20,50
+Elderly Medication Management Support,20,60
+In-Home Occupational Therapy for Hand Function,20,60
+Customized Stress Management Coaching,10,40
+Inhaler Technique Training for Asthma Patients,10,30
+Wound Care Education for Caregivers,10,30
+Dietary Counseling for Hypercholesterolemia,20,50
+Virtual Support for Insulin Pump Users,10,40
+Advanced Physiotherapy for Multiple Sclerosis,20,70
+Lung Function Test for Competitive Swimmers,20,50
+Knee Osteoarthritis Exercise Program,20,60
+Pre-Transplant Nutritional Assessment,30,70
+Home-Based Support for Dementia Patients,20,60
+Chronic Condition Monitoring for Asthma,20,60
+Nutritional Therapy for Pediatric Epilepsy,30,80
+Speech Therapy for Bilingual Children,20,60
+Follow-Up Teleconsultation for Anxiety,10,30
+In-Office Exam for Seasonal Allergies,10,40
+Dietary Support for High Blood Pressure,20,50
+Post-Operative Dietary Plan for Cancer,20,60
+Therapeutic Program for Obsessive-Compulsive Disorder,20,50
+Geriatric Care for Diabetes Management,20,60
+Balance and Coordination Training,20,60
+Nutritional Counseling for Cardiovascular Health,20,50
+Post-Injury Pain Management,20,60
+Physical Therapy for Tendonitis,30,70
+Neuropathy Treatment for Diabetic Patients,20,60
+Mobile Health Screening for Rural Communities,10,40
+Home Care for Post-Surgical Recovery,20,60
+Sports Medicine Consultation for Gymnasts,30,80
+Nutritional Education for Vegetarian Athletes,20,50
+Orthodontic Check for Teeth Realignment,20,50
+General Health Checkup for Corporate Employees,20,60
+Blood Test for Genetic Markers,30,70
+Post-Injury Athletic Rehabilitation,30,80
+Customized Exercise Regimen for Obesity,20,60
+Teleconsultation for Hypertension Management,10,40
+Home Monitoring for COPD,20,50
+Sleep Hygiene Counseling for Insomniacs,10,40
+Allergy Risk Assessment for Children,10,30
+Speech and Language Therapy for Autism Spectrum,20,60
+Customized Cancer Prevention Counseling,20,50
+Rehabilitation for Foot Fracture,20,60
+Osteoarthritis Symptom Counseling,20,50
+Diet Counseling for Hypothyroidism,20,50
+Exercise Program for Post-Cardiac Rehab,30,70
+Virtual Support for Mental Health,20,50
+Cognitive Support for Alzheimer’s Patients,20,50
+Physical Therapy for Post-Mastectomy,30,70
+Dental Consultation for Pregnant Women,20,50
+Counseling for Chronic Pain Management,20,60
+Telemedicine for Allergy Testing,10,40
+Specialized Diabetes Self-Care Training,10,30
+Post-ICU Trauma Recovery,30,80
+Custom Diet Plan for Pregnancy,20,50
+Anxiety Disorder Therapy for Teenagers,20,60
+Post-COVID Rehabilitation Counseling,20,50
+Monitoring for Glaucoma Progression,20,50
+Balance Assessment for Vestibular Issues,20,60
+Mental Health Check-Up for Adolescents,20,50
+Telehealth Counseling for Senior Wellness,10,30
+Radiology Review for Cardiac Risk,40,100
+Pain and Symptom Management for Arthritis,20,60
+Monitoring for Arrhythmia Symptoms,20,50
+Stroke Prevention Education,10,30
+Dietary Intervention for Insulin Resistance,20,50
+Pre-Diabetes Health Coaching,20,50
+Blood Pressure Self-Management Program,10,30
+Thyroid Function Screening,10,30
+Acne Prevention Counseling for Teens,10,30
+Oral Health Counseling for Diabetics,10,30
+Virtual Check-In for Heart Failure,20,60
+Home-Based Palliative Care,20,60
+Weight Management for Post-Menopausal Women,20,50
+Skin Check for Cancer Risk,20,50
+Wound Care Plan for Amputation Patients,30,80
+Counseling for Eating Disorders in Adolescents,20,60
+Genetic Testing for Pediatric Patients,50,150
+Hypertension Education for Young Adults,20,50
+Psychiatric Evaluation for Anxiety Disorder,30,70
+Pain Management Support Group,0,20
+Neurological Monitoring for Parkinson's Disease,30,70
+Family Counseling for Alzheimer's Support,10,30
+Oral Appliance Therapy for Sleep Apnea,30,80
+Nutrition Tracking for High Cholesterol,10,30
+Functional Movement Training for Elderly,20,60
+Joint Health Check for Athletes,20,50
+Heart Disease Screening for Smokers,20,50
+Customized Physical Therapy for Paralysis Recovery,30,80
+Telehealth for Chronic Condition Monitoring,20,50
+Exercise Program for Post-Stroke Recovery,20,60
+Injury Prevention Program for Athletes,20,60
+Post-Operative Cardiovascular Recovery,30,80
+Hormone Therapy Counseling for Menopause,20,50
+Therapy for Speech Disorders in Children,20,60
+Diabetes Management for New Diagnoses,20,50
+Community-Based Mental Health Programs,10,40
+Pulmonary Rehabilitation for Athletes,20,60
+Postpartum Depression Counseling,20,60
+Pediatric Physical Therapy for Mobility Issues,20,60
+Custom Fitness Program for Hypertension,20,50
+Monitoring for Ongoing Cardiac Issues,20,60
+Nutrition Counseling for Cancer Survivors,20,50
+Pain Relief Program for Neurological Conditions,20,60
+Support Program for Stroke Caregivers,10,30
+Chronic Disease Management Education,10,30
+Teletherapy for Rural Mental Health Support,20,60
+Family Counseling for Drug Abuse,20,60
+Behavioral Therapy for Eating Disorders,20,60
+Speech Therapy for Parkinson's Patients,20,60
+Neurological Exam for Elderly Patients,30,70
+Diabetes Prevention Program,10,30
+Weight Management Program for Adolescents,20,60
+Dental Support for Patients with Braces,20,50
+Guided Physical Therapy for Arthritic Hands,20,60
+Elder Care Education for Families,10,30
+Pre-Surgical Dental Cleaning,20,50
+Thyroid Support Program for Men,20,50
+Elderly Heart Screening,30,70
+Nutritional Guidance for Renal Patients,20,50
+Rehabilitation for Knee Replacement,30,80
+Tailored Therapy for PTSD,20,60
+Eye Health Screening for Diabetic Retinopathy,20,50
+Diabetes Foot Care Program,20,60
+Advanced Arthritis Rehabilitation,30,70
+Infant Developmental Screening,10,30
+Behavioral Health Check for Autism,20,50
+Monitoring for High Blood Pressure,10,30
+Muscle Pain Management Program,20,60
+Diet Counseling for GERD,20,50
+Support Group for Cancer Caregivers,10,30
+Oncology Nutrition Counseling,20,60
+Menopause Support Group,10,30
+Pediatric Growth Assessment,10,30
+Speech Training for Stuttering,20,50
+Bone Density Screening for Post-Menopausal Women,20,50
+Addiction Management Program,20,60
+Chronic Obstructive Pulmonary Disease (COPD) Self-Management,20,50
+Post-Surgery Pain Management for Joints,20,50
+Counseling for Fertility Issues,20,60
+Obesity Management Counseling,20,50
+Family Health History Assessment,20,50
+Respiratory Therapy for Sleep Apnea,20,50
+Personalized Weight Loss Coaching,20,50
+Physical Activity Coaching for Seniors,10,30
+Cardiac Rehabilitation for Young Adults,20,60
+Neurological Monitoring for Dementia,20,60
+Guided Therapy for Bipolar Disorder,30,70
+Elderly Medication Safety Check,10,30
+Acupuncture for Chemotherapy Relief,30,60
+Speech Improvement for Vocal Cord Paralysis,30,70
+Vision Assessment for Driving,10,30
+Heart Health Risk Assessment,20,50
+Memory Care Support Group,0,20
+Recovery Program for Heart Attack Patients,30,80
+Post-Hospitalization Follow-Up for Seniors,20,60
+Childhood Behavioral Screening,10,30
+Nutrition Counseling for Gluten-Free Lifestyle,20,50
+In-Home Nursing for Post-Op Recovery,40,90
+Chronic Disease Management for Asthma,20,50
+Sleep Apnea Education for Families,10,30
+Obstetric Care Plan for At-Risk Pregnancy,30,80
+Personalized Diet Plan for Thyroid Health,20,50
+Chronic Pain Telemedicine Follow-Up,10,30
+Advanced Diabetes Monitoring Program,20,50
+Osteoporosis Counseling for Risk Reduction,20,50
+Mental Health Counseling for PTSD,20,50
+Oncology Social Work Support,10,30
+Child Development Therapy for Delayed Milestones,20,60
+Advanced Physical Therapy for Joint Replacement,30,80
+Neurology Monitoring for MS Progression,20,50
+Weight Management for Diabetic Patients,20,50
+Post-Trauma Pain Management,30,60
+Nutrition Counseling for High Blood Sugar,20,50
+Endocrinology Consultation for Hormone Imbalance,20,60
+Cardiology Screening for Senior Men,20,50
+Health Monitoring for Post-COVID Recovery,20,50
+Telemedicine for Diet Coaching,10,30
+Cognitive Behavioral Therapy for Teenagers,20,50
+Mobility Therapy for Parkinson's Disease,30,70
+Custom Sleep Management Program,10,30
+Vaccination Counseling for Pregnant Women,0,20
+Skin Health Assessment for Eczema,10,30
+Nutritional Education for Elderly,10,30
+Tailored Therapy for ADHD in Adults,20,50
+Support Group for ADHD Parents,0,20
+Community Health Education for Youth,10,30
+Chronic Pain Coping Skills Training,20,50
+Eye Therapy for Computer Vision Syndrome,20,50
+Neonatal Nutritional Support,20,50
+Smoking Cessation Therapy for Youth,10,30
+Ongoing Monitoring for Kidney Disease,20,60
+Dietary Support for Cancer Treatment,20,50
+Wellness Screening for Students,10,30
+Teleconsultation for Weight Loss,10,30
+Telemonitoring for Depression Symptoms,20,50
+Asthma Management Program for Young Adults,20,50
+General Wellness Counseling for Parents,10,30
+Teletherapy for Mood Disorders,10,30
+Bariatric Surgery Nutritional Counseling,30,70
+Eye Health Screening for Macular Degeneration,20,50
+In-Office Support for GERD Management,20,50
+Advanced Exercise Program for Seniors,20,50
+Cervical Cancer Prevention Counseling,10,30
+Headache Management for Migraine Sufferers,20,50
+Chronic Pain Therapy for Veterans,20,60
+Post-Surgery Physical Therapy for Seniors,20,50
+Home-Based Diet Coaching,10,30
+Care Coordination for Chronic Illness,20,50
+Nutritional Coaching for Low Blood Pressure,10,30
+Bone Strength Training for Seniors,10,30
+Customized Vision Therapy for Children,20,50
+Health Screening for Pre-Diabetics,20,50
+Pre-Operative Health Assessment,20,50
+Screening for Heart Murmurs,20,50
+Behavioral Coaching for Tobacco Cessation,20,50
+Post-Op Nutritional Support for Surgery Patients,20,60
+Ongoing Monitoring for Autoimmune Disorders,30,70
+Behavioral Health Coaching for Weight Management,20,60
+Diet and Wellness Plan for Crohn's Disease,20,50
+Mobility Training for Amputees,30,80
+Postpartum Weight Loss Program,20,50
+Advanced Eye Care for Seniors,20,60
+Men’s Sexual Health Counseling,20,50
+In-Office Blood Sugar Testing,10,30
+Cardiac Screening for High-Risk Patients,30,70
+Pain Management Program for Chronic Illness,20,60
+Telehealth for Managing Digestive Disorders,20,50
+Stress Reduction Program for Seniors,10,30
+Telemonitoring for Chronic Heart Failure,20,60
+Weight Loss Program for Post-Menopausal Women,20,50
+Counseling for Post-Traumatic Stress Disorder,20,60
+Pelvic Health Screening for Seniors,20,50
+Nutritional Support for Vegetarians,10,30
+Childhood Obesity Counseling,20,60
+Low Vision Therapy for Children,20,50
+Nutrition Education for Cardiovascular Health,20,50
+High-Risk Pregnancy Monitoring,30,80
+Family Nutrition Planning,20,50
+Telecare for Behavioral Health,20,50
+Tailored Stress Management for Athletes,20,50
+Chronic Pain Counseling for Fibromyalgia,20,60
+Postpartum Recovery Counseling,20,50
+Health Assessment for Occupational Hazards,30,60
+High Blood Pressure Monitoring at Home,10,30
+Virtual Check-Ups for Senior Health,10,30
+Dietary Support for Celiac Disease,20,50
+In-Office Laser Treatment for Skin Lesions,30,80
+Self-Care Coaching for Chronic Illness,20,50
+Telemedicine Consultation for Back Pain,20,50
+Customized Fitness for Osteoporosis,20,60
+Teleconsultation for Thyroid Disorders,10,30
+Post-Surgery Support for Cancer Patients,30,70
+Family Therapy for Adolescents,20,50
+Personalized Wellness Planning for Busy Professionals,20,50
+Eye Strain Management for Computer Users,10,30
+Pediatric Obesity Prevention Counseling,10,30
+Home-Based Physical Therapy for Chronic Pain,20,60
+Pain Relief Management for Chronic Migraines,20,60
+Screening for Hormonal Imbalance in Youth,10,30
+Medication Management for Heart Failure,20,60
+Dental Screening for Gum Health,10,30
+Sports Physical Exam for Student Athletes,10,30
+Childhood Immunization Counseling,10,30
+Nutritional Support for Pre-Operative Patients,20,60
+Self-Care Education for Cancer Patients,20,50
+Post-Transplant Health Monitoring,30,70
+Supportive Therapy for Speech Impediments,20,50
+Screening for Glaucoma in High-Risk Individuals,20,50
+Bone Health Counseling for Young Women,10,30
+Virtual Health Coaching for Chronic Illness,20,50
+Injury Prevention for Child Athletes,10,30
+Health Evaluation for Hormone Replacement Therapy,20,60
+Youth Mental Health Wellness Screening,10,30
+Workplace Ergonomics Assessment,20,50
+Advanced Counseling for Bipolar Disorder,20,50
+Self-Monitoring Education for Asthma Patients,10,30
+High-Intensity Therapy for OCD,30,70
+Diabetes Prevention Education,10,30
+Physical Fitness Planning for Seniors,10,30
+Customized Care Plan for Dementia,20,50
+Post-Op Care for Bariatric Surgery Patients,30,80
+Home-Based Stroke Rehabilitation,20,60
+Diet Planning for Athletes with Celiac Disease,20,50
+Pain Management Program for Palliative Care,20,50
+Health Screening for College Students,10,30
+Physical Therapy for Back Pain,20,50
+Support Group for Grieving Families,0,20
+Cognitive Therapy for Mild Dementia,20,50
+Nutrition Plan for Lowering Cholesterol,20,50
+High-Risk Health Management for Chronic Smokers,20,60
+Annual Wellness Check for Working Adults,20,50
+Blood Sugar Management for Young Adults,10,30
+Skin Cancer Check-Up for Outdoor Workers,20,50
+Postpartum Physical Therapy for Diastasis Recti,20,50
+Occupational Health Screening for Travel Workers,20,50
+Home Exercise Program for Arthritis,10,30
+Health Counseling for the Elderly,10,30
+Family Health and Wellness Planning,20,50
+Customized Counseling for Chronic Pain,20,50
+Physical Conditioning Program for Soldiers,20,50
+Behavioral Health Coaching for Veterans,20,60
+Physical Exam for Patients with Chronic Pain,20,50
+Exercise Coaching for Senior Mobility,10,30
+Dermatology Screening for High-Risk Skin Cancer Patients,20,50
+Cardiac Risk Assessment for Overweight Patients,20,50
+Annual Wellness Exam for Pre-Diabetics,20,50
+Home-Based Exercise Program for Diabetes,10,30
+Sleep Apnea Therapy Education,10,30
+Injury Prevention for Senior Athletes,10,30
+Post-Surgery Respiratory Therapy,20,50
+Virtual Exercise Support for Mobility Challenges,20,50
+Nutritional Counseling for Anxiety Management,20,50
+Behavioral Health Counseling for Cancer Patients,20,50
+Telemedicine for Chronic Obesity,10,30
+Pain Management Therapy for Migraine Sufferers,20,50
+In-Home Health Check for Seniors,20,50
+Palliative Counseling for Terminal Illness,20,50
+Custom Diet Plan for Elderly Patients,10,30
+Community-Based Exercise Program for Seniors,10,30
+Workplace Stress Management Workshop,10,30
+Sports Medicine Program for High School Students,20,50
+Child Safety and Health Education,10,30
+Stress Management Counseling for Executives,20,50
+Telehealth Screening for Occupational Health,20,50
+Pediatric Bone Density Screening,20,50
+Men's Health and Nutrition Counseling,20,50
+Post-Cancer Health Maintenance Program,20,50
+Women's Health Counseling for Menopause,20,50
+Fall Prevention Program for Elderly,20,50
+Cognitive Behavioral Therapy for Youth Depression,20,50
+Mental Health Monitoring for Long-Term Care Residents,20,50
+Cancer Screening for High-Risk Populations,20,50
+In-Home Therapy for Chronic Respiratory Illness,20,50
+Wellness Coaching for Cardiovascular Risk,10,30
+Therapeutic Support for Chronic Pain Patients,20,50
+Home Health Monitoring for Heart Patients,20,50
+Advanced Cancer Counseling and Care Planning,30,80
+Physical Therapy for Occupational Injuries,20,50
+Childhood Development Screening for Special Needs,10,30
+Speech Therapy for Developmental Delays,20,50
+Sleep Counseling for Parents of Infants,10,30
+Ongoing Counseling for Chronic Depression,20,50
+Wellness Education for Pre-Teens,10,30
+Advanced Rehabilitation for Joint Pain,20,50
+Virtual Wellness Check for Isolated Seniors,10,30
+Blood Pressure and Heart Rate Monitoring at Home,10,30
+Emotional Support Program for End-of-Life Care,20,50
+Family Education for Chronic Illness Management,10,30
+Occupational Safety Training for Physical Laborers,10,30
+Pain Management for Advanced Cancer,20,50
+Custom Diet Plan for Athletes with Food Allergies,10,30
+Childhood Trauma Counseling,20,50
+Personalized Exercise for Back Pain Relief,20,50
+Virtual Health Counseling for Busy Professionals,10,30
+High-Intensity Pain Management Therapy,30,80
+Behavioral Health Screening for School Children,10,30
+Family Support Program for Dementia Care,10,30
+Senior Wellness Assessment,10,30
+Community Outreach Health Education,10,30
+Diabetes Care Program for Underserved Populations,10,30
+Cardiac Rehabilitation for Youth Athletes,20,50
+Therapeutic Counseling for Grief and Loss,20,50
+Tailored Exercise Therapy for Post-Trauma Recovery,20,50
+Personalized Pain Management for Chronic Migraines,20,50
+Wellness Check-Up for Family Members of Cancer Patients,10,30
+Pediatric Health Education Program,10,30
+Diet and Exercise Counseling for Bone Health,20,50
+Senior Exercise Program for Bone Health,20,50
+Advanced Cardiac Monitoring for Post-Surgery Recovery,30,80
+Behavioral Counseling for Seniors with Mobility Issues,20,50
+Weight Loss Program for Bariatric Patients,20,50
+In-Office Exam for Mild Hearing Loss,10,30
+Asthma Support Group for Families,0,20
+Remote Health Check for Isolated Seniors,10,30
+Custom Nutritional Program for Seniors,10,30
+Telehealth for Sleep Disorder Management,10,30
+Social Skills Training for Teens with Autism,20,50
+Behavioral Therapy for Childhood Behavioral Issues,20,50
+Cancer Care Counseling for Survivors,20,50
+Pediatric Nutrition Program for Malnourishment,20,50
+Mental Health Screening for Adolescents,10,30
+Support Group for People with Chronic Illness,0,20
+In-Office Nutrition Counseling for Diabetics,20,50
+Nutritional Monitoring for Liver Disease Patients,20,50
+General Health Screening for Young Adults,10,30
+Community-Based Wellness Program for Youth,10,30
+Personalized Diabetes Care Education,20,50
+Health Education for At-Risk Youth,10,30
+Tailored Mental Health Therapy for Trauma Survivors,20,50
+Supportive Care for Families of Patients with Cancer,20,50
+Weight Management for Teenagers,20,50
+Cardiovascular Screening for Athletic Youth,20,50
+Specialized Health Coaching for Autoimmune Disorders,20,50
+Pediatric Preventative Dental Education,10,30
+Emotional Support for Chronic Disease Patients,10,30
+Health Screening for Childhood Anemia,10,30
+In-Home Therapy for Memory Loss,20,50
+Home Health Check-Up for Heart Monitoring,20,50
+Telehealth Support for Weight Loss Maintenance,10,30
+Exercise Guidance for Arthritic Seniors,10,30
+Personalized Stress Management for Busy Parents,10,30
+Post-Accident Mobility Training,20,50
+Health Coaching for Families of Cancer Patients,10,30
+Customized Therapy for Speech Delays,20,50
+High Blood Pressure Care Plan,20,50
+School Health Education Program,10,30
+Cardiovascular Risk Reduction Counseling,10,30
+Childhood Mental Health Workshop,10,30
+Medication Therapy Management for Seniors,20,50
+General Health Maintenance for Retirees,10,30
+Lifestyle Change Counseling for Metabolic Syndrome,20,50
+In-Office Counseling for Asthma Control,20,50
+Nutrition Support for Pregnant Women,20,50
+In-Office Blood Pressure Monitoring Program,20,50

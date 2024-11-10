@@ -1,35 +1,95 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Box, Container, VStack, Stack, Heading, Text, Button, SimpleGrid, Icon, useColorModeValue } from '@chakra-ui/react';
+import { FaSearch, FaMoneyBillWave, FaHospital, FaUserMd } from 'react-icons/fa';
+import Layout from './components/Layout';
+
+const Feature = ({ icon, title, description }) => {
+  return (
+    <Stack align="center" textAlign="center">
+      <Icon as={icon} w={10} h={10} color="brand.500" />
+      <Text fontWeight={600} fontSize="lg">{title}</Text>
+      <Text color="gray.600">{description}</Text>
+    </Stack>
+  );
+};
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Layout>
+      {/* Hero Section */}
+      <Box 
+        bg="brand.500" 
+        color="white" 
+        py={20}
+        borderRadius="xl"
+        mb={16}
+      >
+        <Container maxW="container.xl">
+          <VStack spacing={6} align="center" textAlign="center">
+            <Heading size="2xl" fontWeight="bold">
+              Find Affordable Healthcare Providers
+            </Heading>
+            <Text fontSize="xl" maxW="container.md">
+              Compare copays, read reviews, and find the best healthcare providers in your area based on your symptoms and insurance.
+            </Text>
+            <Button
+              size="lg"
+              bg="white"
+              color="brand.500"
+              _hover={{ bg: 'gray.100' }}
+              mt={4}
+            >
+              Get Started
+            </Button>
+          </VStack>
+        </Container>
+      </Box>
+
+      {/* Features Section */}
+      <Container maxW="container.xl" py={16}>
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={8}>
+          <Feature
+            icon={FaSearch}
+            title="Symptom Search"
+            description="Enter your symptoms and get matched with relevant healthcare providers."
+          />
+          <Feature 
+            icon={FaMoneyBillWave}
+            title="Compare Copays"
+            description="Find providers with the most affordable copays for your insurance plan."
+          />
+          <Feature
+            icon={FaHospital}
+            title="Nearby Facilities"
+            description="Discover quality healthcare facilities in your local area."
+          />
+          <Feature
+            icon={FaUserMd}
+            title="Provider Reviews"
+            description="Read authentic reviews from other patients to make informed decisions."
+          />
+        </SimpleGrid>
+      </Container>
+
+      {/* CTA Section */}
+      <Box bg="gray.50" py={16} mt={16} borderRadius="xl">
+        <Container maxW="container.xl">
+          <VStack spacing={6} align="center" textAlign="center">
+            <Heading size="xl">Ready to Find Your Provider?</Heading>
+            <Text fontSize="lg" color="gray.600" maxW="container.md">
+              Join thousands of patients who have found the right healthcare provider at the right price.
+            </Text>
+            <Button
+              size="lg"
+              colorScheme="brand"
+              mt={4}
+            >
+              Search Providers Now
+            </Button>
+          </VStack>
+        </Container>
+      </Box>
+    </Layout>
+  );
 }
 
-export default App
+export default App;

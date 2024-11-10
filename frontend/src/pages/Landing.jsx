@@ -1,4 +1,4 @@
-import { Box, Container, VStack, Stack, Heading, Text, Button, SimpleGrid, Icon, useColorModeValue } from '@chakra-ui/react';
+import { Box, Container, VStack, Stack, Heading, Text, Button, SimpleGrid, Icon, useColorModeValue, HStack } from '@chakra-ui/react';
 import { FaSearch, FaMoneyBillWave, FaHospital, FaUserMd } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
@@ -14,7 +14,7 @@ const Feature = ({ icon, title, description }) => {
   );
 };
 
-function Home() {
+function Landing() {
   const navigate = useNavigate();
 
   return (
@@ -35,15 +35,26 @@ function Home() {
             <Text fontSize="xl" maxW="container.md">
               Compare copays, read reviews, and find the best healthcare providers in your area based on your symptoms and insurance.
             </Text>
-            <Button
-              size="lg"
-              bg="white"
-              color="brand.500"
-              _hover={{ bg: 'gray.100' }}
-              mt={4}
-            >
-              Get Started
-            </Button>
+            <HStack spacing={4} mt={4}>
+              <Button
+                size="lg"
+                bg="white"
+                color="brand.500"
+                _hover={{ bg: 'gray.100' }}
+              >
+                Get Started
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                color="white"
+                borderColor="white"
+                _hover={{ bg: 'whiteAlpha.200' }}
+                onClick={() => navigate('/login')}
+              >
+                Login
+              </Button>
+            </HStack>
           </VStack>
         </Container>
       </Box>
@@ -96,4 +107,4 @@ function Home() {
   );
 }
 
-export default Home; 
+export default Landing; 

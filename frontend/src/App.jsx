@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import BillingHelper from './pages/BillingHelper';
 import BillDetail from './pages/BillDetail';
 import { AuthProvider } from './context/AuthContext';
+import MapDashboard from './pages/MapDashboard';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/landing" element={<Landing />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/map" element={<MapDashboard />} />
           <Route path="/billing" element={<BillingHelper />} />
           <Route path="/bills/:id" element={<BillDetail />} />
         </Routes>

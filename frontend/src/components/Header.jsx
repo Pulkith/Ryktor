@@ -48,6 +48,15 @@ const Header = () => {
           </HStack>
 
           <HStack spacing={4}>
+          <Button
+              as={RouterLink}
+              to="/landing"
+              variant="ghost"
+              colorScheme="brand"
+              size="sm"
+            >
+              About
+            </Button>
             <Button
               as={RouterLink}
               to="/billing"

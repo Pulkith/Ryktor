@@ -5,6 +5,7 @@ import numpy as np
 import re
 from string import Template
 import json as json_lib
+# import fitz
 
 from .gen_compute import LLM_INSTANCE
 
@@ -71,6 +72,14 @@ def extract_text_heavy_billing(image_path):
 
     return text
 
+# def extract_text_heavy_billing(pdf_path):
+#     # use pymupdf to extract text from pdf
+#     text = ""
+
+#     with 
+    
+
+
 # Parse specific details from the text
 def parse_insurance_info(text):
     info = {
@@ -129,8 +138,6 @@ def parse_gen_insurace(raw_text, full_name):
     </FIELDS>
     """
 
-
-    print(raw_text)
 
     formatted_prompt = template.format(fields="\n".join(fields), full_name=full_name)
 
@@ -225,7 +232,6 @@ if __name__ == "__main__":
     med_path = ["id_card_examples/med_bill_example.png"]
 
     ret = medical_bill_pipeline(med_path)
-    print(ret)
 
 
 # Example usage

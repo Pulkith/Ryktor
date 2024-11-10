@@ -33,7 +33,7 @@ function Landing() {
               Find Affordable Healthcare Providers
             </Heading>
             <Text fontSize="xl" maxW="container.md">
-              Compare copays, read reviews, and find the best healthcare providers in your area based on your symptoms and insurance.
+              Your personalized health wallet
             </Text>
             <HStack spacing={4} mt={4}>
               <Button

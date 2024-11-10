@@ -22,6 +22,12 @@ import {
   Icon,
   IconButton,
   Center,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalBody,
+  Progress,
+  Heading,
 } from '@chakra-ui/react';
 import { GoogleMap, Marker, InfoWindow, useJsApiLoader } from '@react-google-maps/api';
 import axios from 'axios';
@@ -50,6 +56,11 @@ function MapDashboard() {
   const [hospitalCount, setHospitalCount] = useState(0);
   const [useCurrentLocation, setUseCurrentLocation] = useState(true);
   const [mapCenter, setMapCenter] = useState(center);  // Add this state for visual center
+  const [isRecording, setIsRecording] = useState(false);
+  const [mediaRecorder, setMediaRecorder] = useState(null);
+  const chunksRef = useRef([]);
+  const [recordingTime, setRecordingTime] = useState(0);
+  const [recordingTimerId, setRecordingTimerId] = useState(null);
 
   const toast = useToast();
 
@@ -154,6 +165,104 @@ function MapDashboard() {
     console.log("Nearest hospitals:", nearestHospitals);
   }, [nearestHospitals]);
 
+  const handleVoiceSearch = async () => {
+    console.log('Voice search button clicked');
+    
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      console.error('MediaRecorder API not supported in this browser');
+      toast({
+        title: 'Error',
+        description: 'Voice recording is not supported in this browser',
+        status: 'error',
+        duration: 3000,
+      });
+      return;
+    }
+
+    try {
+      if (!isRecording) {
+        // Reset recording time
+        setRecordingTime(0);
+        
+        console.log('Requesting microphone permission...');
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        console.log('Microphone permission granted');
+        
+        const recorder = new MediaRecorder(stream);
+        setMediaRecorder(recorder);
+        
+        recorder.ondataavailable = (e) => {
+          console.log('Data available from recorder', e.data.size);
+          chunksRef.current.push(e.data);
+        };
+        
+        recorder.onstop = async () => {
+          console.log('Recording stopped, processing audio...');
+          const audioBlob = new Blob(chunksRef.current, { type: 'audio/webm' });
+          chunksRef.current = [];
+          
+          console.log('Audio blob created:', audioBlob);
+          
+          // Clear timer and reset states
+          if (recordingTimerId) {
+            clearInterval(recordingTimerId);
+            setRecordingTimerId(null);
+          }
+          setRecordingTime(0);
+          setIsRecording(false);
+          stream.getTracks().forEach(track => track.stop());
+        };
+        
+        recorder.start();
+        setIsRecording(true);
+        console.log('Recording started');
+        
+        // Start timer
+        const timerId = setInterval(() => {
+          setRecordingTime(prev => prev + 1);
+        }, 1000);
+        setRecordingTimerId(timerId);
+        
+        // Auto-stop after 120 seconds (2 minutes)
+        setTimeout(() => {
+          if (recorder.state === 'recording') {
+            console.log('Auto-stopping recording after 120 seconds');
+            recorder.stop();
+            clearInterval(timerId);
+            setRecordingTimerId(null);
+          }
+        }, 120000);
+        
+      } else {
+        // Stop recording
+        console.log('Stopping recording');
+        if (mediaRecorder && mediaRecorder.state === 'recording') {
+          mediaRecorder.stop();
+        }
+        if (recordingTimerId) {
+          clearInterval(recordingTimerId);
+          setRecordingTimerId(null);
+        }
+      }
+    } catch (error) {
+      console.error('Error accessing microphone:', error);
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to access microphone',
+        status: 'error',
+        duration: 3000,
+      });
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (recordingTimerId) {
+        clearInterval(recordingTimerId);
+      }
+    };
+  }, [recordingTimerId]);
+
   return isLoaded ? (
     <Box
       padding={0}
@@ -240,7 +349,7 @@ function MapDashboard() {
                       variant="ghost"
                       colorScheme="brand"
                       size="lg"
-                      onClick={() => {/* Add voice search logic here */}}
+                      onClick={handleVoiceSearch}
                       _hover={{
                         bg: 'brand.50',
                         transform: 'scale(1.1)',
@@ -476,6 +585,44 @@ function MapDashboard() {
           </Card>
         </VStack>
       </Container>
+      <Modal isOpen={isRecording} onClose={() => handleVoiceSearch()} isCentered>
+        <ModalOverlay
+          bg="blackAlpha.300"
+          backdropFilter="blur(10px)"
+        />
+        <ModalContent
+          bg={cardBg}
+          borderRadius="xl"
+          boxShadow="xl"
+          maxW="400px"
+          p={6}
+        >
+          <ModalBody>
+            <VStack spacing={6}>
+              <Heading size="md">Recording...</Heading>
+              <Text fontSize="4xl" fontWeight="bold">
+                {recordingTime}s
+              </Text>
+              <Progress
+                value={(recordingTime / 120) * 100}
+                size="sm"
+                width="100%"
+                colorScheme="brand"
+                borderRadius="full"
+              />
+              <Button
+                colorScheme="brand"
+                onClick={() => handleVoiceSearch()}
+                size="lg"
+                width="100%"
+                borderRadius="full"
+              >
+                Stop Recording
+              </Button>
+            </VStack>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </Box>
   ) : (
     <Container maxW="container.xl" py={2}>

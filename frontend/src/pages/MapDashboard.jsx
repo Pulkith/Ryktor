@@ -25,7 +25,7 @@ import { useToast } from '@chakra-ui/react';
 
 const containerStyle = {
   width: '100%',
-  height: '65vh',
+  height: '60vh',
 };
 
 function MapDashboard() {
@@ -150,12 +150,12 @@ function MapDashboard() {
   return isLoaded ? (
     <Container 
       maxW="container.xl" 
-      py={8}
-      height="calc(100vh - 60px)" 
+      height="90vh"
+      py={1}
       display="flex" 
       flexDirection="column"
     >
-      <VStack spacing={6} align="stretch">
+      <VStack spacing={3} align="stretch" height="100%">
         {/* Location Controls Group */}
         <Card bg={cardBg} borderColor={borderColor}>
           <CardBody>

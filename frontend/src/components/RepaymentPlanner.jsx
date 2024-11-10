@@ -161,6 +161,13 @@ function RepaymentPlanner({ billAmount }) {
                   </Tbody>
                 </Table>
               </Box>
+
+              <Box mt={4}>
+                <Text fontWeight="bold" mb={2}>Strategy Explanation</Text>
+                <Text whiteSpace="pre-wrap" color="gray.600">
+                  {strategy.explanation}
+                </Text>
+              </Box>
             </CardBody>
           </Card>
         ))}

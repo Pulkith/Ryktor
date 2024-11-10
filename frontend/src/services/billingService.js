@@ -57,3 +57,8 @@ export const deleteBill = async (billId) => {
   const response = await axios.delete(`${API_URL}/receipt/${billId}`);
   return response.data;
 };
+
+export const getInsuranceCard = async (userId) => {
+  const response = await axios.get(`${API_URL}/insurance/${userId}`);
+  return response.data;
+};

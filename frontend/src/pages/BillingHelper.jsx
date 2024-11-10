@@ -28,6 +28,8 @@ import { getUserIllnesses, getAllBillingReceptions, deleteBill } from '../servic
 import { useAuth } from '../context/AuthContext';
 import { uploadInsuranceCard } from '../services/billingService';
 import { uploadReceipt } from '../services/billingService';
+import { getInsuranceCard } from '../services/billingService';
+import InsuranceCardModal from '../components/InsuranceCardModal';
 
 const BillCard = ({ bill, onDelete }) => {
   const toast = useToast();
@@ -121,9 +123,13 @@ function BillingHelper() {
   const [selectedIllness, setSelectedIllness] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const { user, isLoading: authLoading } = useAuth();
+  const [isInsuranceModalOpen, setIsInsuranceModalOpen] = useState(false);
+  const [insuranceData, setInsuranceData] = useState(null);
 
   const fetchData = async () => {
     if (!user) return;
+    console.log("fetching data");
+    console.log(user);
     
     try {
       const [fetchedIllnesses, fetchedReceipts] = await Promise.all([
@@ -277,6 +283,24 @@ function BillingHelper() {
     setBills(prevBills => prevBills.filter(bill => bill._id !== billId));
   };
 
+  const handleViewInsurance = async () => {
+    console.log("user");
+    console.log(user);
+    try {
+      const data = await user.insurance_card;
+      console.log(data)
+      setInsuranceData(data);
+      setIsInsuranceModalOpen(true);
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: error.response?.data?.detail || 'Failed to fetch insurance card',
+        status: 'error',
+        duration: 5000,
+      });
+    }
+  };
+
   return (
     // <Layout>
       <Container maxW="container.xl" py={8}>
@@ -335,6 +359,20 @@ function BillingHelper() {
                   >
                     Submit
                   </Button>
+                  <Button
+                    colorScheme="brand"
+                    variant="ghost"
+                    w="full"
+                    onClick={handleViewInsurance}
+                    isDisabled={user && !user?.insurance_card}
+                  >
+                    View Insurance Card
+                  </Button>
+                  <InsuranceCardModal
+                    isOpen={isInsuranceModalOpen}
+                    onClose={() => setIsInsuranceModalOpen(false)}
+                    insuranceData={insuranceData}
+                  />
                 </VStack>
               </CardBody>
             </Card>

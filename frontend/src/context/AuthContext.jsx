@@ -17,6 +17,8 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (userData) => {
+    console.log("login");
+    console.log(userData);
     setUser(userData);
     Cookies.set('user', JSON.stringify(userData), { expires: 7 });
   };

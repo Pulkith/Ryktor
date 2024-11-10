@@ -64,6 +64,33 @@ class IllnessCreate(BaseModel):
     symptoms: str
     user_id: str
 
+
+class InsuranceCard(BaseModel):
+    id: Optional[PyObjectId] = Field(default_factory=PyObjectId, alias="_id")
+    first_name: str
+    last_name: str
+    date_of_birth: Optional[str] = None
+    policy_number: str
+    group_number: str
+    member_id: str
+    insurance_company: str
+    insurance_plan: str
+    insurance_type: Optional[str] = None
+    effective_date: str
+    in_network_deductible: float
+    out_network_deductible: float
+    in_network_out_of_pocket_max: float
+    out_network_out_of_pocket_max: float
+
+    class Config:
+        json_encoders = {ObjectId: str}
+        populate_by_name = True
+        arbitrary_types_allowed = True
+
+    @field_serializer('id')
+    def serialize_id(self, id: Optional[PyObjectId], _info):
+        return str(id) if id else None
+
 class User(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     first_name: str
@@ -76,6 +103,7 @@ class User(BaseModel):
     state: str
     insurance_type: str
     created_at: datetime = Field(default_factory=datetime.utcnow)
+    insurance_card: Optional[InsuranceCard] = None
 
     class Config:
         json_encoders = {ObjectId: str}
@@ -103,6 +131,7 @@ class UserResponse(BaseModel):
     state: str
     insurance_type: str
     created_at: datetime
+    insurance_card: Optional[dict] = None
 
     class Config:
         json_encoders = {ObjectId: str}
@@ -134,6 +163,7 @@ class RepaymentStrategy(BaseModel):
     payment_schedule: List[Dict]
     risk_level: str
     recommended: bool
+    explanation: str
 
 class RepaymentPlan(BaseModel):
     total_amount: float

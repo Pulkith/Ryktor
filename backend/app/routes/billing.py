@@ -191,3 +191,19 @@ async def delete_receipt(
         return {"message": "Receipt deleted successfully"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+@router.get("/insurance/{user_id}")
+async def get_insurance_card(
+    user_id: str,
+    db: AsyncIOMotorDatabase = Depends(get_database)
+):
+    if not user_id:
+        raise HTTPException(status_code=400, detail="User ID is required")
+        
+    try:
+        user = await db.users.find_one({"_id": ObjectId(user_id)})
+        if not user or not user.get('insurance_card'):
+            raise HTTPException(status_code=404, detail="Insurance card not found")
+        return user['insurance_card']
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))

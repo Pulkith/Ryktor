@@ -23,12 +23,13 @@ import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { FaUpload, FaFileInvoiceDollar, FaIdCard } from 'react-icons/fa';
 import { Link as RouterLink } from 'react-router-dom';
-import { getUserIllnesses } from '../services/billingService';
+import { getUserIllnesses, getAllBillingReceptions } from '../services/billingService';
 import { useAuth } from '../context/AuthContext';
 import { uploadInsuranceCard } from '../services/billingService';
 import { uploadReceipt } from '../services/billingService';
 
 const BillCard = ({ bill }) => {
+  console.log(bill)
   return (
     <LinkBox 
       as={Card}
@@ -36,32 +37,38 @@ const BillCard = ({ bill }) => {
     >
       <CardBody>
         <VStack align="stretch" spacing={3}>
-          <LinkOverlay as={RouterLink} to={`/bills/${bill.id}`}>
-            <Heading size="sm">Bill #{bill.id}</Heading>
+          <LinkOverlay as={RouterLink} to={`/bills/${bill && bill['_id']}`}>
+            <Heading size="sm">Bill #{bill._id}</Heading>
           </LinkOverlay>
           
           <Image
-            src={bill.imageUrl}
+            src={
+              bill.processed_data && 
+              "uploaded_files/" + bill['user_id'] + "/" + bill.processed_data['file_name']
+            }
             alt={`Bill #${bill.id}`}
             borderRadius="md"
+            height={200}
+            objectFit="cover"
             fallback={<Box bg="gray.100" h="200px" />}
           />
           
           <HStack justify="space-between">
             <Text color="gray.600">
-              {new Date(bill.date).toLocaleDateString()}
+              {new Date(bill.processed_data && bill.processed_data['Date of Service']).toLocaleDateString()}
             </Text>
-            <Badge colorScheme={bill.status === 'processed' ? 'green' : 'yellow'}>
-              {bill.status}
+            <Badge colorScheme={bill.status !== 'processed' ? 'green' : 'yellow'}>
+              {'processed'}
             </Badge>
           </HStack>
           
           <Text fontWeight="bold">
-            ${bill.amount}
+            {bill && bill.processed_data && bill.processed_data['Patient Responsibility Remaining']}
           </Text>
           
           <Text noOfLines={2} color="gray.600">
-            {bill.description || 'No description provided'}
+            {bill.processed_data && bill.processed_data['services'].length} services 
+            rendered at {bill.processed_data && bill.processed_data['Hospital Name']}
           </Text>
         </VStack>
       </CardBody>
@@ -111,7 +118,29 @@ function BillingHelper() {
       }
     };
 
+    const fetchReceipts = async () => {
+      try {
+        if (!user) {
+          navigate('/login');
+          return;
+        }
+        const fetchedReceipts = await getAllBillingReceptions(user._id);
+        console.log(fetchedReceipts);
+        setBills(fetchedReceipts);
+      } catch (error) {
+        toast({
+          title: 'Error fetching receipts',
+          description: error.message,
+          status: 'error',
+          duration: 5000,
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     fetchIllnesses();
+    fetchReceipts();
   }, [user, toast, navigate]);
 
   const handleInsuranceUpload = (side) => (event) => {
@@ -143,10 +172,10 @@ function BillingHelper() {
   };
 
   const handleInsuranceSubmit = async () => {
-    if (!insuranceFiles.front || !insuranceFiles.back) {
+    if (!insuranceFiles.front && !insuranceFiles.back) {
       toast({
         title: 'Missing files',
-        description: 'Please upload both sides of your insurance card',
+        description: 'Please upload your insurance card',
         status: 'error',
         duration: 3000,
       });

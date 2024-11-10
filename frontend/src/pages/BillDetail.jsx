@@ -12,23 +12,27 @@ import {
 import { useParams, useNavigate } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
 import Layout from '../components/Layout';
+import { useState, useEffect } from 'react';
+import { getBillById } from '../services/billingService';
 
 function BillDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [bill, setBill] = useState({});
+
+  useEffect(() => {
+    // Fetch bill details
+    getBillById(id)
+      .then((data) => {
+        setBill(data);
+        console.log(data);
+      })
+      .catch((error) => console.error(error));
+  }, [id]);
+
 
   // In a real app, you would fetch the bill details using the id
-  const bill = {
-    id,
-    imageUrl: 'https://example.com/bill1.jpg',
-    date: '2024-03-15',
-    status: 'processed',
-    amount: 150.00,
-    description: 'General checkup and prescription',
-    provider: 'City Medical Center',
-    insuranceResponsibility: 120.00,
-    patientResponsibility: 30.00,
-  };
+  
 
   return (
     // <Layout>
@@ -47,7 +51,10 @@ function BillDetail() {
 
           <Box borderRadius="lg" overflow="hidden">
             <Image
-              src={bill.imageUrl}
+              src={
+                bill.processed_data && 
+                "/uploaded_files/" + bill['user_id'] + "/" + bill.processed_data['file_name']
+              }
               alt={`Bill #${id}`}
               w="full"
               fallback={<Box bg="gray.100" h="400px" />}
@@ -57,39 +64,52 @@ function BillDetail() {
           <VStack spacing={4} align="stretch" p={6} bg="white" borderRadius="lg" shadow="sm">
             <HStack justify="space-between">
               <Text fontSize="lg" fontWeight="bold">Status</Text>
-              <Badge colorScheme={bill.status === 'processed' ? 'green' : 'yellow'}>
-                {bill.status}
+              <Badge colorScheme={bill.status !== 'processed' ? 'green' : 'yellow'}>
+                {'processed'}
               </Badge>
             </HStack>
 
             <HStack justify="space-between">
               <Text fontSize="lg" fontWeight="bold">Date</Text>
-              <Text>{new Date(bill.date).toLocaleDateString()}</Text>
+              <Text>{new Date(bill.processed_data && bill.processed_data['Date of Service']).toLocaleDateString()}</Text>
             </HStack>
 
             <HStack justify="space-between">
               <Text fontSize="lg" fontWeight="bold">Provider</Text>
-              <Text>{bill.provider}</Text>
+              <Text>{bill.processed_data && bill.processed_data['Hospital Name']}
+               {" "}at {bill.processed_data && bill.processed_data['Full Location']}</Text>
             </HStack>
 
             <HStack justify="space-between">
               <Text fontSize="lg" fontWeight="bold">Total Amount</Text>
-              <Text>${bill.amount}</Text>
+              <Text>{bill.processed_data && bill.processed_data['Total Amount Charged']}</Text>
             </HStack>
 
             <HStack justify="space-between">
               <Text fontSize="lg" fontWeight="bold">Insurance Responsibility</Text>
-              <Text>${bill.insuranceResponsibility}</Text>
+              <Text>{bill.processed_data && bill.processed_data['Insurance Responibility']}</Text>
             </HStack>
 
             <HStack justify="space-between">
               <Text fontSize="lg" fontWeight="bold">Patient Responsibility</Text>
-              <Text>${bill.patientResponsibility}</Text>
+              <Text>{bill.processed_data && bill.processed_data['Patient Responsibility Remaining']}</Text>
             </HStack>
 
             <Box>
-              <Text fontSize="lg" fontWeight="bold" mb={2}>Description</Text>
-              <Text color="gray.600">{bill.description}</Text>
+              <Text fontSize="lg" fontWeight="bold" mb={2}>Services</Text>
+              <Text color="gray.600">
+                {
+                  
+                  bill.processed_data && bill.processed_data['services'].map((service, index) => {
+                    return (
+                      <Text key={index}>
+                        {service['Service Name']} on {service['Service Date']}:  {service['Amount Charged']}
+                      </Text>
+                    )
+                })
+              }
+                
+              </Text>
             </Box>
           </VStack>
         </VStack>

@@ -314,7 +314,6 @@ function MapDashboard() {
             top="20%"
             left="50%"
             transform="translate(-50%, -50%)"
-            // zIndex={2}
             width="80%"
             maxWidth="800px"
           >
@@ -325,10 +324,9 @@ function MapDashboard() {
                   size="lg"
                   transition="all 0.2s"
                   transform={searchTerm ? "scale(1.02)" : "scale(1)"}
-                  borderRadius="3xl"
+                  borderRadius="xl"
                   overflow="hidden"
                   height="120px"
-                  position="relative"
                 >
                   {/* <InputLeftElement 
                     pointerEvents='none'
@@ -389,6 +387,22 @@ function MapDashboard() {
                     />
                   </InputRightElement>
                 </InputGroup>
+                
+                <Button
+                  bg="white"
+                  color="brand.500"
+                  borderRadius="xl"
+                  px={8}
+                  py={4}
+                  _hover={{
+                    bg: 'white',
+                    transform: 'scale(1.05)',
+                    boxShadow: '0 0 12px rgba(128, 90, 213, 0.3)'
+                  }}
+                  transition="all 0.2s"
+                >
+                  Submit
+                </Button>
               </VStack>
             </CardBody>
           </Card>

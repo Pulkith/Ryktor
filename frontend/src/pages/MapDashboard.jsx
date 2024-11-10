@@ -655,15 +655,38 @@ function MapDashboard() {
                 colorScheme="brand"
                 borderRadius="full"
               />
-              <Button
-                colorScheme="brand"
-                onClick={() => handleVoiceSearch()}
-                size="lg"
-                width="100%"
-                borderRadius="full"
-              >
-                Stop Recording
-              </Button>
+              <HStack spacing={4} width="100%">
+                <Button
+                  colorScheme="red"
+                  onClick={() => {
+                    // Stop and discard recording
+                    if (mediaRecorder && mediaRecorder.state === 'recording') {
+                      mediaRecorder.stop();
+                      chunksRef.current = []; // Clear chunks
+                    }
+                    if (recordingTimerId) {
+                      clearInterval(recordingTimerId);
+                      setRecordingTimerId(null);
+                    }
+                    setRecordingTime(0);
+                    setIsRecording(false);
+                  }}
+                  size="lg"
+                  width="50%"
+                  borderRadius="full"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  colorScheme="brand"
+                  onClick={() => handleVoiceSearch()}
+                  size="lg"
+                  width="50%"
+                  borderRadius="full"
+                >
+                  Done
+                </Button>
+              </HStack>
             </VStack>
           </ModalBody>
         </ModalContent>

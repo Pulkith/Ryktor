@@ -68,6 +68,8 @@ class User(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     first_name: str
     last_name: str
+    email: str
+    password: str
     zipcode: str
     address: str
     city: str
@@ -82,8 +84,26 @@ class User(BaseModel):
 class UserCreate(BaseModel):
     first_name: str
     last_name: str
+    email: str
+    password: str
     zipcode: str
     address: str
     city: str
     state: str
     insurance_type: str
+
+class UserResponse(BaseModel):
+    id: PyObjectId = Field(alias="_id")
+    first_name: str
+    last_name: str
+    email: str
+    zipcode: str
+    address: str
+    city: str
+    state: str
+    insurance_type: str
+    created_at: datetime
+
+    class Config:
+        json_encoders = {ObjectId: str}
+        populate_by_name = True

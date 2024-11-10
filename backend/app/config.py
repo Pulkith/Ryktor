@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     APP_NAME: str = "Ryktor"
     PORT: int = 8002
     ENVIRONMENT: str = "development"
-    ALLOWED_ORIGINS: List[str] = ["http://localhost:3000"]
+    ALLOWED_ORIGINS: List[str] = ["http://localhost:3000", "http://localhost:5173"]
 
     # MongoDB
     MONGODB_CONNECTION_STRING: str

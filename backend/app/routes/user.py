@@ -1,7 +1,7 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Body
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from bson import ObjectId
-from ..models import User, UserCreate
+from ..models import User, UserCreate, UserResponse
 from ..database import get_database
 import datetime
 
@@ -15,6 +15,8 @@ async def create_user(
     user_entry = User(
         first_name=user.first_name,
         last_name=user.last_name,
+        email=user.email,
+        password=user.password,
         zipcode=user.zipcode,
         address=user.address,
         city=user.city,
@@ -44,4 +46,23 @@ async def get_user(
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
         
-    return user 
+    return user
+
+@router.post("/login", response_model=UserResponse)
+async def login_user(
+    email: str = Body(...),
+    password: str = Body(...),
+    db: AsyncIOMotorDatabase = Depends(get_database)
+):
+    if not email or not password:
+        raise HTTPException(status_code=400, detail="Email and password are required")
+    
+    user = await db.users.find_one({"email": email, "password": password})
+    
+    if not user:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email or password"
+        )
+    
+    return UserResponse(**user)

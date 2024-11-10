@@ -92,7 +92,7 @@ function Landing() {
       <Box bg="gray.50" py={16} mt={16} borderRadius="xl">
         <Container maxW="container.xl">
           <VStack spacing={6} align="center" textAlign="center">
-            <Heading size="xl">Ready to Find Your Provider?</Heading>
+            <Heading size="xl" style={{marginTop: '100px'}}>Ready to Find Your Provider?</Heading>
             <Text fontSize="lg" color="gray.600" maxW="container.md">
               Join thousands of patients who have found the right healthcare provider at the right price.
             </Text>

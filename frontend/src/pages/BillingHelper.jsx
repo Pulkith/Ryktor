@@ -339,7 +339,7 @@ function BillingHelper() {
                     variant="outline"
                     w="full"
                   >
-                    {insuranceFiles.front ? 'Edit Front Side' : 'Upload Front Side'}
+                    {insuranceFiles.front ? 'Edit Front Side' : 'Reupload Front Side'}
                   </Button>
                   <Input
                     type="file"
@@ -355,7 +355,7 @@ function BillingHelper() {
                     variant="outline"
                     w="full"
                   >
-                    {insuranceFiles.back ? 'Edit Back Side' : 'Upload Back Side'}
+                    {insuranceFiles.back ? 'Edit Back Side' : 'Reupload Back Side'}
                   </Button>
                   <Button
                     colorScheme="brand"
@@ -400,7 +400,7 @@ function BillingHelper() {
                     value={selectedIllness}
                   >
                     {illnesses.map((illness, index) => (
-                      <option key={index} value={illness}>{illness}</option>
+                      <option key={index} value={illness}>Default Illness Query</option>
                     ))}
                   </Select>
                   <Input

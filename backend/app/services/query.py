@@ -1,7 +1,7 @@
 import math
 import pandas as pd
 import numpy as np
-from gen_compute import LLM_INSTANCE
+from ..services.gen_compute import LLM_INSTANCE
 import json as json_lib
 
 hopsital_locs_df = pd.read_csv("/Users/pulkith/Desktop/Development/Ryktor/backend/app/services/projectdata/Hospitals.csv", dtype={"ZIP": "object"})
@@ -639,27 +639,35 @@ def query_pipeline(prompt, user_profile, user_plan, docs, user_loc):
     # sort by total cost
     # total_data = sorted(total_data, key=lambda x: x["total_cost_copay"])
 
-    return total_data
+    # convert dic to list
+
+    final_data = []
+
+    for key, value in total_data.items():
+        final_data.append(value)
+
+
+    return final_data
         
-if __name__ == "__main__":
-#    prompt = """I woke up this morning. I have a pulsating headache with a fever. I think I have a migraine. I feel very dizzy and lightheaded. I went to
-#    shit this morning, and I'm pretty sure there was blood in it. I didn't do anything last night, I had a good meal, and drank lots of water. When I started walking I felt
-#    very dizzy and had to sit down and my vision went blurry. """
-   prompt = """I have a cough. """
+# if __name__ == "__main__":
+# #    prompt = """I woke up this morning. I have a pulsating headache with a fever. I think I have a migraine. I feel very dizzy and lightheaded. I went to
+# #    shit this morning, and I'm pretty sure there was blood in it. I didn't do anything last night, I had a good meal, and drank lots of water. When I started walking I felt
+# #    very dizzy and had to sit down and my vision went blurry. """
+#    prompt = """I have a cough. """
 
-   user_profile = """Patient has a history of concussions, and is 32, Male. Grown up in Texas, currently living in Princeton, NJ, woring as a software engineer at Blockstone. 
-   He is in overall good health. Is 5 foot 11 inches, and 152 pounds. Patient has headaches about once a year
-   """
+#    user_profile = """Patient has a history of concussions, and is 32, Male. Grown up in Texas, currently living in Princeton, NJ, woring as a software engineer at Blockstone. 
+#    He is in overall good health. Is 5 foot 11 inches, and 152 pounds. Patient has headaches about once a year
+#    """
 
-   user_plan = """OA Managed Choice POS HDHP"""
+#    user_plan = """OA Managed Choice POS HDHP"""
 
-   docs = ["Patient came in last year for a headache, prescribed OTC drugs and he was good", "Patient came in for a routine-checkup no issues"]
+#    docs = ["Patient came in last year for a headache, prescribed OTC drugs and he was good", "Patient came in for a routine-checkup no issues"]
 
-   user_loc = (-74.652694, 40.3503947)
+#    user_loc = (-74.652694, 40.3503947)
 
-   response = query_pipeline(prompt, user_profile, user_plan, docs, user_loc)
+#    response = query_pipeline(prompt, user_profile, user_plan, docs, user_loc)
 
-   print(response)
+#    print(response)
 
 
 

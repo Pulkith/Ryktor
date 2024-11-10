@@ -1,20 +1,64 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Form, HTTPException, Depends
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from bson import ObjectId
 from typing import List
 from ..models import IllnessEntry, IllnessCreate, Provider
 from ..database import get_database
-from ..services.query_management import process_query
+from ..services.query_management import detect_text
 import datetime
 import pandas as pd
 import numpy as np
 import os
 from pathlib import Path
 
+from ..services.query_management import detect_text
+from ..services.query import query_pipeline
+
 # Get the absolute path to the project root
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 router = APIRouter()
+
+@router.post('/illness/question')
+async def get_illness_from_question(prompt: str = Form(...), 
+                                    user_id: str = Form(...),
+                                    long: float = Form(...),
+                                    lat: float = Form(...),
+                                    db: AsyncIOMotorDatabase = Depends(get_database),
+                                    ):
+    print("Processing question...")
+    if not user_id:
+        raise HTTPException(status_code=400, detail="User ID is required")
+    
+    # Get user information
+    try:
+        user = await db.users.find_one({"_id": ObjectId(user_id)})
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+    except:
+        raise HTTPException(status_code=400, detail="Invalid user ID")
+    
+    # convert to correct language
+    print("Detecting Language...")
+    query = detect_text(prompt)
+
+    user_profile = """Patient has a history of concussions, and is 32, Male. Grown up in Texas, currently living in Princeton, NJ, woring as a software engineer at Blockstone. 
+    He is in overall good health. Is 6 foot 1 inches, and 152 pounds. Patient has headaches about once a year.
+    """
+
+    user_plan = """OA Managed Choice POS HDHP"""
+
+    docs = ["Patient came in last year for a headache, prescribed OTC drugs and he was good", "Patient came in for a routine-checkup no issues"]
+
+    user_loc = (long, lat)
+
+    print("Beginning Query...")
+    response = query_pipeline(query, user_profile, user_plan, docs, user_loc)
+    print("Finalized Query...")
+    return response
+
+
+
 
 @router.post("/illness", response_model=IllnessEntry)
 async def create_illness_entry(

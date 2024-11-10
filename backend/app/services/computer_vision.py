@@ -185,6 +185,7 @@ def parse_gen_medical_bill(raw_text):
         "Insurance Responsibility / Pay":"",
         "Patient Responsibility Paid":"",
         "Patient Responsibility Remaining":"Sometimes called 'Patient Balance Due' or 'Amount Due'",
+        "Possible Incorrect or Upcoded Charges":"",
         
     }
 
@@ -192,6 +193,10 @@ def parse_gen_medical_bill(raw_text):
     You are an expert in ready medical bills. The below text has been extract from a possibly multipage medical bill
     using OCR in a way that preserves f/how-to-request-an-itemized-bill-from-a-hospitalormatting as much as possible. Please extract the below fields in the format specified. For any missing fields
     please deduce them from the rest of the text if possible, and if not, leave them as an empty string. 
+
+    Also find any fraudlent or incorrect charges. These are charges that make no sense, are priced wrong, or are upcoded. 
+    If you find any, please list them in the Possible Incorrect or Upcoded Charges field. Find any discrepancies in the bill
+    and describe it in the Possible Incorrect or Upcoded Charges field.
 
     $json_enforcer$
 

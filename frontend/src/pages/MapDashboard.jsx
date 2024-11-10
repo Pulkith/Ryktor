@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
+  Accordion,
   Box,
   Container,
   VStack,
@@ -28,15 +29,947 @@ import {
   ModalBody,
   Progress,
   Heading,
+  Spinner,
 } from '@chakra-ui/react';
+// import { Accordion, AccordionItem } from '@szhsin/react-accordion';
 import { GoogleMap, Marker, InfoWindow, useJsApiLoader } from '@react-google-maps/api';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
 import { useToast } from '@chakra-ui/react';
 import { FaNotesMedical } from 'react-icons/fa'; // or another medical-themed icon
 
 import { FaSearch, FaMicrophone } from 'react-icons/fa';
 
 import { transcribeAudio } from '../services/audioService';
+
+
+
+const json_dt = {
+  "LBJ TROPICAL MEDICAL CENTER": {
+      "treatments": [
+          {
+              "CPT Code": "99213",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "Established patient office visit, typically 15-29 minutes.",
+              "Probability": 0.9,
+              "Category": "General_Practice",
+              "varianced_cost_total": 82.43972530368731,
+              "varianced_cost_copay": 16.487945060737463
+          },
+          {
+              "CPT Code": "99214",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "Established patient office visit, typically 30-39 minutes.",
+              "Probability": 0.5,
+              "Category": "General_Practice",
+              "varianced_cost_total": 84.85041771858096,
+              "varianced_cost_copay": 16.970083543716193
+          },
+          {
+              "CPT Code": "93000",
+              "Service Name": "Electrocardiogram (ECG or EKG)",
+              "Description": "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
+              "Probability": 0.1,
+              "Category": "Cardiology",
+              "varianced_cost_total": 19.750853248186832,
+              "varianced_cost_copay": 3.9501706496373665
+          },
+          {
+              "CPT Code": "70450",
+              "Service Name": "CT Scan of Head or Brain",
+              "Description": "CT scan of the head or brain without contrast material.",
+              "Probability": 0.2,
+              "Category": "Diagnostic_Radiology",
+              "varianced_cost_total": 142.6696465080307,
+              "varianced_cost_copay": 28.533929301606136
+          },
+          {
+              "CPT Code": "70460",
+              "Service Name": "CT Scan of Head or Brain with Contrast",
+              "Description": "CT scan of the head or brain with contrast material.",
+              "Probability": 0.05,
+              "Category": "Diagnostic_Radiology",
+              "varianced_cost_total": 170.8636143903241,
+              "varianced_cost_copay": 34.17272287806481
+          },
+          {
+              "CPT Code": "99203",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "New patient office visit, typically 30-44 minutes.",
+              "Probability": 0.1,
+              "Category": "General_Practice",
+              "varianced_cost_total": 86.43844382100737,
+              "varianced_cost_copay": 17.287688764201473
+          },
+          {
+              "CPT Code": "36415",
+              "Service Name": "Collection of Venous Blood Sample",
+              "Description": "Collection of venous blood by venipuncture.",
+              "Probability": 0.3,
+              "Category": "Clinical_Laboratory",
+              "varianced_cost_total": 510.45760222916107,
+              "varianced_cost_copay": 102.09152044583222
+          },
+          {
+              "CPT Code": "85025",
+              "Service Name": "Complete Blood Count (CBC) with Differential",
+              "Description": "Complete blood count with differential white blood cell count.",
+              "Probability": 0.3,
+              "Category": "Clinical_Laboratory",
+              "varianced_cost_total": 494.90877124672477,
+              "varianced_cost_copay": 98.98175424934496
+          },
+          {
+              "CPT Code": "99212",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "Established patient office visit, typically 10-19 minutes.",
+              "Probability": 0.2,
+              "Category": "General_Practice",
+              "varianced_cost_total": 52.64306461245534,
+              "varianced_cost_copay": 10.528612922491067
+          },
+          {
+              "CPT Code": "99205",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "New patient office visit, typically 45-59 minutes.",
+              "Probability": 0.01,
+              "Category": "General_Practice",
+              "varianced_cost_total": 159.85404269636197,
+              "varianced_cost_copay": 31.97080853927239
+          }
+      ],
+      "X": -19000649.7737926,
+      "Y": -1607536.44242472,
+      "OBJECTID": 8383,
+      "ID": 396799,
+      "NAME": "LBJ TROPICAL MEDICAL CENTER",
+      "ADDRESS": "FAGAALU VILLAGE, PO BOX LBJ",
+      "CITY": "PAGO PAGO",
+      "STATE": "AS",
+      "ZIP": "96799",
+      "ZIP4": "NOT AVAILABLE",
+      "TELEPHONE": "(684) 633-4590",
+      "TYPE": "GENERAL ACUTE CARE",
+      "STATUS": "OPEN",
+      "POPULATION": 150,
+      "COUNTY": "EASTERN",
+      "COUNTYFIPS": 60010,
+      "COUNTRY": "ASM",
+      "LATITUDE": -14.290242,
+      "LONGITUDE": -170.685741,
+      "NAICS_CODE": 622110,
+      "NAICS_DESC": "GENERAL MEDICAL AND SURGICAL HOSPITALS",
+      "SOURCE": "https://data.cms.gov/provider-data/search?page=4&theme=Hospitals",
+      "SOURCEDATE": "2024/04/12 00:00:00+00",
+      "VAL_METHOD": "IMAGERY/OTHER",
+      "VAL_DATE": "2014/04/03 00:00:00+00",
+      "WEBSITE": "NOT AVAILABLE",
+      "STATE_ID": "NOT AVAILABLE",
+      "ALT_NAME": "NOT AVAILABLE",
+      "ST_FIPS": "60",
+      "OWNER": "GOVERNMENT - DISTRICT/AUTHORITY",
+      "TTL_STAFF": -999,
+      "BEDS": 150,
+      "TRAUMA": "NOT AVAILABLE",
+      "HELIPAD": "N",
+      "Distance": 9844.635152110093,
+      "total_cost_overall": 478.05406675287117,
+      "total_cost_copay": 95.61081335057425
+  },
+  "BELAU NATIONAL HOSPITAL": {
+      "treatments": [
+          {
+              "CPT Code": "99213",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "Established patient office visit, typically 15-29 minutes.",
+              "Probability": 0.9,
+              "Category": "General_Practice",
+              "varianced_cost_total": 82.43972530368731,
+              "varianced_cost_copay": 16.487945060737463
+          },
+          {
+              "CPT Code": "99214",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "Established patient office visit, typically 30-39 minutes.",
+              "Probability": 0.5,
+              "Category": "General_Practice",
+              "varianced_cost_total": 84.85041771858096,
+              "varianced_cost_copay": 16.970083543716193
+          },
+          {
+              "CPT Code": "93000",
+              "Service Name": "Electrocardiogram (ECG or EKG)",
+              "Description": "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
+              "Probability": 0.1,
+              "Category": "Cardiology",
+              "varianced_cost_total": 19.750853248186832,
+              "varianced_cost_copay": 3.9501706496373665
+          },
+          {
+              "CPT Code": "70450",
+              "Service Name": "CT Scan of Head or Brain",
+              "Description": "CT scan of the head or brain without contrast material.",
+              "Probability": 0.2,
+              "Category": "Diagnostic_Radiology",
+              "varianced_cost_total": 142.6696465080307,
+              "varianced_cost_copay": 28.533929301606136
+          },
+          {
+              "CPT Code": "70460",
+              "Service Name": "CT Scan of Head or Brain with Contrast",
+              "Description": "CT scan of the head or brain with contrast material.",
+              "Probability": 0.05,
+              "Category": "Diagnostic_Radiology",
+              "varianced_cost_total": 170.8636143903241,
+              "varianced_cost_copay": 34.17272287806481
+          },
+          {
+              "CPT Code": "99203",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "New patient office visit, typically 30-44 minutes.",
+              "Probability": 0.1,
+              "Category": "General_Practice",
+              "varianced_cost_total": 86.43844382100737,
+              "varianced_cost_copay": 17.287688764201473
+          },
+          {
+              "CPT Code": "36415",
+              "Service Name": "Collection of Venous Blood Sample",
+              "Description": "Collection of venous blood by venipuncture.",
+              "Probability": 0.3,
+              "Category": "Clinical_Laboratory",
+              "varianced_cost_total": 510.45760222916107,
+              "varianced_cost_copay": 102.09152044583222
+          },
+          {
+              "CPT Code": "85025",
+              "Service Name": "Complete Blood Count (CBC) with Differential",
+              "Description": "Complete blood count with differential white blood cell count.",
+              "Probability": 0.3,
+              "Category": "Clinical_Laboratory",
+              "varianced_cost_total": 494.90877124672477,
+              "varianced_cost_copay": 98.98175424934496
+          },
+          {
+              "CPT Code": "99212",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "Established patient office visit, typically 10-19 minutes.",
+              "Probability": 0.2,
+              "Category": "General_Practice",
+              "varianced_cost_total": 52.64306461245534,
+              "varianced_cost_copay": 10.528612922491067
+          },
+          {
+              "CPT Code": "99205",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "New patient office visit, typically 45-59 minutes.",
+              "Probability": 0.01,
+              "Category": "General_Practice",
+              "varianced_cost_total": 159.85404269636197,
+              "varianced_cost_copay": 31.97080853927239
+          }
+      ],
+      "X": 14968479.0648747,
+      "Y": 820922.833465995,
+      "OBJECTID": 13191,
+      "ID": 696940,
+      "NAME": "BELAU NATIONAL HOSPITAL",
+      "ADDRESS": "1 HOSPITAL ROAD",
+      "CITY": "KOROR",
+      "STATE": "PW",
+      "ZIP": "96940",
+      "ZIP4": "NOT AVAILABLE",
+      "TELEPHONE": "(680) 488-2552",
+      "TYPE": "GENERAL ACUTE CARE",
+      "STATUS": "OPEN",
+      "POPULATION": 80,
+      "COUNTY": "KOROR",
+      "COUNTYFIPS": 70150,
+      "COUNTRY": "PLW",
+      "LATITUDE": 7.35419831000007,
+      "LONGITUDE": 134.46413524,
+      "NAICS_CODE": 622110,
+      "NAICS_DESC": "GENERAL MEDICAL AND SURGICAL HOSPITALS",
+      "SOURCE": "https://www.palauhealth.org/MOHpages/MOHContactUs1.aspx",
+      "SOURCEDATE": "2023/05/11 00:00:00+00",
+      "VAL_METHOD": "IMAGERY/OTHER",
+      "VAL_DATE": "2014/04/03 00:00:00+00",
+      "WEBSITE": "NOT AVAILABLE",
+      "STATE_ID": "NOT AVAILABLE",
+      "ALT_NAME": "NOT AVAILABLE",
+      "ST_FIPS": " ",
+      "OWNER": "GOVERNMENT - LOCAL",
+      "TTL_STAFF": -999,
+      "BEDS": 80,
+      "TRAUMA": "NOT AVAILABLE",
+      "HELIPAD": "N",
+      "Distance": 10926.235678404328,
+      "total_cost_overall": 478.05406675287117,
+      "total_cost_copay": 95.61081335057425
+  },
+  "NAVAL HOSPITAL GUAM": {
+      "treatments": [
+          {
+              "CPT Code": "99213",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "Established patient office visit, typically 15-29 minutes.",
+              "Probability": 0.9,
+              "Category": "General_Practice",
+              "varianced_cost_total": 82.43972530368731,
+              "varianced_cost_copay": 16.487945060737463
+          },
+          {
+              "CPT Code": "99214",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "Established patient office visit, typically 30-39 minutes.",
+              "Probability": 0.5,
+              "Category": "General_Practice",
+              "varianced_cost_total": 84.85041771858096,
+              "varianced_cost_copay": 16.970083543716193
+          },
+          {
+              "CPT Code": "93000",
+              "Service Name": "Electrocardiogram (ECG or EKG)",
+              "Description": "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
+              "Probability": 0.1,
+              "Category": "Cardiology",
+              "varianced_cost_total": 19.750853248186832,
+              "varianced_cost_copay": 3.9501706496373665
+          },
+          {
+              "CPT Code": "70450",
+              "Service Name": "CT Scan of Head or Brain",
+              "Description": "CT scan of the head or brain without contrast material.",
+              "Probability": 0.2,
+              "Category": "Diagnostic_Radiology",
+              "varianced_cost_total": 142.6696465080307,
+              "varianced_cost_copay": 28.533929301606136
+          },
+          {
+              "CPT Code": "70460",
+              "Service Name": "CT Scan of Head or Brain with Contrast",
+              "Description": "CT scan of the head or brain with contrast material.",
+              "Probability": 0.05,
+              "Category": "Diagnostic_Radiology",
+              "varianced_cost_total": 170.8636143903241,
+              "varianced_cost_copay": 34.17272287806481
+          },
+          {
+              "CPT Code": "99203",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "New patient office visit, typically 30-44 minutes.",
+              "Probability": 0.1,
+              "Category": "General_Practice",
+              "varianced_cost_total": 86.43844382100737,
+              "varianced_cost_copay": 17.287688764201473
+          },
+          {
+              "CPT Code": "36415",
+              "Service Name": "Collection of Venous Blood Sample",
+              "Description": "Collection of venous blood by venipuncture.",
+              "Probability": 0.3,
+              "Category": "Clinical_Laboratory",
+              "varianced_cost_total": 510.45760222916107,
+              "varianced_cost_copay": 102.09152044583222
+          },
+          {
+              "CPT Code": "85025",
+              "Service Name": "Complete Blood Count (CBC) with Differential",
+              "Description": "Complete blood count with differential white blood cell count.",
+              "Probability": 0.3,
+              "Category": "Clinical_Laboratory",
+              "varianced_cost_total": 494.90877124672477,
+              "varianced_cost_copay": 98.98175424934496
+          },
+          {
+              "CPT Code": "99212",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "Established patient office visit, typically 10-19 minutes.",
+              "Probability": 0.2,
+              "Category": "General_Practice",
+              "varianced_cost_total": 52.64306461245534,
+              "varianced_cost_copay": 10.528612922491067
+          },
+          {
+              "CPT Code": "99205",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "New patient office visit, typically 45-59 minutes.",
+              "Probability": 0.01,
+              "Category": "General_Practice",
+              "varianced_cost_total": 159.85404269636197,
+              "varianced_cost_copay": 31.97080853927239
+          }
+      ],
+      "X": 16112005.9247197,
+      "Y": 1514076.60194413,
+      "OBJECTID": 15998,
+      "ID": 182096919,
+      "NAME": "NAVAL HOSPITAL GUAM",
+      "ADDRESS": "FARENHOLT AVE., BLDG 50",
+      "CITY": "AGANA HEIGHTS",
+      "STATE": "GU",
+      "ZIP": "96919",
+      "ZIP4": "NOT AVAILABLE",
+      "TELEPHONE": "(671) 344-9242",
+      "TYPE": "MILITARY",
+      "STATUS": "OPEN",
+      "POPULATION": -999,
+      "COUNTY": "GUAM",
+      "COUNTYFIPS": 66010,
+      "COUNTRY": "GUM",
+      "LATITUDE": 13.4752103000001,
+      "LONGITUDE": 144.7366118,
+      "NAICS_CODE": 622110,
+      "NAICS_DESC": "GENERAL MEDICAL AND SURGICAL HOSPITALS",
+      "SOURCE": "http://www.tricare.mil/mtf",
+      "SOURCEDATE": "2024/04/22 00:00:00+00",
+      "VAL_METHOD": "IMAGERY/OTHER",
+      "VAL_DATE": "2022/04/07 00:00:00+00",
+      "WEBSITE": "NOT AVAILABLE",
+      "STATE_ID": "NOT AVAILABLE",
+      "ALT_NAME": "NOT AVAILABLE",
+      "ST_FIPS": "66",
+      "OWNER": "GOVERNMENT - FEDERAL",
+      "TTL_STAFF": -999,
+      "BEDS": -999,
+      "TRAUMA": "NOT AVAILABLE",
+      "HELIPAD": "Y",
+      "Distance": 11873.487886628223,
+      "total_cost_overall": 478.05406675287117,
+      "total_cost_copay": 95.61081335057425
+  },
+  "GUAM MEMORIAL HOSPITAL AUTHORITY": {
+      "treatments": [
+          {
+              "CPT Code": "99213",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "Established patient office visit, typically 15-29 minutes.",
+              "Probability": 0.9,
+              "Category": "General_Practice",
+              "varianced_cost_total": 82.43972530368731,
+              "varianced_cost_copay": 16.487945060737463
+          },
+          {
+              "CPT Code": "99214",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "Established patient office visit, typically 30-39 minutes.",
+              "Probability": 0.5,
+              "Category": "General_Practice",
+              "varianced_cost_total": 84.85041771858096,
+              "varianced_cost_copay": 16.970083543716193
+          },
+          {
+              "CPT Code": "93000",
+              "Service Name": "Electrocardiogram (ECG or EKG)",
+              "Description": "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
+              "Probability": 0.1,
+              "Category": "Cardiology",
+              "varianced_cost_total": 19.750853248186832,
+              "varianced_cost_copay": 3.9501706496373665
+          },
+          {
+              "CPT Code": "70450",
+              "Service Name": "CT Scan of Head or Brain",
+              "Description": "CT scan of the head or brain without contrast material.",
+              "Probability": 0.2,
+              "Category": "Diagnostic_Radiology",
+              "varianced_cost_total": 142.6696465080307,
+              "varianced_cost_copay": 28.533929301606136
+          },
+          {
+              "CPT Code": "70460",
+              "Service Name": "CT Scan of Head or Brain with Contrast",
+              "Description": "CT scan of the head or brain with contrast material.",
+              "Probability": 0.05,
+              "Category": "Diagnostic_Radiology",
+              "varianced_cost_total": 170.8636143903241,
+              "varianced_cost_copay": 34.17272287806481
+          },
+          {
+              "CPT Code": "99203",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "New patient office visit, typically 30-44 minutes.",
+              "Probability": 0.1,
+              "Category": "General_Practice",
+              "varianced_cost_total": 86.43844382100737,
+              "varianced_cost_copay": 17.287688764201473
+          },
+          {
+              "CPT Code": "36415",
+              "Service Name": "Collection of Venous Blood Sample",
+              "Description": "Collection of venous blood by venipuncture.",
+              "Probability": 0.3,
+              "Category": "Clinical_Laboratory",
+              "varianced_cost_total": 510.45760222916107,
+              "varianced_cost_copay": 102.09152044583222
+          },
+          {
+              "CPT Code": "85025",
+              "Service Name": "Complete Blood Count (CBC) with Differential",
+              "Description": "Complete blood count with differential white blood cell count.",
+              "Probability": 0.3,
+              "Category": "Clinical_Laboratory",
+              "varianced_cost_total": 494.90877124672477,
+              "varianced_cost_copay": 98.98175424934496
+          },
+          {
+              "CPT Code": "99212",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "Established patient office visit, typically 10-19 minutes.",
+              "Probability": 0.2,
+              "Category": "General_Practice",
+              "varianced_cost_total": 52.64306461245534,
+              "varianced_cost_copay": 10.528612922491067
+          },
+          {
+              "CPT Code": "99205",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "New patient office visit, typically 45-59 minutes.",
+              "Probability": 0.01,
+              "Category": "General_Practice",
+              "varianced_cost_total": 159.85404269636197,
+              "varianced_cost_copay": 31.97080853927239
+          }
+      ],
+      "X": 16116219.2783907,
+      "Y": 1517481.59830073,
+      "OBJECTID": 9962,
+      "ID": 496913,
+      "NAME": "GUAM MEMORIAL HOSPITAL AUTHORITY",
+      "ADDRESS": "85O GOV CARLOS G CAMACHO ROAD",
+      "CITY": "TAMUNING",
+      "STATE": "GU",
+      "ZIP": "96913",
+      "ZIP4": "NOT AVAILABLE",
+      "TELEPHONE": "(671) 647-2552",
+      "TYPE": "GENERAL ACUTE CARE",
+      "STATUS": "OPEN",
+      "POPULATION": 158,
+      "COUNTY": "GUAM",
+      "COUNTYFIPS": 66010,
+      "COUNTRY": "GUM",
+      "LATITUDE": 13.5049540000001,
+      "LONGITUDE": 144.774461,
+      "NAICS_CODE": 622110,
+      "NAICS_DESC": "GENERAL MEDICAL AND SURGICAL HOSPITALS",
+      "SOURCE": "https://data.cms.gov/provider-data/search?page=4&theme=Hospitals",
+      "SOURCEDATE": "2024/04/12 00:00:00+00",
+      "VAL_METHOD": "IMAGERY/OTHER",
+      "VAL_DATE": "2018/04/06 00:00:00+00",
+      "WEBSITE": "http://www.gmha.org/gmha_new/",
+      "STATE_ID": "650001",
+      "ALT_NAME": "NOT AVAILABLE",
+      "ST_FIPS": "66",
+      "OWNER": "GOVERNMENT - LOCAL",
+      "TTL_STAFF": -999,
+      "BEDS": 158,
+      "TRAUMA": "NOT AVAILABLE",
+      "HELIPAD": "N",
+      "Distance": 11877.73936753569,
+      "total_cost_overall": 478.05406675287117,
+      "total_cost_copay": 95.61081335057425
+  },
+  "GUAM REGIONAL MEDICAL CITY": {
+      "treatments": [
+          {
+              "CPT Code": "99213",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "Established patient office visit, typically 15-29 minutes.",
+              "Probability": 0.9,
+              "Category": "General_Practice",
+              "varianced_cost_total": 82.43972530368731,
+              "varianced_cost_copay": 16.487945060737463
+          },
+          {
+              "CPT Code": "99214",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "Established patient office visit, typically 30-39 minutes.",
+              "Probability": 0.5,
+              "Category": "General_Practice",
+              "varianced_cost_total": 84.85041771858096,
+              "varianced_cost_copay": 16.970083543716193
+          },
+          {
+              "CPT Code": "93000",
+              "Service Name": "Electrocardiogram (ECG or EKG)",
+              "Description": "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
+              "Probability": 0.1,
+              "Category": "Cardiology",
+              "varianced_cost_total": 19.750853248186832,
+              "varianced_cost_copay": 3.9501706496373665
+          },
+          {
+              "CPT Code": "70450",
+              "Service Name": "CT Scan of Head or Brain",
+              "Description": "CT scan of the head or brain without contrast material.",
+              "Probability": 0.2,
+              "Category": "Diagnostic_Radiology",
+              "varianced_cost_total": 142.6696465080307,
+              "varianced_cost_copay": 28.533929301606136
+          },
+          {
+              "CPT Code": "70460",
+              "Service Name": "CT Scan of Head or Brain with Contrast",
+              "Description": "CT scan of the head or brain with contrast material.",
+              "Probability": 0.05,
+              "Category": "Diagnostic_Radiology",
+              "varianced_cost_total": 170.8636143903241,
+              "varianced_cost_copay": 34.17272287806481
+          },
+          {
+              "CPT Code": "99203",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "New patient office visit, typically 30-44 minutes.",
+              "Probability": 0.1,
+              "Category": "General_Practice",
+              "varianced_cost_total": 86.43844382100737,
+              "varianced_cost_copay": 17.287688764201473
+          },
+          {
+              "CPT Code": "36415",
+              "Service Name": "Collection of Venous Blood Sample",
+              "Description": "Collection of venous blood by venipuncture.",
+              "Probability": 0.3,
+              "Category": "Clinical_Laboratory",
+              "varianced_cost_total": 510.45760222916107,
+              "varianced_cost_copay": 102.09152044583222
+          },
+          {
+              "CPT Code": "85025",
+              "Service Name": "Complete Blood Count (CBC) with Differential",
+              "Description": "Complete blood count with differential white blood cell count.",
+              "Probability": 0.3,
+              "Category": "Clinical_Laboratory",
+              "varianced_cost_total": 494.90877124672477,
+              "varianced_cost_copay": 98.98175424934496
+          },
+          {
+              "CPT Code": "99212",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "Established patient office visit, typically 10-19 minutes.",
+              "Probability": 0.2,
+              "Category": "General_Practice",
+              "varianced_cost_total": 52.64306461245534,
+              "varianced_cost_copay": 10.528612922491067
+          },
+          {
+              "CPT Code": "99205",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "New patient office visit, typically 45-59 minutes.",
+              "Probability": 0.01,
+              "Category": "General_Practice",
+              "varianced_cost_total": 159.85404269636197,
+              "varianced_cost_copay": 31.97080853927239
+          }
+      ],
+      "X": 16121631.0754356,
+      "Y": 1519791.88953132,
+      "OBJECTID": 9963,
+      "ID": 180696929,
+      "NAME": "GUAM REGIONAL MEDICAL CITY",
+      "ADDRESS": "133 ROUTE 3",
+      "CITY": "DEDEDO",
+      "STATE": "GU",
+      "ZIP": "96929",
+      "ZIP4": "NOT AVAILABLE",
+      "TELEPHONE": "(671) 645-5500",
+      "TYPE": "GENERAL ACUTE CARE",
+      "STATUS": "OPEN",
+      "POPULATION": 136,
+      "COUNTY": "GUAM",
+      "COUNTYFIPS": 66010,
+      "COUNTRY": "GUM",
+      "LATITUDE": 13.525133,
+      "LONGITUDE": 144.823076,
+      "NAICS_CODE": 622110,
+      "NAICS_DESC": "GENERAL MEDICAL AND SURGICAL HOSPITALS",
+      "SOURCE": "https://data.cms.gov/provider-data/search?page=4&theme=Hospitals",
+      "SOURCEDATE": "2024/04/12 00:00:00+00",
+      "VAL_METHOD": "IMAGERY",
+      "VAL_DATE": "2019/05/09 00:00:00+00",
+      "WEBSITE": "http://www.grmc.gu/",
+      "STATE_ID": "650003",
+      "ALT_NAME": "NOT AVAILABLE",
+      "ST_FIPS": "66",
+      "OWNER": "NON-PROFIT",
+      "TTL_STAFF": -999,
+      "BEDS": 136,
+      "TRAUMA": "NOT AVAILABLE",
+      "HELIPAD": "N",
+      "Distance": 11881.263584303024,
+      "total_cost_overall": 478.05406675287117,
+      "total_cost_copay": 95.61081335057425
+  },
+  "COMMONWEALTH HEALTH CENTER": {
+      "treatments": [
+          {
+              "CPT Code": "99213",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "Established patient office visit, typically 15-29 minutes.",
+              "Probability": 0.9,
+              "Category": "General_Practice",
+              "varianced_cost_total": 82.43972530368731,
+              "varianced_cost_copay": 16.487945060737463
+          },
+          {
+              "CPT Code": "99214",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "Established patient office visit, typically 30-39 minutes.",
+              "Probability": 0.5,
+              "Category": "General_Practice",
+              "varianced_cost_total": 84.85041771858096,
+              "varianced_cost_copay": 16.970083543716193
+          },
+          {
+              "CPT Code": "93000",
+              "Service Name": "Electrocardiogram (ECG or EKG)",
+              "Description": "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
+              "Probability": 0.1,
+              "Category": "Cardiology",
+              "varianced_cost_total": 19.750853248186832,
+              "varianced_cost_copay": 3.9501706496373665
+          },
+          {
+              "CPT Code": "70450",
+              "Service Name": "CT Scan of Head or Brain",
+              "Description": "CT scan of the head or brain without contrast material.",
+              "Probability": 0.2,
+              "Category": "Diagnostic_Radiology",
+              "varianced_cost_total": 142.6696465080307,
+              "varianced_cost_copay": 28.533929301606136
+          },
+          {
+              "CPT Code": "70460",
+              "Service Name": "CT Scan of Head or Brain with Contrast",
+              "Description": "CT scan of the head or brain with contrast material.",
+              "Probability": 0.05,
+              "Category": "Diagnostic_Radiology",
+              "varianced_cost_total": 170.8636143903241,
+              "varianced_cost_copay": 34.17272287806481
+          },
+          {
+              "CPT Code": "99203",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "New patient office visit, typically 30-44 minutes.",
+              "Probability": 0.1,
+              "Category": "General_Practice",
+              "varianced_cost_total": 86.43844382100737,
+              "varianced_cost_copay": 17.287688764201473
+          },
+          {
+              "CPT Code": "36415",
+              "Service Name": "Collection of Venous Blood Sample",
+              "Description": "Collection of venous blood by venipuncture.",
+              "Probability": 0.3,
+              "Category": "Clinical_Laboratory",
+              "varianced_cost_total": 510.45760222916107,
+              "varianced_cost_copay": 102.09152044583222
+          },
+          {
+              "CPT Code": "85025",
+              "Service Name": "Complete Blood Count (CBC) with Differential",
+              "Description": "Complete blood count with differential white blood cell count.",
+              "Probability": 0.3,
+              "Category": "Clinical_Laboratory",
+              "varianced_cost_total": 494.90877124672477,
+              "varianced_cost_copay": 98.98175424934496
+          },
+          {
+              "CPT Code": "99212",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "Established patient office visit, typically 10-19 minutes.",
+              "Probability": 0.2,
+              "Category": "General_Practice",
+              "varianced_cost_total": 52.64306461245534,
+              "varianced_cost_copay": 10.528612922491067
+          },
+          {
+              "CPT Code": "99205",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "New patient office visit, typically 45-59 minutes.",
+              "Probability": 0.01,
+              "Category": "General_Practice",
+              "varianced_cost_total": 159.85404269636197,
+              "varianced_cost_copay": 31.97080853927239
+          }
+      ],
+      "X": 16221974.0625733,
+      "Y": 1713602.38387751,
+      "OBJECTID": 12705,
+      "ID": 596950,
+      "NAME": "COMMONWEALTH HEALTH CENTER",
+      "ADDRESS": "1 LOWER NAVY HILL ROAD, PO BOX 409CK",
+      "CITY": "GARAPAN",
+      "STATE": "MP",
+      "ZIP": "96950",
+      "ZIP4": "NOT AVAILABLE",
+      "TELEPHONE": "(670) 234-8950",
+      "TYPE": "GENERAL ACUTE CARE",
+      "STATUS": "OPEN",
+      "POPULATION": 86,
+      "COUNTY": "SAIPAN",
+      "COUNTYFIPS": 69110,
+      "COUNTRY": "MNP",
+      "LATITUDE": 15.2116344400001,
+      "LONGITUDE": 145.72447239,
+      "NAICS_CODE": 622110,
+      "NAICS_DESC": "GENERAL MEDICAL AND SURGICAL HOSPITALS",
+      "SOURCE": "https://data.cms.gov/provider-data/dataset/xubh-q36u",
+      "SOURCEDATE": "2024/04/15 00:00:00+00",
+      "VAL_METHOD": "IMAGERY/OTHER",
+      "VAL_DATE": "2018/04/06 00:00:00+00",
+      "WEBSITE": "https://chcc.gov.mp/",
+      "STATE_ID": "NOT AVAILABLE",
+      "ALT_NAME": "NOT AVAILABLE",
+      "ST_FIPS": "69",
+      "OWNER": "PROPRIETARY",
+      "TTL_STAFF": -999,
+      "BEDS": 86,
+      "TRAUMA": "NOT AVAILABLE",
+      "HELIPAD": "Y",
+      "Distance": 12087.53354839062,
+      "total_cost_overall": 478.05406675287117,
+      "total_cost_copay": 95.61081335057425
+  },
+  "GOV JUAN F LUIS HOSPITAL AND MEDICAL CTR": {
+      "treatments": [
+          {
+              "CPT Code": "99213",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "Established patient office visit, typically 15-29 minutes.",
+              "Probability": 0.9,
+              "Category": "General_Practice",
+              "varianced_cost_total": 82.43972530368731,
+              "varianced_cost_copay": 16.487945060737463
+          },
+          {
+              "CPT Code": "99214",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "Established patient office visit, typically 30-39 minutes.",
+              "Probability": 0.5,
+              "Category": "General_Practice",
+              "varianced_cost_total": 84.85041771858096,
+              "varianced_cost_copay": 16.970083543716193
+          },
+          {
+              "CPT Code": "93000",
+              "Service Name": "Electrocardiogram (ECG or EKG)",
+              "Description": "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
+              "Probability": 0.1,
+              "Category": "Cardiology",
+              "varianced_cost_total": 19.750853248186832,
+              "varianced_cost_copay": 3.9501706496373665
+          },
+          {
+              "CPT Code": "70450",
+              "Service Name": "CT Scan of Head or Brain",
+              "Description": "CT scan of the head or brain without contrast material.",
+              "Probability": 0.2,
+              "Category": "Diagnostic_Radiology",
+              "varianced_cost_total": 142.6696465080307,
+              "varianced_cost_copay": 28.533929301606136
+          },
+          {
+              "CPT Code": "70460",
+              "Service Name": "CT Scan of Head or Brain with Contrast",
+              "Description": "CT scan of the head or brain with contrast material.",
+              "Probability": 0.05,
+              "Category": "Diagnostic_Radiology",
+              "varianced_cost_total": 170.8636143903241,
+              "varianced_cost_copay": 34.17272287806481
+          },
+          {
+              "CPT Code": "99203",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "New patient office visit, typically 30-44 minutes.",
+              "Probability": 0.1,
+              "Category": "General_Practice",
+              "varianced_cost_total": 86.43844382100737,
+              "varianced_cost_copay": 17.287688764201473
+          },
+          {
+              "CPT Code": "36415",
+              "Service Name": "Collection of Venous Blood Sample",
+              "Description": "Collection of venous blood by venipuncture.",
+              "Probability": 0.3,
+              "Category": "Clinical_Laboratory",
+              "varianced_cost_total": 510.45760222916107,
+              "varianced_cost_copay": 102.09152044583222
+          },
+          {
+              "CPT Code": "85025",
+              "Service Name": "Complete Blood Count (CBC) with Differential",
+              "Description": "Complete blood count with differential white blood cell count.",
+              "Probability": 0.3,
+              "Category": "Clinical_Laboratory",
+              "varianced_cost_total": 494.90877124672477,
+              "varianced_cost_copay": 98.98175424934496
+          },
+          {
+              "CPT Code": "99212",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "Established patient office visit, typically 10-19 minutes.",
+              "Probability": 0.2,
+              "Category": "General_Practice",
+              "varianced_cost_total": 52.64306461245534,
+              "varianced_cost_copay": 10.528612922491067
+          },
+          {
+              "CPT Code": "99205",
+              "Service Name": "Office or Other Outpatient Visit",
+              "Description": "New patient office visit, typically 45-59 minutes.",
+              "Probability": 0.01,
+              "Category": "General_Practice",
+              "varianced_cost_total": 159.85404269636197,
+              "varianced_cost_copay": 31.97080853927239
+          }
+      ],
+      "X": -7208101.55907185,
+      "Y": 2006342.97802613,
+      "OBJECTID": 14544,
+      "ID": 200820,
+      "NAME": "GOV JUAN F LUIS HOSPITAL AND MEDICAL CTR",
+      "ADDRESS": "4007 EST DIAMOND RUBY, CHRISTIANSTED",
+      "CITY": "ST CROIX",
+      "STATE": "VI",
+      "ZIP": "00820",
+      "ZIP4": "NOT AVAILABLE",
+      "TELEPHONE": "(340) 778-6311",
+      "TYPE": "GENERAL ACUTE CARE",
+      "STATUS": "OPEN",
+      "POPULATION": 188,
+      "COUNTY": "ST. CROIX",
+      "COUNTYFIPS": 78010,
+      "COUNTRY": "VIR",
+      "LATITUDE": 17.733195,
+      "LONGITUDE": -64.751478,
+      "NAICS_CODE": 622110,
+      "NAICS_DESC": "GENERAL MEDICAL AND SURGICAL HOSPITALS",
+      "SOURCE": "https://data.cms.gov/provider-data/search?page=4&theme=Hospitals",
+      "SOURCEDATE": "2024/04/22 00:00:00+00",
+      "VAL_METHOD": "IMAGERY/OTHER",
+      "VAL_DATE": "2018/04/06 00:00:00+00",
+      "WEBSITE": "NOT AVAILABLE",
+      "STATE_ID": "480002",
+      "ALT_NAME": "NOT AVAILABLE",
+      "ST_FIPS": "78",
+      "OWNER": "GOVERNMENT - STATE",
+      "TTL_STAFF": -999,
+      "BEDS": 188,
+      "TRAUMA": "NOT AVAILABLE",
+      "HELIPAD": "N",
+      "Distance": 12328.140876155563,
+      "total_cost_overall": 478.05406675287117,
+      "total_cost_copay": 95.61081335057425
+  }
+}
+var json_lst = []
+
+// convert json_dt into a list of objects
+for (var key in json_dt) {
+  json_lst.push(json_dt[key]);
+}
+
 
 const containerStyle = {
   width: '100%',
@@ -49,13 +982,17 @@ function MapDashboard() {
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
   });
 
+  const { user } = useAuth();  // Get the user object from the AuthProvider
+
   const [center, setCenter] = useState({ lat: 39.95, lng: -75.1943 }); // Default center
   const [hoveredHospital, setHoveredHospital] = useState(null);
+  
   const [nearestHospitals, setNearestHospitals] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); // State for storing search input
   const [isFocused, setIsFocused] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
-  const [hospitalCount, setHospitalCount] = useState(50);
+  const [hospitalCount, setHospitalCount] = useState(30);
+  const [showActuals, setShowActuals] = useState(false);  // Add this state for showing actuals
   const [useCurrentLocation, setUseCurrentLocation] = useState(true);
   const [mapCenter, setMapCenter] = useState(center);  // Add this state for visual center
   const [isRecording, setIsRecording] = useState(false);
@@ -63,6 +1000,9 @@ function MapDashboard() {
   const chunksRef = useRef([]);
   const [recordingTime, setRecordingTime] = useState(0);
   const [recordingTimerId, setRecordingTimerId] = useState(null);
+  
+  const [showTreatsModal, setShowTreatsModal] = useState(false);
+  const [showTeatsHospital, setShowTeatsHospital] = useState({});
 
   const toast = useToast();
 
@@ -77,8 +1017,84 @@ function MapDashboard() {
       setHospitalCount(hospitalCount);
     }, 100);  // Small delay to batch updates
 
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
     return () => clearTimeout(timer);
   }, [hospitalCount]);
+
+  const [status, setStatus] = useState('idle');
+  const [statusTextIndex, setStatusTextIndex] = useState(0);
+
+  const statusTexts = [
+    'Uploading Data',
+    'Crunching the Numbers',
+    'Finding Possible Conditions',
+    'Predicting Potential Treatments',
+    'Analyzing Costs',
+    'Checking Insurance Coverage',
+    'Predicting Copay',
+    'Finding Regional Deltas',
+    'Checking Distance to Nearest Hospitals',
+    'Checking Deductible',
+    'Finding Premiums',
+    'Recommending Next Steps',
+  ];
+  const API_URL = "http://localhost:8002/api";
+  const submitQuery = async () => {
+    if(!searchTerm) {
+      toast({
+        title: 'Please enter a query',
+        status: 'warning',
+        duration: 5000,
+      });
+      return;
+    }
+    setStatus('loading');
+    setStatusTextIndex(0);
+
+    const timerId = setInterval(() => {
+      setStatusTextIndex((prevIndex) => (prevIndex + 1) % statusTexts.length);
+    }, 3000);
+
+    const formData = new FormData();
+    console.log(mapCenter)
+    formData.append("user_id", user._id);
+    formData.append("prompt", searchTerm);
+    formData.append("long", mapCenter.lng);
+    formData.append("lat", mapCenter.lat);
+
+    await axios.post(`${API_URL}/illness/question`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }).then((response) => {
+      console.log(response.data);
+      setNearestHospitals(response.data);
+      setShowActuals(true)
+      setStatus('idle');
+      clearInterval(timerId);
+
+      
+      const element = document.getElementById("mapmove");
+      if (element) {
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      } else {
+        console.warn(`Element with id "${id}" not found.`);
+      }
+    }).catch((error) => {
+      console.error(error);
+      setStatus('idle');
+      clearInterval(timerId);
+    });
+
+
+  }
 
   // Get the user's current location and set it as the new center
   useEffect(() => {
@@ -120,8 +1136,22 @@ function MapDashboard() {
           searchTerm: searchTerm || undefined
         });
 
-        console.log("API Response:", response.data); // Debug log
-        setNearestHospitals(response.data);
+        // uppercase each key
+        response.data.forEach((hospital) => {
+          Object.keys(hospital).forEach((key) => {
+            const newKey = key.toUpperCase();
+            if (key !== newKey) {
+              hospital[newKey] = hospital[key];
+              delete hospital[key];
+            }
+          });
+        });
+
+        // console.log(response.data)
+        // setNearestHospitals(response.data);
+        setNearestHospitals(json_lst)
+        setShowActuals(true)
+
       } catch (error) {
         console.error('Error fetching nearest hospitals:', error);
         toast({
@@ -134,7 +1164,7 @@ function MapDashboard() {
       }
     };
 
-    if (center && hospitalCount > 0) {
+    if (center && nearestHospitals.length == 0) {
       fetchNearestHospitals();
     }
   }, [center, hospitalCount]);
@@ -164,7 +1194,7 @@ function MapDashboard() {
 
   // Add this console log to verify the data
   useEffect(() => {
-    console.log("Nearest hospitals:", nearestHospitals);
+    // console.log("Nearest hospitals:", nearestHospitals);
   }, [nearestHospitals]);
 
   const handleVoiceSearch = async () => {
@@ -283,9 +1313,12 @@ function MapDashboard() {
     <Box
       padding={0}
       position="relative"
-      minHeight="180vh"
-      background="linear-gradient(180deg, brand.500 0%, brand.200 100%)"
-      backgroundAttachment="fixed"
+      minHeight="163vh"
+      // background="linear-gradient(180deg, brand.500 0%, brand.200 100%)"
+      // backgroundAttachment="fixed"
+      style={{
+        backgroundColor: "rgb(246, 246, 246)",
+      }}
       _before={{
         content: '""',
         position: "absolute",
@@ -293,7 +1326,7 @@ function MapDashboard() {
         right: 0,
         bottom: 0,
         left: 0,
-        background: "linear-gradient(180deg, rgba(122,115,158,0.9) 0%, rgba(213,211,229,0.7) 100%)",
+        backgroundColor: "rgb(246, 246, 246)",
         zIndex: 0
       }}
     >
@@ -303,6 +1336,9 @@ function MapDashboard() {
         py={8}
         display="flex" 
         flexDirection="column"
+        style={{
+          backgroundColor: "rgb(246, 246, 246)",
+        }}
       >
         <VStack spacing={8} align="stretch" height="100%">
           {/* Location Controls Group */}
@@ -316,17 +1352,23 @@ function MapDashboard() {
             transform="translate(-50%, -50%)"
             width="80%"
             maxWidth="800px"
+            style={{
+              backgroundColor: "rgb(246, 246, 246)",
+            }}
           >
             <CardBody py={8}>
-              <VStack spacing={6}>
+              <VStack spacing={6} style={{display: (status === 'idle' ? 'block' : 'none')}} >
                 <InputGroup
                   bg={cardBg}
                   size="lg"
                   transition="all 0.2s"
                   transform={searchTerm ? "scale(1.02)" : "scale(1)"}
                   borderRadius="xl"
-                  overflow="hidden"
+                  // overflow="hidden"
                   height="120px"
+                  style={{
+                    backgroundColor: "rgb(246, 246, 246)",
+                  }}
                 >
                   {/* <InputLeftElement 
                     pointerEvents='none'
@@ -338,7 +1380,7 @@ function MapDashboard() {
                     <Icon as={FaNotesMedical} color="gray.400" boxSize={5} />
                   </InputLeftElement> */}
                   <Input
-                    placeholder="Enter your symptoms..."
+                    placeholder="I have a a rash on my arm..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     onFocus={() => setIsFocused(true)}
@@ -363,7 +1405,7 @@ function MapDashboard() {
                       pt: "16px",
                       borderColor: "brand.500",
                       boxShadow: "0 0 12px rgba(128, 90, 213, 0.3)",
-                      transform: "scale(1.02)"
+                      transform: "scale(1.03)"
                     }}
                     transition="all 0.2s"
                   />
@@ -387,23 +1429,50 @@ function MapDashboard() {
                     />
                   </InputRightElement>
                 </InputGroup>
-                
-                <Button
-                  bg="white"
-                  color="brand.500"
-                  borderRadius="xl"
-                  px={8}
-                  py={4}
-                  _hover={{
-                    bg: 'white',
-                    transform: 'scale(1.05)',
-                    boxShadow: '0 0 12px rgba(128, 90, 213, 0.3)'
-                  }}
-                  transition="all 0.2s"
-                >
-                  Submit
-                </Button>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  paddingTop: '1rem',
+                }}>
+                  <Button
+                    bg="white"
+                    color="brand.500"
+                    borderRadius="xl"
+                    px={8}
+                    py={4}
+                    style={{
+                    }}
+                    _hover={{
+                      bg: 'white',
+                      transform: 'scale(1.05)',
+                      boxShadow: '0 0 12px rgba(128, 90, 213, 0.3)',
+                      marginTop: '30px'
+                    }}
+                    transition="all 0.2s"
+                    onClick={() => {submitQuery()}}
+                  >
+                    Submit
+                  </Button>
+                </div>
               </VStack>
+              <div style={{display: (status !== 'idle' ? 'block' : 'none')}}
+                
+
+              >
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  // font size
+                  fontSize: '1.5rem',
+                  // color: 'white',
+                  padding: '1rem',
+                  font: 'bold',
+                  fontFamily: 'ui-sans-serif,-apple-system,system-ui,Segoe UI,Helvetica,Apple Color Emoji,Arial,sans-serif,Segoe UI Emoji,Segoe UI Symbol',
+                }}><Spinner style={{marginRight: '10px'}}></Spinner>{statusTexts[statusTextIndex]}</div>
+                
+                </div>
             </CardBody>
           </Card>
 
@@ -414,9 +1483,10 @@ function MapDashboard() {
             marginTop={"80vh"} 
             borderWidth="0px"  // Ensure border is removed
             boxShadow="none"   // Remove any shadow
+            
           >
             <CardBody p={4}>
-              {!useCurrentLocation && (
+              {/* {!useCurrentLocation && (
                 <Box
                   borderWidth="0px"
                   shadow="none"
@@ -432,7 +1502,7 @@ function MapDashboard() {
                   backgroundRepeat="no-repeat"
                   pointerEvents="none"
                 />
-              )}
+              )} */}
               
               <Box
                 bg={cardBg}
@@ -441,7 +1511,7 @@ function MapDashboard() {
                 borderWidth="0px"
                 borderColor="transparent"
                 _hover={{
-                  borderColor: "transparent",
+                  backgroundColor: "transparent",
                   boxShadow: "none",
                   transition: "all 0.2s"
                 }}
@@ -465,17 +1535,19 @@ function MapDashboard() {
                     disableDoubleClickZoom: true,
                     clickableIcons: false
                   }}
+                  id="mapmove"
                 >
                   {/* User location blue marker (only when using current location) */}
                   {userLocation && useCurrentLocation && (
-                    <Marker
-                      position={userLocation}
-                      icon={{
-                        url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
-                        scaledSize: new window.google.maps.Size(40, 40),
-                      }}
-                      title="Your Location"
-                    />
+                    // <Marker
+                    //   position={userLocation}
+                    //   icon={{
+                    //     url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+                    //     scaledSize: new window.google.maps.Size(40, 40),
+                    //   }}
+                    //   title="Your Location"
+                    // />
+                    <>  </>
                   )}
 
                   {nearestHospitals.map((hospital, index) => {
@@ -485,10 +1557,25 @@ function MapDashboard() {
                     }
 
                     // Use lowercase field names to match backend
-                    const name = hospital.name || 'Unknown Hospital';
-                    const address = hospital.address || 'Address not available';
-                    const lat = parseFloat(hospital.latitude);
-                    const lng = parseFloat(hospital.longitude);
+                    const name = hospital.NAME || 'Unknown Hospital';
+                    const address = hospital.ADDRESS || 'Address not available';
+                    // const lat = parseFloat(hospital.LATITUDE);
+                    // const lng = parseFloat(hospital.LONGITUDE);
+
+                    const lat = hospital.LATITUDE
+                    const lng = hospital.LONGITUDE
+                    // console.log(lat, lng, name, address)
+
+                    // const name = hospital.name || 'Unknown Hospital';
+                    // const address = hospital.address || 'Address not available';
+                    // // const lat = parseFloat(hospital.LATITUDE);
+                    // // const lng = parseFloat(hospital.LONGITUDE);
+
+                    // const lat = hospital.latitude
+                    // const lng = hospital.longitude
+                    // console.log(lat, lng, name, address)
+
+                    // console.log(hospital.Distance)
                     
                     if (isNaN(lat) || isNaN(lng)) {
                       console.warn(`Invalid coordinates for hospital: ${name}`);
@@ -496,6 +1583,7 @@ function MapDashboard() {
                     }
 
                     return (
+                      // <p></p>
                       <Marker
                         key={index}
                         position={new window.google.maps.LatLng(lat, lng)}
@@ -524,12 +1612,26 @@ function MapDashboard() {
                       />
                     );
                   })}
+                      {/* <Marker
+                      key={19}  // Use a unique identifier for the key
+                      position={{ lat: 42.778690, lng: -74.056410}}
+                      title={"HEYYY"}
+                      onClick={(e) => {
+                        // Prevent default behavior and stop event propagation
+                        e.domEvent.stopPropagation();
+
+                      }}
+                      options={{
+                        clickable: true,
+                        zIndex: 1000
+                      }}
+                    /> */}
 
                   {hoveredHospital && (
                     <InfoWindow
                       position={new window.google.maps.LatLng(
-                        parseFloat(hoveredHospital.latitude),
-                        parseFloat(hoveredHospital.longitude)
+                        parseFloat(hoveredHospital.LATITUDE),
+                        parseFloat(hoveredHospital.LONGITUDE)
                       )}
                       onCloseClick={() => setHoveredHospital(null)}
                       options={{
@@ -550,8 +1652,11 @@ function MapDashboard() {
                           e.nativeEvent.stopImmediatePropagation();
                         }}
                       >
-                        <h4 style={{ fontWeight: 'bold', marginBottom: '5px' }}>{hoveredHospital.name}</h4>
-                        <p style={{ marginBottom: '5px' }}>{hoveredHospital.address}</p>
+                        <h4 style={{ fontWeight: 'bold', marginBottom: '5px' }}>{hoveredHospital.NAME}</h4>
+                        <p style={{ marginBottom: '5px' }}>{hoveredHospital.ADDRESS}</p>
+
+                        <p style={{marginBottom: '3px'}}>Total Copay: <strong>${Math.round(100*hoveredHospital.total_cost_copay) / 100}</strong></p>
+                        <p style={{marginBottom: '3px'}}>Total Cost: ${Math.round(100*hoveredHospital.total_cost_overall)/ 100}</p>
                         <button 
                           onClick={(e) => {
                             e.stopPropagation();
@@ -560,6 +1665,8 @@ function MapDashboard() {
                           style={{
                             marginTop: '5px',
                             padding: '5px 10px',
+                            paddingLeft: '0x',
+                            marginLeft: '-10px',
                             cursor: 'pointer'
                           }}
                         >
@@ -598,16 +1705,16 @@ function MapDashboard() {
 
 <Center width="100%" justifyContent="center">
                     <HStack spacing={4}>
-                      <Checkbox
-                        isChecked={useCurrentLocation}
-                        onChange={(e) => setUseCurrentLocation(e.target.checked)}
-                        colorScheme="brand.secondary"
-                        color="gray.600"
-                        size="lg"
-                        borderColor="gray.500"
-                      >
-                        Use my location
-                      </Checkbox>
+                    <Checkbox
+                      isChecked={useCurrentLocation}
+                      onChange={(e) => setUseCurrentLocation(e.target.checked)}
+                      iconColor="black"       // Set the color of the checkmark to black
+                      size="lg"
+                      borderColor="gray.500"
+                      colorScheme="gray"       // Set a color scheme to match the black styling
+                    >
+                      Use my location
+                    </Checkbox>
 
                       {!useCurrentLocation && (
                         <Button
@@ -625,7 +1732,82 @@ function MapDashboard() {
                       )}
                     </HStack>
                   </Center>
-                </Flex>
+
+
+                  {/* <div style={{display: 'flex'}}>
+                        <H1></H1>
+                  </div> */}
+              </Flex>
+
+              <div style={{display: 'flex', justifyContent: 'center', marginTop: '40px', flexDirection: 'row',
+            'display': showActuals ? 'flex' : 'none'}}>
+                <div 
+                  style={{
+                    fontSize: '2.5rem',
+                    fontWeight: 'bold',
+                    fontFamily: 'system-ui',
+                  }}
+                >Cheapest Nearby Hospitals</div>
+
+              <div style={{ color: 'black', display: 'flex', flexDirection: 'column', width: '100%' }}>
+                {
+                  nearestHospitals.map((hospital, index) => (
+                    <div key={index} 
+                    onClick={
+                      () => {
+                        setShowTeatsHospital(hospital);
+                        setShowTreatsModal(true);
+                      }
+                    }
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      padding: '10px',
+                      borderRadius: '5px',
+                      margin: '10px',
+                      backgroundColor: 'rgba(248, 248, 248)', // very light gray
+                      shadow: '0 0 5px rgba(0, 0, 0, 0.1)',
+                      fontFamily: 'system-ui',
+                      cursor: 'pointer',
+                    }}>
+                      {/* Uncomment these lines as needed */}
+                      <p style={{
+                        fontSize: '1.5rem',
+                        fontWeight: 'bold',
+                        fontFamily: 'system-ui',
+                      }}>{hospital.NAME}</p>
+                      <p style={{
+                        fontSize: '0.9rem',
+                        fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif;', // thin font
+                      }}>{hospital.ADDRESS}, {hospital.CITY}, {hospital.STATE}, {hospital.ZIP}</p>
+                      <div style={{fontWeight: 'bold', marginTop: '15px'}}>
+                        <p>Total Copay: ${Math.round(100 * hospital.total_cost_copay) / 100}</p>
+                        <p>Total Cost: ${Math.round(100 * hospital.total_cost_overall) / 100}</p>
+                      </div>
+                      <button
+                      style={{
+                        padding: '5px 10px',
+                        width: '150px',
+                        marginLeft: '-25px',
+                        marginTop: '10px'
+                      }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleGetDirections(hospital);
+                        }}
+                      >
+                        Get Directions
+                      </button> 
+                      <p>Contact: {hospital.TELEPHONE}</p>
+                      <p>Website: {hospital.WEBSITE}</p>
+                      <p>Type: {hospital.TYPE}</p>
+                    </div>
+                  ))
+                }
+              </div>
+                  
+
+              </div>
             </CardBody>
           </Card>
         </VStack>
@@ -685,6 +1867,99 @@ function MapDashboard() {
                   borderRadius="full"
                 >
                   Done
+                </Button>
+              </HStack>
+            </VStack>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+
+
+      <Modal isOpen={showTreatsModal} size={"xl"} isCentered >
+        <ModalOverlay
+          bg="blackAlpha.300"
+          backdropFilter="blur(1px)"
+        />
+        <ModalContent
+          bg={cardBg}
+          borderRadius="xl"
+          boxShadow="xl"
+          // maxW="400px"
+          p={6}
+        >
+          <ModalBody>
+            <VStack spacing={6}>
+              <Heading size="md" style={{
+                textAlign: 'center',
+              }}>Specific Breakdown for {showTeatsHospital && showTeatsHospital.NAME}</Heading>
+              <Text fontSize="4xl" fontWeight="bold">
+                
+              </Text>
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                width: '100%',
+              }}>
+              <div style={{
+                fontSize: '1.2rem',
+                fontWeight: 'bold',
+                fontFamily: 'system-ui',
+              }}>Possible Treatments:</div>
+              {showTeatsHospital && showTeatsHospital.treatments && showTeatsHospital.treatments.map((treatment, index) => (
+                <div key={index} style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  padding: '10px',
+                  borderRadius: '5px',
+                  margin: '10px',
+                  backgroundColor: 'rgba(248, 248, 248)', // very light gray
+                  shadow: '0 0 5px rgba(0, 0, 0, 0.1)',
+                  fontFamily: 'system-ui',
+                }}>
+                  <p style={{
+                    fontSize: '1.5rem',
+                    fontWeight: 'bold',
+                    fontFamily: 'system-ui',
+                  }}>{treatment && treatment["Service Name"]}</p>
+                   <p style={{
+                    fontSize: '0.7rem',
+                    fontWeight: 'bold',
+                    fontFamily: 'system-ui',
+                  }}>CPT Code: {treatment && treatment["CPT Code"]}</p>
+                   <p style={{
+                    fontSize: '0.7rem',
+                    fontFamily: 'system-ui',
+                  }}>Description: {treatment && treatment["Description"]}</p>
+                  <p style={{
+                    fontSize: '0.7rem',
+                    fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif;', // thin font
+                  }}>Estimated Total Cost: ${(treatment && Math.round(treatment["varianced_cost_total"] * 100))/100}</p>
+                   <p style={{
+                    fontSize: '0.7rem',
+                    fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif;', // thin font
+                  }}>Estimated Copay: ${(treatment && Math.round(treatment["varianced_cost_copay"] * 100))/100}</p>
+                   <p style={{
+                    fontSize: '0.7rem',
+                    fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif;', // thin font
+                  }}>Category: {(treatment && treatment["Category"] )}</p>
+                  <p style={{
+                    fontSize: '0.7rem',
+                    fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif;', // thin font
+                  }}>Chance of Use: {(treatment && treatment["Probability"] *100 )}{'%'}</p>
+              </div>
+              ))}
+              </div>
+              <HStack spacing={4} width="100%">
+                <Button
+                  colorScheme="red"
+                  onClick={() => {
+                    setShowTreatsModal(false);
+                  }}
+                  size="lg"
+                  width="100%"
+                  borderRadius="full"
+                >
+                  Close
                 </Button>
               </HStack>
             </VStack>

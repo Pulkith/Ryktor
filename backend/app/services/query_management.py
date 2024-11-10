@@ -34,16 +34,16 @@ def send_transcript(file):
     }
 
 
-def process_text(language, text):
-    docs = get_patient_docs()
-    if language == "en":
-        process_query(docs, text)
-    else:
-        translated_text = translate_text(language, text)
-        process_query(docs, translated_text)
+# def process_text(language, text):
+#     docs = get_patient_docs()
+#     if language == "en":
+#         process_query(docs, text)
+#     else:
+#         translated_text = translate_text(language, text)
+#         process_query(docs, translated_text)
 
-def get_patient_docs(): # RAG
-    return []
+# def get_patient_docs(): # RAG
+#     return []
 
 def translate_text(language, text):
     PROMPT = """
@@ -65,53 +65,77 @@ def translate_text(language, text):
 
     return LLM_INSTANCE(PROMPT, text)
 
-treatments = [
-    "Surgery",
-    "Medication",
-    "Physical Therapy",
-    "Counseling",
-    "Diet and Exercise",
-]
-
-def process_query(docs: list, query):
-    global treatments
-    
+def detect_text(text):
     PROMPT = """
-    You are an expert in medical information retrieval.
-    
-    The below text is a question either typed or spoken by a user. The user is describing their
-    symptoms and current condition, and is looking for information on what they should do next.
-    
-    Based on the user's symptoms and medical history, provide a list of 5 possible treatment options, 
-    ranked from most likely to least likely. Be realistic and logical.
-    
-    Output your response as JSON and only JSON as it will be used directly by an automated system. Use the following format:
-    [
-        {{
-            "treatment": "name",
-            "reason": "reason for treatment",
-            "weight": 0.2
-        }}
-    ]
+    You are an expert in medical language translation.
 
-    Below is the information.
+    Read the following text. Figure out which language it is in. Output
+    the two-letter language code of the language the text is in. For example
+    if the text is in English, output "en". If the text is in Spanish, output "es".
 
-    <TREATMENTS>
-    {treatments}
-    </TREATMENTS>
-
-    <Medical History Information>
-    {docs}
-    </Medical History Information>
+    Output nothing else other than the two-letter language code. Your response will be used directly by an
+    automated system. Output only the two-letter language code. No punctuation or additional information, just the 
+    two characters.
     """
+
+    language = LLM_INSTANCE(PROMPT, text)
+
+    if language == "en":
+        return text
     
-    PROMPT = PROMPT.format(treatments=treatments, docs=docs)
+    else:
+        translated_text = translate_text(language, text)
+        return translated_text
+
+
+
+# treatments = [
+#     "Surgery",
+#     "Medication",
+#     "Physical Therapy",
+#     "Counseling",
+#     "Diet and Exercise",
+# ]
+
+# def process_query(docs: list, query):
+#     global treatments
     
-    response = LLM_INSTANCE(PROMPT, query)
+#     PROMPT = """
+#     You are an expert in medical information retrieval.
     
-    treatments_list = json.loads(response)
+#     The below text is a question either typed or spoken by a user. The user is describing their
+#     symptoms and current condition, and is looking for information on what they should do next.
     
-    return treatments_list
+#     Based on the user's symptoms and medical history, provide a list of 5 possible treatment options, 
+#     ranked from most likely to least likely. Be realistic and logical.
+    
+#     Output your response as JSON and only JSON as it will be used directly by an automated system. Use the following format:
+#     [
+#         {{
+#             "treatment": "name",
+#             "reason": "reason for treatment",
+#             "weight": 0.2
+#         }}
+#     ]
+
+#     Below is the information.
+
+#     <TREATMENTS>
+#     {treatments}
+#     </TREATMENTS>
+
+#     <Medical History Information>
+#     {docs}
+#     </Medical History Information>
+#     """
+    
+#     PROMPT = PROMPT.format(treatments=treatments, docs=docs)
+    
+#     response = LLM_INSTANCE(PROMPT, query)
+    
+#     treatments_list = json.loads(response)
+    
+#     return treatments_list
     
 
 

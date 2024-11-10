@@ -101,10 +101,15 @@ function BillDetail() {
               <Text fontSize="lg" fontWeight="bold">Insurance Responsibility</Text>
               <Text>{bill.processed_data && bill.processed_data['Insurance Responibility']}</Text>
             </HStack>
-
+            
             <HStack justify="space-between">
               <Text fontSize="lg" fontWeight="bold">Patient Responsibility</Text>
               <Text>{bill.processed_data && bill.processed_data['Patient Responsibility Remaining']}</Text>
+            </HStack>
+
+            <HStack justify="space-between">
+              <Text fontSize="lg" fontWeight="bold">Possible Incorrect or Upcoded Charges</Text>
+              <Text>{bill.processed_data && bill.processed_data['Possible Incorrect or Upcoded Charges']}</Text>
             </HStack>
 
             <Box>

@@ -125,6 +125,8 @@ function BillingHelper() {
   const { user, isLoading: authLoading } = useAuth();
   const [isInsuranceModalOpen, setIsInsuranceModalOpen] = useState(false);
   const [insuranceData, setInsuranceData] = useState(null);
+  const [isInsuranceSubmitting, setIsInsuranceSubmitting] = useState(false);
+  const [isReceiptSubmitting, setIsReceiptSubmitting] = useState(false);
 
   const fetchData = async () => {
     if (!user) return;
@@ -201,6 +203,7 @@ function BillingHelper() {
       return;
     }
 
+    setIsInsuranceSubmitting(true);
     try {
       const result = await uploadInsuranceCard(
         insuranceFiles.front,
@@ -215,7 +218,6 @@ function BillingHelper() {
         duration: 3000,
       });
       
-      // Handle the result as needed
       console.log(result);
     } catch (error) {
       toast({
@@ -224,6 +226,8 @@ function BillingHelper() {
         status: 'error',
         duration: 5000,
       });
+    } finally {
+      setIsInsuranceSubmitting(false);
     }
   };
 
@@ -248,6 +252,7 @@ function BillingHelper() {
       return;
     }
 
+    setIsReceiptSubmitting(true);
     try {
       const result = await uploadReceipt(
         receiptFile,
@@ -276,6 +281,8 @@ function BillingHelper() {
         status: 'error',
         duration: 5000,
       });
+    } finally {
+      setIsReceiptSubmitting(false);
     }
   };
 
@@ -356,6 +363,8 @@ function BillingHelper() {
                     w="full"
                     onClick={handleInsuranceSubmit}
                     mt={2}
+                    isLoading={isInsuranceSubmitting}
+                    loadingText="Submitting..."
                   >
                     Submit
                   </Button>
@@ -416,6 +425,8 @@ function BillingHelper() {
                     w="full"
                     onClick={handleReceiptSubmit}
                     mt={2}
+                    isLoading={isReceiptSubmitting}
+                    loadingText="Submitting..."
                   >
                     Submit
                   </Button>

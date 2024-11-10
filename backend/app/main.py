@@ -1,8 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from .database import connect_to_mongodb, close_mongodb_connection
 from .config import settings
 from .routes import illness, user, hospitals, billing
+from .services.query_management import process_audio
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -48,4 +49,15 @@ async def root():
     return {
         "message": f"Welcome to {settings.APP_NAME} API",
         "environment": settings.ENVIRONMENT
-    } 
+    }
+
+@app.post("/api/transcribe")
+async def transcribe_audio(audio: UploadFile = File(...)):
+    try:
+        # Await the read() operation
+        audio_data = await audio.read()
+        transcription = process_audio(audio_data)
+        return {"text": transcription}
+    except Exception as e:
+        print(f"Error in transcribe_audio: {str(e)}")  # Debug logging
+        raise HTTPException(status_code=500, detail=str(e))

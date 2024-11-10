@@ -36,6 +36,8 @@ import { FaNotesMedical } from 'react-icons/fa'; // or another medical-themed ic
 
 import { FaSearch, FaMicrophone } from 'react-icons/fa';
 
+import { transcribeAudio } from '../services/audioService';
+
 const containerStyle = {
   width: '100%',
   height: '70vh',
@@ -53,7 +55,7 @@ function MapDashboard() {
   const [searchTerm, setSearchTerm] = useState(""); // State for storing search input
   const [isFocused, setIsFocused] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
-  const [hospitalCount, setHospitalCount] = useState(0);
+  const [hospitalCount, setHospitalCount] = useState(50);
   const [useCurrentLocation, setUseCurrentLocation] = useState(true);
   const [mapCenter, setMapCenter] = useState(center);  // Add this state for visual center
   const [isRecording, setIsRecording] = useState(false);
@@ -202,6 +204,20 @@ function MapDashboard() {
           chunksRef.current = [];
           
           console.log('Audio blob created:', audioBlob);
+          
+          try {
+            const transcribedText = await transcribeAudio(audioBlob);
+            console.log('Transcribed text:', transcribedText);
+            setSearchTerm(transcribedText);
+          } catch (error) {
+            console.error('Error transcribing audio:', error);
+            toast({
+              title: 'Error',
+              description: 'Failed to transcribe audio',
+              status: 'error',
+              duration: 3000,
+            });
+          }
           
           // Clear timer and reset states
           if (recordingTimerId) {

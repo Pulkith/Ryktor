@@ -81,55 +81,32 @@ function BillingHelper() {
   const [insuranceFiles, setInsuranceFiles] = useState({ front: null, back: null });
   const [receiptFile, setReceiptFile] = useState(null);
   const toast = useToast();
-  const [bills, setBills] = useState([
-    {
-      id: '001',
-      imageUrl: 'https://example.com/bill1.jpg',
-      date: '2024-03-15',
-      status: 'processed',
-      amount: 150.00,
-      description: 'General checkup and prescription'
-    },
-    // Add more sample bills as needed
-  ]);
+  const [bills, setBills] = useState([]);
   const [illnesses, setIllnesses] = useState([]);
   const [selectedIllness, setSelectedIllness] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const { user } = useAuth();
+  const { user, isLoading: authLoading } = useAuth();
 
   useEffect(() => {
-    const fetchIllnesses = async () => {
-      try {
-        if (!user) {
-          navigate('/login');
-          return;
-        }
-        const fetchedIllnesses = await getUserIllnesses(user._id);
-        setIllnesses(fetchedIllnesses);
-      } catch (error) {
-        toast({
-          title: 'Error fetching illnesses',
-          description: error.message,
-          status: 'error',
-          duration: 5000,
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    if (!authLoading && !user) {
+      navigate('/login');
+      return;
+    }
 
-    const fetchReceipts = async () => {
+    const fetchData = async () => {
+      if (!user) return;
+      
       try {
-        if (!user) {
-          navigate('/login');
-          return;
-        }
-        const fetchedReceipts = await getAllBillingReceptions(user._id);
-        console.log(fetchedReceipts);
+        const [fetchedIllnesses, fetchedReceipts] = await Promise.all([
+          getUserIllnesses(user._id),
+          getAllBillingReceptions(user._id)
+        ]);
+        
+        setIllnesses(fetchedIllnesses);
         setBills(fetchedReceipts);
       } catch (error) {
         toast({
-          title: 'Error fetching receipts',
+          title: 'Error fetching data',
           description: error.message,
           status: 'error',
           duration: 5000,
@@ -139,9 +116,10 @@ function BillingHelper() {
       }
     };
 
-    fetchIllnesses();
-    fetchReceipts();
-  }, [user, toast, navigate]);
+    if (!authLoading && user) {
+      fetchData();
+    }
+  }, [user, authLoading, navigate, toast]);
 
   const handleInsuranceUpload = (side) => (event) => {
     const file = event.target.files[0];

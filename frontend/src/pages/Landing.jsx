@@ -1,5 +1,5 @@
 import { Box, Container, VStack, Stack, Heading, Text, Button, SimpleGrid, Icon, useColorModeValue, HStack } from '@chakra-ui/react';
-import { FaSearch, FaMoneyBillWave, FaHospital, FaUserMd } from 'react-icons/fa';
+import { FaSearch, FaMoneyBillWave, FaHospital, FaFileInvoiceDollar } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 
@@ -60,6 +60,8 @@ function Landing() {
         </Container>
       </Box>
 
+
+
       {/* Features Section */}
       <Container maxW="container.xl" py={16}>
         <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={8}>
@@ -79,9 +81,9 @@ function Landing() {
             description="Discover quality healthcare facilities in your local area."
           />
           <Feature
-            icon={FaUserMd}
-            title="Provider Reviews"
-            description="Read authentic reviews from other patients to make informed decisions."
+            icon={FaFileInvoiceDollar}
+            title="Bill Analysis"
+            description="Get detailed breakdowns of your medical bills and understand your payment responsibilities."
           />
         </SimpleGrid>
       </Container>

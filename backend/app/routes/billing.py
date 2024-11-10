@@ -7,6 +7,8 @@ from ..database import get_database
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from bson import ObjectId
 import datetime
+from pathlib import Path
+import uuid
 
 router = APIRouter()
 
@@ -17,8 +19,6 @@ async def upload_insurance_card(
     user_id: str = Form(...),
     db: AsyncIOMotorDatabase = Depends(get_database)
 ):
-    print(user_id);
-    print(front_image);
     if not user_id:
         raise HTTPException(status_code=400, detail="User ID is required")
         
@@ -42,8 +42,15 @@ async def upload_insurance_card(
 
     try:
         # Process the insurance card images
-        result = insurance_card_pipeline(front_path, back_path, full_name)
-        return result
+        result_text = insurance_card_pipeline(front_path, back_path, full_name)
+        # Store the processed insurance card in the database
+        db.users.update_one({
+            "_id": ObjectId(user_id)
+        }, {
+            "$set": {
+                "insurance_card": result_text
+            }
+        })
     finally:
         # Clean up temporary files
         os.unlink(front_path)
@@ -69,14 +76,39 @@ async def upload_medical_receipt(
     except:
         raise HTTPException(status_code=400, detail="Invalid user ID")
         
+
+    # move the uploaded file to a permanent location
+
+    username = str(ObjectId(user_id))
+
+    parent = str(Path(__file__).parent.parent.parent.parent)
+    dictory_store = parent + f"/frontend/public/uploaded_files/{username}/"
+    # dictory_store = f"../../frontend/public/uploaded_files/{username}/"
+
+    # create the directory if it does not exist
+    if not os.path.exists(dictory_store):
+        os.makedirs(dictory_store)
+
+    # change receipt.filename to a unique name with 8 random characters
+    # move file extension to the end of the filename
+    receipt.filename = f"{str(uuid.uuid4())[:16]}{Path(receipt.filename).suffix}"
+
+    # move file to the directory
+    with open(f"{dictory_store}{receipt.filename}", "wb") as f:
+        f.write(receipt.file.read())
+    
+    full_path = f"{dictory_store}{receipt.filename}"
+
+
     # Create temporary file for the uploaded image
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as temp_file:
-        temp_file.write(await receipt.read())
-        file_path = temp_file.name
+    # with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as temp_file:
+        # temp_file.write(await receipt.read())
+        # file_path = temp_file.name
 
     try:
         # Process the medical receipt
-        result = medical_bill_pipeline([file_path])
+        result = medical_bill_pipeline([full_path])
+        result["file_name"] = receipt.filename
         
         # Store the processed receipt in the database
         receipt_entry = {
@@ -90,5 +122,56 @@ async def upload_medical_receipt(
         return result
         
     finally:
+        pass
         # Clean up temporary file
-        os.unlink(file_path) 
+        # os.unlink(file_path) 
+
+@router.get("/receipt/user/{user_id}")
+async def get_all_receipts(
+    user_id: str,
+    db: AsyncIOMotorDatabase = Depends(get_database)
+):
+    if not user_id:
+        raise HTTPException(status_code=400, detail="User ID is required")
+        
+    # Verify user exists
+    try:
+        user = await db.users.find_one({"_id": ObjectId(user_id)})
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail="Invalid user ID")
+    
+    # Fetch receipts
+    receipts_cursor = db.medical_receipts.find({"user_id": user_id})
+    receipts = await receipts_cursor.to_list(length=None)  # Convert cursor to list
+
+    # Convert ObjectId fields to strings for JSON serialization
+    for receipt in receipts:
+        receipt["_id"] = str(receipt["_id"])
+        receipt["user_id"] = str(receipt["user_id"])
+
+    return receipts
+
+
+@router.get("/receipt/bill/{receipt_id}")
+async def get_receipt(
+    receipt_id: str,
+    db: AsyncIOMotorDatabase = Depends(get_database)
+):
+    if not receipt_id:
+        raise HTTPException(status_code=400, detail="Receipt ID is required")
+        
+    # Fetch receipt
+    try:
+        receipt = await db.medical_receipts.find_one({"_id": ObjectId(receipt_id)})
+        if not receipt:
+            raise HTTPException(status_code=404, detail="Receipt not found")
+    except:
+        raise HTTPException(status_code=400, detail="Invalid receipt ID")
+
+    # Convert ObjectId fields to strings for JSON serialization
+    receipt["_id"] = str(receipt["_id"])
+    receipt["user_id"] = str(receipt["user_id"])
+
+    return receipt

@@ -7,6 +7,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  InputRightElement,
   Text,
   Slider,
   SliderTrack,
@@ -18,14 +19,20 @@ import {
   Checkbox,
   Button,
   Flex,
+  Icon,
+  IconButton,
+  Center,
 } from '@chakra-ui/react';
 import { GoogleMap, Marker, InfoWindow, useJsApiLoader } from '@react-google-maps/api';
 import axios from 'axios';
 import { useToast } from '@chakra-ui/react';
+import { FaNotesMedical } from 'react-icons/fa'; // or another medical-themed icon
+
+import { FaSearch, FaMicrophone } from 'react-icons/fa';
 
 const containerStyle = {
   width: '100%',
-  height: '60vh',
+  height: '70vh',
 };
 
 function MapDashboard() {
@@ -148,257 +155,324 @@ function MapDashboard() {
   }, [nearestHospitals]);
 
   return isLoaded ? (
-    <Container 
-      maxW="container.xl" 
-      height="90vh"
-      py={1}
-      display="flex" 
-      flexDirection="column"
+    <Box
+      padding={0}
+      position="relative"
+      minHeight="180vh"
+      background="linear-gradient(180deg, brand.500 0%, brand.200 100%)"
+      backgroundAttachment="fixed"
+      _before={{
+        content: '""',
+        position: "absolute",
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+        background: "linear-gradient(180deg, rgba(122,115,158,0.9) 0%, rgba(213,211,229,0.7) 100%)",
+        zIndex: 0
+      }}
     >
-      <VStack spacing={3} align="stretch" height="100%">
-        {/* Location Controls Group */}
-        <Card bg={cardBg} borderColor={borderColor}>
-          <CardBody>
-            <VStack spacing={4}>
-              <InputGroup
-                transition="all 0.2s"
-                transform={searchTerm ? "scale(1.02)" : "scale(1)"}
-              >
-                <InputLeftElement 
-                  pointerEvents='none'
-                  transition="all 0.3s"
-                  transform={isFocused ? "translateX(-4px)" : "translateX(0)"}
-                >
-                </InputLeftElement>
-                <Input
-                  placeholder="Enter search term..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  onFocus={() => setIsFocused(true)}
-                  onBlur={() => setIsFocused(false)}
-                  borderColor="brand.200"
-                  _hover={{ 
-                    borderColor: "brand.300",
-                    transform: "scale(1.01)",
-                    boxShadow: "0 0 8px rgba(128, 90, 213, 0.2)"
-                  }}
-                  _focus={{ 
-                    borderColor: "brand.500",
-                    boxShadow: "0 0 12px rgba(128, 90, 213, 0.3)",
-                    transform: "scale(1.02)"
-                  }}
+      <Container 
+        maxW="container.xl" 
+        height="100vh"
+        py={8}
+        display="flex" 
+        flexDirection="column"
+      >
+        <VStack spacing={8} align="stretch" height="100%">
+          {/* Location Controls Group */}
+          <Card 
+            bg="transparent" 
+            borderColor={borderColor} 
+            shadow="none"
+            position="absolute"
+            top="20%"
+            left="50%"
+            transform="translate(-50%, -50%)"
+            // zIndex={2}
+            width="80%"
+            maxWidth="800px"
+            // round the ed
+          >
+            <CardBody py={8}>
+              <VStack spacing={6}>
+                <InputGroup
+                  bg={cardBg}
+                  size="lg"
                   transition="all 0.2s"
-                />
-              </InputGroup>
-
-              <Box width="100%" px={4}>
-                <Text mb={2}>Number of hospitals to display: {hospitalCount}</Text>
-                <Slider
-                  aria-label='hospital-count-slider'
-                  min={0}
-                  max={50}
-                  step={1}
-                  value={hospitalCount}
-                  onChange={setHospitalCount}
-                  colorScheme="brand"
+                  transform={searchTerm ? "scale(1.02)" : "scale(1)"}
+                  borderRadius="full"
+                  overflow="hidden"
                 >
-                  <SliderTrack>
-                    <SliderFilledTrack />
-                  </SliderTrack>
-                  <SliderThumb 
-                    boxSize={6} 
-                    bg="white"
-                    borderWidth="2px"
-                    borderColor="brand.500"
-                    boxShadow="0 0 5px rgba(128, 90, 213, 0.3)"
-                  />
-                </Slider>
-              </Box>
-              <Flex px={4} align="left" gap={4}>
-                <Checkbox
-                  isChecked={useCurrentLocation}
-                  onChange={(e) => setUseCurrentLocation(e.target.checked)}
-                  colorScheme="brand"
-                  size="md"
-                  alignSelf="flex-start"
-                >
-                  Use my current location
-                </Checkbox>
-
-                {!useCurrentLocation && (
-                  <Button
-                    colorScheme="brand"
-                    onClick={handleFindNearby}
-                    size="md"
-                    flexShrink={0}
+                  <InputLeftElement 
+                    pointerEvents='none'
+                    transition="all 0.3s"
+                    transform={isFocused ? "translateX(-4px)" : "translateX(0)"}
+                    h="100%"
                   >
-                    Find Nearby Hospitals
-                  </Button>
-                )}
-              </Flex>
-            </VStack>
-          </CardBody>
-        </Card>
+                    <Icon as={FaNotesMedical} color="gray.400" boxSize={5} />
+                  </InputLeftElement>
+                  <Input
+                    placeholder="Enter your symptoms..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
+                    borderColor="brand.200"
+                    height="60px"
+                    fontSize="lg"
+                    _hover={{ 
+                      borderColor: "brand.300",
+                      transform: "scale(1.01)",
+                      boxShadow: "0 0 8px rgba(128, 90, 213, 0.2)"
+                    }}
+                    _focus={{ 
+                      borderColor: "brand.500",
+                      boxShadow: "0 0 12px rgba(128, 90, 213, 0.3)",
+                      transform: "scale(1.02)"
+                    }}
+                    transition="all 0.2s"
+                  />
+                  <InputRightElement h="100%" pr={2}>
+                    <IconButton
+                      aria-label="Voice search"
+                      icon={<FaMicrophone />}
+                      variant="ghost"
+                      colorScheme="brand"
+                      size="lg"
+                      onClick={() => {/* Add voice search logic here */}}
+                      _hover={{
+                        bg: 'brand.50',
+                        transform: 'scale(1.1)',
+                      }}
+                      transition="all 0.2s"
+                    />
+                  </InputRightElement>
+                </InputGroup>
+              </VStack>
+            </CardBody>
+          </Card>
 
-        {/* Map Container */}
-        <Card variant="elevated" bg={cardBg}>
-          <CardBody p={4}>
-            {!useCurrentLocation && (
+          {/* Map Container */}
+          <Card 
+            variant="elevated" 
+            bg="transparent"  // Changed from cardBg to transparent
+            marginTop={"80vh"} 
+            borderWidth="0px"  // Ensure border is removed
+            boxShadow="none"   // Remove any shadow
+          >
+            <CardBody p={4}>
+              {!useCurrentLocation && (
+                <Box
+                  borderWidth="0px"
+                  shadow="none"
+                  position="absolute"
+                  left="50%"
+                  top="50%"
+                  transform="translate(-50%, -50%)"
+                  width="40px"
+                  height="40px"
+                  zIndex={1}
+                  backgroundImage="url(http://maps.google.com/mapfiles/ms/icons/green-dot.png)"
+                  backgroundSize="contain"
+                  backgroundRepeat="no-repeat"
+                  pointerEvents="none"
+                />
+              )}
+              
               <Box
-                position="absolute"
-                left="50%"
-                top="50%"
-                transform="translate(-50%, -50%)"
-                width="40px"
-                height="40px"
-                zIndex={1}
-                backgroundImage="url(http://maps.google.com/mapfiles/ms/icons/green-dot.png)"
-                backgroundSize="contain"
-                backgroundRepeat="no-repeat"
-                pointerEvents="none"
-              />
-            )}
-            
-            <Box
-              bg={cardBg}
-              borderRadius="lg"
-              overflow="hidden"
-              borderWidth="1px"
-              borderColor={borderColor}
-              _hover={{
-                borderColor: hoverBorderColor,
-                boxShadow: "lg",
-                transition: "all 0.2s"
-              }}
-            >
-              <GoogleMap 
-                mapContainerStyle={containerStyle} 
-                center={center} 
-                zoom={10}
-                onLoad={map => {
-                  mapRef.current = map;
-                }}
-                onCenterChanged={handleCenterChanged}
-                onClick={(e) => {
-                  // Prevent any click events if clicking on InfoWindow
-                  if (e.domEvent?.target?.closest('.gm-style-iw')) {
-                    return;
-                  }
-                  setHoveredHospital(null);
-                }}
-                options={{
-                  disableDoubleClickZoom: true,
-                  clickableIcons: false
+                bg={cardBg}
+                borderRadius="lg"
+                overflow="hidden"
+                borderWidth="0px"
+                borderColor="transparent"
+                _hover={{
+                  borderColor: "transparent",
+                  boxShadow: "none",
+                  transition: "all 0.2s"
                 }}
               >
-                {/* User location blue marker (only when using current location) */}
-                {userLocation && useCurrentLocation && (
-                  <Marker
-                    position={userLocation}
-                    icon={{
-                      url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
-                      scaledSize: new window.google.maps.Size(40, 40),
-                    }}
-                    title="Your Location"
-                  />
-                )}
-
-                {nearestHospitals.map((hospital, index) => {
-                  if (!hospital) {
-                    console.warn(`Hospital at index ${index} is undefined or null`);
-                    return null;
-                  }
-
-                  // Use lowercase field names to match backend
-                  const name = hospital.name || 'Unknown Hospital';
-                  const address = hospital.address || 'Address not available';
-                  const lat = parseFloat(hospital.latitude);
-                  const lng = parseFloat(hospital.longitude);
-                  
-                  if (isNaN(lat) || isNaN(lng)) {
-                    console.warn(`Invalid coordinates for hospital: ${name}`);
-                    return null;
-                  }
-
-                  return (
+                <GoogleMap 
+                  mapContainerStyle={containerStyle} 
+                  center={center} 
+                  zoom={10}
+                  onLoad={map => {
+                    mapRef.current = map;
+                  }}
+                  onCenterChanged={handleCenterChanged}
+                  onClick={(e) => {
+                    // Prevent any click events if clicking on InfoWindow
+                    if (e.domEvent?.target?.closest('.gm-style-iw')) {
+                      return;
+                    }
+                    setHoveredHospital(null);
+                  }}
+                  options={{
+                    disableDoubleClickZoom: true,
+                    clickableIcons: false
+                  }}
+                >
+                  {/* User location blue marker (only when using current location) */}
+                  {userLocation && useCurrentLocation && (
                     <Marker
-                      key={index}
-                      position={new window.google.maps.LatLng(lat, lng)}
-                      title={name}
-                      onClick={(() => {
-                        return (e) => {
-                          // Prevent the default behavior
-                          e.stop();
-                          if (e.domEvent) {
-                            e.domEvent.stopPropagation();
-                            e.domEvent.preventDefault();
-                          }
-                          
-                          // Set the hovered hospital
-                          setHoveredHospital({
-                            ...hospital,
-                            name,
-                            address
-                          });
-                        };
-                      })()}
-                      options={{
-                        clickable: true,
-                        zIndex: 1000 // Ensure marker is clickable
+                      position={userLocation}
+                      icon={{
+                        url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+                        scaledSize: new window.google.maps.Size(40, 40),
                       }}
+                      title="Your Location"
                     />
-                  );
-                })}
+                  )}
 
-                {hoveredHospital && (
-                  <InfoWindow
-                    position={new window.google.maps.LatLng(
-                      parseFloat(hoveredHospital.latitude),
-                      parseFloat(hoveredHospital.longitude)
-                    )}
-                    onCloseClick={() => setHoveredHospital(null)}
-                    options={{
-                      pixelOffset: new window.google.maps.Size(0, -30),
-                      maxWidth: 200,
-                      zIndex: 1001,
-                      clickable: true
-                    }}
-                    onClick={(e) => {
-                      e.domEvent?.stopPropagation();
-                      e.stop?.();
-                    }}
-                  >
-                    <div 
-                      style={{ padding: '5px' }}
+                  {nearestHospitals.map((hospital, index) => {
+                    if (!hospital) {
+                      console.warn(`Hospital at index ${index} is undefined or null`);
+                      return null;
+                    }
+
+                    // Use lowercase field names to match backend
+                    const name = hospital.name || 'Unknown Hospital';
+                    const address = hospital.address || 'Address not available';
+                    const lat = parseFloat(hospital.latitude);
+                    const lng = parseFloat(hospital.longitude);
+                    
+                    if (isNaN(lat) || isNaN(lng)) {
+                      console.warn(`Invalid coordinates for hospital: ${name}`);
+                      return null;
+                    }
+
+                    return (
+                      <Marker
+                        key={index}
+                        position={new window.google.maps.LatLng(lat, lng)}
+                        title={name}
+                        onClick={(() => {
+                          return (e) => {
+                            // Prevent the default behavior
+                            e.stop();
+                            if (e.domEvent) {
+                              e.domEvent.stopPropagation();
+                              e.domEvent.preventDefault();
+                            }
+                            
+                            // Set the hovered hospital
+                            setHoveredHospital({
+                              ...hospital,
+                              name,
+                              address
+                            });
+                          };
+                        })()}
+                        options={{
+                          clickable: true,
+                          zIndex: 1000 // Ensure marker is clickable
+                        }}
+                      />
+                    );
+                  })}
+
+                  {hoveredHospital && (
+                    <InfoWindow
+                      position={new window.google.maps.LatLng(
+                        parseFloat(hoveredHospital.latitude),
+                        parseFloat(hoveredHospital.longitude)
+                      )}
+                      onCloseClick={() => setHoveredHospital(null)}
+                      options={{
+                        pixelOffset: new window.google.maps.Size(0, -30),
+                        maxWidth: 200,
+                        zIndex: 1001,
+                        clickable: true
+                      }}
                       onClick={(e) => {
-                        e.stopPropagation();
-                        e.nativeEvent.stopImmediatePropagation();
+                        e.domEvent?.stopPropagation();
+                        e.stop?.();
                       }}
                     >
-                      <h4 style={{ fontWeight: 'bold', marginBottom: '5px' }}>{hoveredHospital.name}</h4>
-                      <p style={{ marginBottom: '5px' }}>{hoveredHospital.address}</p>
-                      <button 
+                      <div 
+                        style={{ padding: '5px' }}
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleGetDirections(hoveredHospital);
-                        }}
-                        style={{
-                          marginTop: '5px',
-                          padding: '5px 10px',
-                          cursor: 'pointer'
+                          e.nativeEvent.stopImmediatePropagation();
                         }}
                       >
-                        Get Directions
-                      </button>
-                    </div>
-                  </InfoWindow>
-                )}
-              </GoogleMap>
-            </Box>
-          </CardBody>
-        </Card>
-      </VStack>
-    </Container>
+                        <h4 style={{ fontWeight: 'bold', marginBottom: '5px' }}>{hoveredHospital.name}</h4>
+                        <p style={{ marginBottom: '5px' }}>{hoveredHospital.address}</p>
+                        <button 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleGetDirections(hoveredHospital);
+                          }}
+                          style={{
+                            marginTop: '5px',
+                            padding: '5px 10px',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          Get Directions
+                        </button>
+                      </div>
+                    </InfoWindow>
+                  )}
+                </GoogleMap>
+              </Box>
+              {/* Updated controls layout */}
+              <Flex width="100%" gap={6} align="center" marginTop={"4vh"}>
+                  {/* <Box flex="1">
+                    <Text mb={2}>Number of hospitals: {hospitalCount}</Text>
+                    <Slider
+                      aria-label='hospital-count-slider'
+                      min={0}
+                      max={50}
+                      step={1}
+                      value={hospitalCount}
+                      onChange={setHospitalCount}
+                      colorScheme="brand"
+                    >
+                      <SliderTrack>
+                        <SliderFilledTrack />
+                      </SliderTrack>
+                      <SliderThumb 
+                        boxSize={6} 
+                        bg="white"
+                        borderWidth="2px"
+                        borderColor="brand.500"
+                        boxShadow="0 0 5px rgba(128, 90, 213, 0.3)"
+                      />
+                    </Slider>
+                  </Box> */}
+
+                  <Center width="100%" justifyContent="center">
+                    <HStack spacing={4}>
+                      <Checkbox
+                        isChecked={useCurrentLocation}
+                        onChange={(e) => setUseCurrentLocation(e.target.checked)}
+                        colorScheme="brand.secondary"
+                        color="gray.600"
+                        size="lg"
+                      >
+                        Use my location
+                      </Checkbox>
+
+                      {!useCurrentLocation && (
+                        <Button
+                          colorScheme="brand"
+                          onClick={handleFindNearby}
+                          size="lg"
+                          leftIcon={<Icon as={FaSearch} />}
+                          px={8}
+                        >
+                          Find Nearby
+                        </Button>
+                      )}
+                    </HStack>
+                  </Center>
+                </Flex>
+            </CardBody>
+          </Card>
+        </VStack>
+      </Container>
+    </Box>
   ) : (
     <Container maxW="container.xl" py={2}>
       <Text>Loading map...</Text>

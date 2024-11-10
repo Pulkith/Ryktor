@@ -52,7 +52,7 @@ The API will be available at `http://localhost:8002`
 ## API Documentation
 
 Once the server is running, you can access:
-- Interactive API docs: `http://localhost:8002/docs`
+- Interactive API docs: `x`
 - Alternative API docs: `http://localhost:8002/redoc`
 
 ## Project Structure

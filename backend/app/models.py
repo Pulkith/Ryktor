@@ -107,3 +107,21 @@ class UserResponse(BaseModel):
     class Config:
         json_encoders = {ObjectId: str}
         populate_by_name = True
+
+class LatLng(BaseModel):
+    lat: float
+    lng: float
+
+class LocationRequest(BaseModel):
+    center: LatLng
+    count: int
+    searchTerm: Optional[str] = None
+
+class HospitalResponse(BaseModel):
+    id: str
+    name: str
+    address: str
+    latitude: float
+    longitude: float
+    distance: float
+    type: str

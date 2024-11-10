@@ -175,3 +175,19 @@ async def get_receipt(
     receipt["user_id"] = str(receipt["user_id"])
 
     return receipt
+
+@router.delete("/receipt/{receipt_id}")
+async def delete_receipt(
+    receipt_id: str,
+    db: AsyncIOMotorDatabase = Depends(get_database)
+):
+    if not receipt_id:
+        raise HTTPException(status_code=400, detail="Receipt ID is required")
+        
+    try:
+        result = await db.medical_receipts.delete_one({"_id": ObjectId(receipt_id)})
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Receipt not found")
+        return {"message": "Receipt deleted successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))

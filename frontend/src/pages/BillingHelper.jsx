@@ -17,19 +17,44 @@ import {
   LinkOverlay,
   HStack,
   Badge,
+  IconButton,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
-import { FaUpload, FaFileInvoiceDollar, FaIdCard } from 'react-icons/fa';
+import { FaUpload, FaFileInvoiceDollar, FaIdCard, FaTrash } from 'react-icons/fa';
 import { Link as RouterLink } from 'react-router-dom';
-import { getUserIllnesses, getAllBillingReceptions } from '../services/billingService';
+import { getUserIllnesses, getAllBillingReceptions, deleteBill } from '../services/billingService';
 import { useAuth } from '../context/AuthContext';
 import { uploadInsuranceCard } from '../services/billingService';
 import { uploadReceipt } from '../services/billingService';
 
-const BillCard = ({ bill }) => {
-  console.log(bill)
+const BillCard = ({ bill, onDelete }) => {
+  const toast = useToast();
+
+  const handleDelete = async (e) => {
+    e.preventDefault(); // Prevent navigation
+    e.stopPropagation(); // Prevent event bubbling
+    
+    try {
+      await deleteBill(bill._id);
+      onDelete(bill._id);
+      toast({
+        title: 'Success',
+        description: 'Bill deleted successfully',
+        status: 'success',
+        duration: 3000,
+      });
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: error.response?.data?.detail || 'Failed to delete bill',
+        status: 'error',
+        duration: 5000,
+      });
+    }
+  };
+
   return (
     <LinkBox 
       as={Card}
@@ -37,9 +62,19 @@ const BillCard = ({ bill }) => {
     >
       <CardBody>
         <VStack align="stretch" spacing={3}>
-          <LinkOverlay as={RouterLink} to={`/bills/${bill && bill['_id']}`}>
-            <Heading size="sm">Bill #{bill._id}</Heading>
-          </LinkOverlay>
+          <HStack justify="space-between">
+            <LinkOverlay as={RouterLink} to={`/bills/${bill && bill['_id']}`}>
+              <Heading size="sm">Bill #{bill._id}</Heading>
+            </LinkOverlay>
+            <IconButton
+              icon={<FaTrash />}
+              variant="ghost"
+              colorScheme="red"
+              size="sm"
+              onClick={handleDelete}
+              aria-label="Delete bill"
+            />
+          </HStack>
           
           <Image
             src={
@@ -87,34 +122,34 @@ function BillingHelper() {
   const [isLoading, setIsLoading] = useState(true);
   const { user, isLoading: authLoading } = useAuth();
 
+  const fetchData = async () => {
+    if (!user) return;
+    
+    try {
+      const [fetchedIllnesses, fetchedReceipts] = await Promise.all([
+        getUserIllnesses(user._id),
+        getAllBillingReceptions(user._id)
+      ]);
+      
+      setIllnesses(fetchedIllnesses);
+      setBills(fetchedReceipts);
+    } catch (error) {
+      toast({
+        title: 'Error fetching data',
+        description: error.message,
+        status: 'error',
+        duration: 5000,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (!authLoading && !user) {
       navigate('/login');
       return;
     }
-
-    const fetchData = async () => {
-      if (!user) return;
-      
-      try {
-        const [fetchedIllnesses, fetchedReceipts] = await Promise.all([
-          getUserIllnesses(user._id),
-          getAllBillingReceptions(user._id)
-        ]);
-        
-        setIllnesses(fetchedIllnesses);
-        setBills(fetchedReceipts);
-      } catch (error) {
-        toast({
-          title: 'Error fetching data',
-          description: error.message,
-          status: 'error',
-          duration: 5000,
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
 
     if (!authLoading && user) {
       fetchData();
@@ -221,8 +256,13 @@ function BillingHelper() {
         duration: 3000,
       });
       
-      // Handle the result as needed
-      console.log(result);
+      // Clear the form
+      setReceiptFile(null);
+      setSelectedIllness('');
+      
+      // Fetch updated bills
+      await fetchData();
+      
     } catch (error) {
       toast({
         title: 'Error',
@@ -231,6 +271,10 @@ function BillingHelper() {
         duration: 5000,
       });
     }
+  };
+
+  const handleDeleteBill = (billId) => {
+    setBills(prevBills => prevBills.filter(bill => bill._id !== billId));
   };
 
   return (
@@ -352,7 +396,7 @@ function BillingHelper() {
               spacing={6}
             >
               {bills.map((bill) => (
-                <BillCard key={bill.id} bill={bill} />
+                <BillCard key={bill._id} bill={bill} onDelete={handleDeleteBill} />
               ))}
             </SimpleGrid>
           </Box>

@@ -52,3 +52,8 @@ export const getBillById = async (billId) => {
   const response = await axios.get(`${API_URL}/receipt/bill/${billId}`);
   return response.data;
 };
+
+export const deleteBill = async (billId) => {
+  const response = await axios.delete(`${API_URL}/receipt/${billId}`);
+  return response.data;
+};

@@ -41,6 +41,7 @@ function Landing() {
                 bg="white"
                 color="brand.500"
                 _hover={{ bg: 'gray.100' }}
+                onClick={() => navigate('/login')}
               >
                 Get Started
               </Button>
@@ -97,6 +98,7 @@ function Landing() {
               size="lg"
               colorScheme="brand"
               mt={4}
+              onClick={() => navigate('/login')}
             >
               Search Providers Now
             </Button>

@@ -25,7 +25,7 @@ import { useToast } from '@chakra-ui/react';
 
 const containerStyle = {
   width: '100%',
-  height: '65vh',
+  height: '60vh',
 };
 
 function MapDashboard() {
@@ -145,22 +145,22 @@ function MapDashboard() {
   return isLoaded ? (
     <Container 
       maxW="container.xl" 
-      py={8}
-      height="calc(100vh - 60px)" 
+      height="90vh"
+      py={1}
       display="flex" 
       flexDirection="column"
     >
-      <VStack spacing={6} align="stretch">
+      <VStack spacing={3} align="stretch" height="100%">
         {/* Location Controls Group */}
         <Box
           bg="background.primary"
-          p={6}
+          p={3}
           borderRadius="xl"
           borderWidth="1px"
           borderColor={useColorModeValue('gray.200', 'gray.600')}
           shadow="sm"
         >
-          <Flex px={4} align="left" gap={4}>
+          <Flex px={2} align="center" gap={4} mb={2}>
             <Checkbox
               isChecked={useCurrentLocation}
               onChange={(e) => setUseCurrentLocation(e.target.checked)}

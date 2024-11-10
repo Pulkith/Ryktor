@@ -6,11 +6,11 @@ import {
   Text,
   Button,
   useColorModeValue,
-  Icon,
+  Image,
 } from '@chakra-ui/react';
-import { FaHospital } from 'react-icons/fa';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import logo from '../assets/medbank4.png';
 
 const Header = () => {
   const { user, logout } = useAuth();
@@ -30,14 +30,20 @@ const Header = () => {
       <Container maxW="container.xl">
         <Flex h="60px" align="center" justify="space-between">
           <HStack spacing={4} as={RouterLink} to="/" _hover={{ textDecoration: 'none' }}>
-            <Icon as={FaHospital} w={6} h={6} color="brand.500" />
+            <Image 
+              src={logo} 
+              alt="Health Wallet Logo" 
+              w={20} 
+              h={20}
+              objectFit="contain"
+            />
             <Text
               fontSize="xl"
               fontWeight="bold"
               bgGradient="linear(to-r, brand.500, purple.500)"
               bgClip="text"
             >
-              Health Wallet
+              Medbank
             </Text>
           </HStack>
 

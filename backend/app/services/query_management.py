@@ -2,7 +2,6 @@ import whisper
 import json
 import tempfile
 from pydub import AudioSegment
-import io
 import os
 
 from .gen_compute import LLM_INSTANCE
@@ -11,41 +10,25 @@ whisper_model = whisper.load_model("base")
 
     
 
-def process_audio(audio_bytes):
-    """Process audio bytes and return transcription"""
+def process_audio(audio_file_path: str):
+    # Load the audio file directly using the path
+    audio = AudioSegment.from_file(audio_file_path)
+    wav_path = 'uploaded_recording.wav'
+    audio.export(wav_path, format='wav')
+    
     try:
-        # Create a temporary file to store the audio data
-        with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
-            tmp_file.write(audio_bytes)
-            tmp_file_path = tmp_file.name
-
-        # Convert the audio to WAV format
-        audio = AudioSegment.from_file(tmp_file_path)
-        wav_path = 'uploaded_recording.wav'
-        audio.export(wav_path, format='wav')
-        
-        # Get transcription
         transcription = send_transcript(wav_path)
-        print(f"Transcription result: {transcription}")
-        
-        # Clean up temporary files
-        os.remove(wav_path)
-        os.remove(tmp_file_path)
-        
+        print(transcription)
         return transcription
-        
-    except Exception as e:
-        print(f"Error in process_audio: {str(e)}")
-        raise e
+    finally:
+        # Clean up the temporary WAV file
+        os.remove(wav_path)
 
-def send_transcript(file_path):
-    """Send audio file to Whisper model for transcription"""
-    try:
-        result = whisper_model.transcribe(file_path)
-        return result["text"]
-    except Exception as e:
-        print(f"Error in send_transcript: {str(e)}")
-        raise e
+def send_transcript(file):
+    result = whisper_model.transcribe(file)
+    print(result)
+    transcription = result["text"]
+    return transcription
 
 
 def process_text(language, text):
@@ -131,7 +114,7 @@ def process_query(docs: list, query):
 
 if __name__ == "__main__":
     input = """
-    नमस्कार. मला अलीकडे अनेकदा हात थरथरण्याची समस्या येत आहे. जेव्हा मी टायपिंग किंवा लिहितो तेव्हा माझा हात थोडा थरथरतो किंवा जेव्हा मी काहीही घट्ट धरतो तेव्हा माझे हस्ताक्षर आणि फोन स्क्रीन सारख्या लहान इलेक्ट्रॉनिक्स वापरण्याची क्षमता बिघडते. मला चालताना हळूहळू समतोल साधण्यात काही समस्या येत आहेत आणि मला आधारासाठी रेलिंगला धरून ठेवण्याची गरज आहे. मी सहसा दररोज योगा करतो, परंतु अलीकडे सराव करताना मला अडखळते किंवा त्याच लवचिकतेने ताणता येत नाही. मी अजूनही छान उठू शकतो आणि माझी नेहमीची ताकद आहे, पण मला जास्त वेळ लागतो आणि थकवा येतो. मला हे जाणून घ्यायचे आहे की हे वृद्धापकाळामुळे आहे की नाही. मी या लक्ष���ांचा सामना कसा करू शकतो? मी काय करू शकतो हे शोधण्यासाठी मला डॉक्टरांना भेटायचे आहे आणि काही निदान असल्यास मला माहित असले पाहिजे.
+    नमस्कार. मला अलीकडे अनेकदा हात थरथरण्याची समस्या येत आहे. जेव्हा मी टायपिंग किंवा लिहितो तेव्हा माझा हात थोडा थरथरतो किंवा जेव्हा मी काहीही घट्ट धरतो तेव्हा माझे हस्ताक्षर आणि फोन स्क्रीन सारख्या लहान इलेक्ट्रॉनिक्स वापरण्याची क्षमता बिघडते. मला चालताना हळूहळू समतोल साधण्यात काही समस्या येत आहेत आणि मला आधारासाठी रेलिंगला धरून ठेवण्याची गरज आहे. मी सहसा दररोज योगा करतो, परंतु अलीकडे सराव करताना मला अडखळते किंवा त्याच लवचिकतेने ताणता येत नाही. मी अजूनही छान उठू शकतो आणि माझी नेहमीची ताकद आहे, पण मला जास्त वेळ लागतो आणि थकवा येतो. मला हे जाणून घ्यायचे आहे की हे वृद्धापकाळामुळे आहे की नाही. मी या लक्षणांचा सामना कसा करू शकतो? मी काय करू शकतो हे शोधण्यासाठी मला डॉक्टरांना भेटायचे आहे आणि काही निदान असल्यास मला माहित असले पाहिजे.
     """
     
     print(translate_text("Marathi", input))

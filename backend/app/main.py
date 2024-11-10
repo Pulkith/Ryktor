@@ -4,6 +4,8 @@ from .database import connect_to_mongodb, close_mongodb_connection
 from .config import settings
 from .routes import illness, user, hospitals, billing
 from .services.query_management import process_audio
+import tempfile
+import os
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -54,10 +56,21 @@ async def root():
 @app.post("/api/transcribe")
 async def transcribe_audio(audio: UploadFile = File(...)):
     try:
-        # Await the read() operation
-        audio_data = await audio.read()
-        transcription = process_audio(audio_data)
-        return {"text": transcription}
+        # Create a temporary file to store the audio data
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.webm') as tmp_file:
+            # Write the contents of the uploaded file to the temporary file
+            content = await audio.read()  # Properly await the async read
+            tmp_file.write(content)
+            tmp_file_path = tmp_file.name
+
+        # Process the audio file
+        try:
+            transcription = process_audio(tmp_file_path)
+            return {"text": transcription}
+        finally:
+            # Clean up the temporary file
+            os.unlink(tmp_file_path)
+            
     except Exception as e:
         print(f"Error in transcribe_audio: {str(e)}")  # Debug logging
         raise HTTPException(status_code=500, detail=str(e))

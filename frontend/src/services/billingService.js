@@ -18,9 +18,11 @@ export const uploadInsuranceCard = async (frontFile, backFile, userId) => {
   return response.data;
 };
 
-export const uploadReceipt = async (receiptFile) => {
+export const uploadReceipt = async (receiptFile, illnessId, userId) => {
   const formData = new FormData();
   formData.append('receipt', receiptFile);
+  formData.append('illness_id', illnessId);
+  formData.append('user_id', userId);
 
   const response = await axios.post(`${API_URL}/receipt/upload`, formData, {
     headers: {

@@ -26,6 +26,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { getUserIllnesses } from '../services/billingService';
 import { useAuth } from '../context/AuthContext';
 import { uploadInsuranceCard } from '../services/billingService';
+import { uploadReceipt } from '../services/billingService';
 
 const BillCard = ({ bill }) => {
   return (
@@ -178,6 +179,53 @@ function BillingHelper() {
     }
   };
 
+  const handleReceiptSubmit = async () => {
+    if (!receiptFile) {
+      toast({
+        title: 'Missing file',
+        description: 'Please upload a medical receipt',
+        status: 'error',
+        duration: 3000,
+      });
+      return;
+    }
+
+    if (!selectedIllness) {
+      toast({
+        title: 'Missing illness',
+        description: 'Please select an illness for this receipt',
+        status: 'error',
+        duration: 3000,
+      });
+      return;
+    }
+
+    try {
+      const result = await uploadReceipt(
+        receiptFile,
+        selectedIllness,
+        user._id
+      );
+      
+      toast({
+        title: 'Success',
+        description: 'Medical receipt processed successfully',
+        status: 'success',
+        duration: 3000,
+      });
+      
+      // Handle the result as needed
+      console.log(result);
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: error.response?.data?.detail || 'Failed to process medical receipt',
+        status: 'error',
+        duration: 5000,
+      });
+    }
+  };
+
   return (
     // <Layout>
       <Container maxW="container.xl" py={8}>
@@ -248,7 +296,11 @@ function BillingHelper() {
               <CardBody>
                 <VStack spacing={4}>
                   <Text>Upload your medical receipt for processing</Text>
-                  <Select placeholder="Select illness query">
+                  <Select 
+                    placeholder="Select illness query"
+                    onChange={(e) => setSelectedIllness(e.target.value)}
+                    value={selectedIllness}
+                  >
                     {illnesses.map((illness, index) => (
                       <option key={index} value={illness}>{illness}</option>
                     ))}
@@ -267,13 +319,13 @@ function BillingHelper() {
                     variant="outline"
                     w="full"
                   >
-                    Upload Receipt
+                    {receiptFile ? 'Edit Receipt' : 'Upload Receipt'}
                   </Button>
                   <Button
                     colorScheme="brand"
                     variant="solid"
                     w="full"
-                    onClick={()=>{}}
+                    onClick={handleReceiptSubmit}
                     mt={2}
                   >
                     Submit

@@ -156,7 +156,6 @@ def insurance_card_pipeline(front_image_path, back_image_path, full_name):
 
     return json
 
-import json
 def parse_gen_medical_bill(raw_text):
 
     fields = {

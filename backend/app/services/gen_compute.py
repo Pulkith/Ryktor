@@ -4,6 +4,26 @@ import json
 
 dotenv.load_dotenv()
 
+def recursive_json_loads(data):
+    # Base case: if data is not a string, return it as it is
+    if not isinstance(data, str):
+        return data
+    
+    try:
+        # Try to load the string as JSON
+        loaded_data = json.loads(data)
+    except json.JSONDecodeError:
+        # If data is not JSON, return as is
+        return data
+
+    # Recursively apply the function if the result is a dict or list
+    if isinstance(loaded_data, dict):
+        return {key: recursive_json_loads(value) for key, value in loaded_data.items()}
+    elif isinstance(loaded_data, list):
+        return [recursive_json_loads(item) for item in loaded_data]
+    else:
+        return loaded_data
+
 def LLM_INSTANCE(prompt, text = "", convJSON = False):
 
     json_enforcer_prompt = """
@@ -41,5 +61,5 @@ def LLM_INSTANCE(prompt, text = "", convJSON = False):
     text = chat_completion.choices[0].message.content
 
     if convJSON:
-        return json.loads(text)
+        return recursive_json_loads(text)
     return text

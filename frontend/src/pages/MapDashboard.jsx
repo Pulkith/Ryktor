@@ -112,7 +112,7 @@ function MapDashboard() {
     if (center && hospitalCount > 0) {
       fetchNearestHospitals();
     }
-  }, [center, hospitalCount, searchTerm, toast]);
+  }, [center, hospitalCount]);
 
   const handleGetDirections = (hospital) => {
     const directionsUrl = `https://www.google.com/maps/dir/?api=1&origin=${center.lat},${center.lng}&destination=${hospital.LATITUDE},${hospital.LONGITUDE}`;
@@ -285,38 +285,33 @@ function MapDashboard() {
             )}
 
             {nearestHospitals.map((hospital, index) => {
-              // Skip if hospital object is undefined or null
               if (!hospital) {
                 console.warn(`Hospital at index ${index} is undefined or null`);
                 return null;
               }
-              // Ensure required properties exist
-              const name = hospital.NAME || 'Unknown Hospital';
-              const address = hospital.ADDRESS || 'Address not available';
-              const telephone = hospital.TELEPHONE || 'Phone not available';
+
+              // Use lowercase field names to match backend
+              const name = hospital.name || 'Unknown Hospital';
+              const address = hospital.address || 'Address not available';
+              const lat = parseFloat(hospital.latitude);
+              const lng = parseFloat(hospital.longitude);
               
-              // Debug log for each hospital
-              console.log(`Processing hospital ${index}:`, {
-                name,
-                lat: hospital.LATITUDE,
-                lng: hospital.LONGITUDE
-              });
+              if (isNaN(lat) || isNaN(lng)) {
+                console.warn(`Invalid coordinates for hospital: ${name}`);
+                return null;
+              }
 
               return (
                 <Marker
                   key={index}
-                  position={new window.google.maps.LatLng(
-                    parseFloat(hospital.LATITUDE),
-                    parseFloat(hospital.LONGITUDE)
-                  )}
+                  position={new window.google.maps.LatLng(lat, lng)}
                   title={name}
                   onClick={(e) => {
                     e.domEvent.stopPropagation();
                     setHoveredHospital({
                       ...hospital,
-                      NAME: name,
-                      ADDRESS: address,
-                      TELEPHONE: telephone
+                      name,
+                      address
                     });
                   }}
                   options={{
@@ -327,16 +322,15 @@ function MapDashboard() {
             })}
             {hoveredHospital && (
               <InfoWindow
-                position={{ 
-                  lat: parseFloat(hoveredHospital.LATITUDE), 
-                  lng: parseFloat(hoveredHospital.LONGITUDE) 
-                }}
+                position={new window.google.maps.LatLng(
+                  parseFloat(hoveredHospital.latitude),
+                  parseFloat(hoveredHospital.longitude)
+                )}
                 onCloseClick={() => setHoveredHospital(null)}
               >
                 <div>
-                  <h4>{hoveredHospital.NAME}</h4>
-                  <p>{hoveredHospital.ADDRESS}</p>
-                  <p>{hoveredHospital.TELEPHONE}</p>
+                  <h4>{hoveredHospital.name}</h4>
+                  <p>{hoveredHospital.address}</p>
                   <button onClick={() => handleGetDirections(hoveredHospital)}>
                     Get Directions
                   </button>

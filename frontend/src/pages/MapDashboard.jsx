@@ -153,18 +153,18 @@ function MapDashboard() {
       <VStack spacing={6} align="stretch">
         {/* Location Controls Group */}
         <Box
-          bg="white"
+          bg="background.primary"
           p={6}
           borderRadius="xl"
           borderWidth="1px"
           borderColor={useColorModeValue('gray.200', 'gray.600')}
           shadow="sm"
         >
-          <Flex px={4} align="left"  gap={4}>
+          <Flex px={4} align="left" gap={4}>
             <Checkbox
               isChecked={useCurrentLocation}
               onChange={(e) => setUseCurrentLocation(e.target.checked)}
-              colorScheme="purple"
+              colorScheme="brand"
               size="md"
             >
               Use my current location
@@ -172,7 +172,7 @@ function MapDashboard() {
 
             {!useCurrentLocation && (
               <Button
-                colorScheme="purple"
+                colorScheme="brand"
                 onClick={handleFindNearby}
                 size="md"
                 flexShrink={0}
@@ -244,7 +244,7 @@ function MapDashboard() {
           p={4}
           borderRadius="xl"
           borderWidth="1px"
-          borderColor={useColorModeValue('gray.200', 'gray.600')}
+          borderColor="brand.500"
           shadow="sm"
         >
           {!useCurrentLocation && (

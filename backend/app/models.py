@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, GetJsonSchemaHandler, field_serializer
-from typing import List, Optional
+from typing import List, Optional, Dict
 from datetime import datetime
 from bson import ObjectId
 from pydantic.json_schema import JsonSchemaValue
@@ -125,3 +125,20 @@ class HospitalResponse(BaseModel):
     longitude: float
     distance: float
     type: str
+
+class RepaymentStrategy(BaseModel):
+    monthly_payment: float
+    total_interest_paid: float
+    potential_investment_gains: float
+    total_cost: float
+    payment_schedule: List[Dict]
+    risk_level: str
+    recommended: bool
+
+class RepaymentPlan(BaseModel):
+    total_amount: float
+    max_timeline_months: int
+    debt_interest_rate: float
+    savings_interest_rate: float
+    monthly_income: float
+    monthly_budget: Optional[float] = None

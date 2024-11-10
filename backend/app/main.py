@@ -2,7 +2,7 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from .database import connect_to_mongodb, close_mongodb_connection
 from .config import settings
-from .routes import illness, user, hospitals, billing, translation
+from .routes import illness, user, hospitals, billing, translation, repayment
 from .services.query_management import process_audio
 import tempfile
 import os
@@ -47,6 +47,9 @@ app.include_router(billing.router, prefix="/api", tags=["Billing"])
 
 # Include the translation router
 app.include_router(translation.router, prefix="/api", tags=["Translation"])
+
+# Include the repayment router
+app.include_router(repayment.router, prefix="/api", tags=["Repayment"])
 
 # Root endpoint
 @app.get("/", tags=["Root"])

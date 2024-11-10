@@ -14,17 +14,29 @@ import { FaArrowLeft } from 'react-icons/fa';
 import Layout from '../components/Layout';
 import { useState, useEffect } from 'react';
 import { getBillById } from '../services/billingService';
+import RepaymentPlanner from '../components/RepaymentPlanner';
 
 function BillDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [bill, setBill] = useState({});
+  const [billAmount, setBillAmount] = useState(0);
 
   useEffect(() => {
     // Fetch bill details
     getBillById(id)
       .then((data) => {
         setBill(data);
+        if (data.processed_data && data.processed_data['Patient Responsibility Remaining']) {
+          console.log("data.processed_data['Patient Responsibility Remaining']");
+          console.log(data.processed_data['Patient Responsibility Remaining']);
+          // remove any non-numeric characters
+          const cleaned_str = data.processed_data['Patient Responsibility Remaining'].replace(/[^0-9.]/g, '');
+          const amount = parseFloat(cleaned_str);
+          if (!isNaN(amount)) {
+            setBillAmount(amount);
+          }
+        }
         console.log(data);
       })
       .catch((error) => console.error(error));
@@ -112,6 +124,10 @@ function BillDetail() {
               </Text>
             </Box>
           </VStack>
+
+          <Box mt={8}>
+            <RepaymentPlanner billAmount={billAmount} />
+          </Box>
         </VStack>
       </Container>
     // </Layout>

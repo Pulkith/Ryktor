@@ -25,4 +25,16 @@ export const uploadReceipt = async (receiptFile) => {
     },
   });
   return response.data;
+};
+
+export const getUserIllnesses = async (userId) => {
+    console.log(userId);
+  const response = await axios.get(`${API_URL}/illness/user/${userId}`);
+  console.log(response.data);
+  if (response.data && response.data.length > 0) {
+    const illnesses = response.data.map((illness) => illness.symptoms);
+    console.log(illnesses);
+    return illnesses;
+  }
+  return [];
 }; 

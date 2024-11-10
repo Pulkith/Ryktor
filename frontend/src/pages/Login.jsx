@@ -20,6 +20,7 @@ import { useState } from 'react';
 import { FaEye, FaEyeSlash, FaGoogle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -31,6 +32,7 @@ function Login() {
   const toast = useToast();
   const bgColor = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const { login } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -42,16 +44,8 @@ function Login() {
         password
       });
 
-      // Store user data in localStorage or state management
-      localStorage.setItem('user', JSON.stringify(response.data));
-      
-      toast({
-        title: 'Login successful',
-        status: 'success',
-        duration: 3000,
-      });
-
-      navigate('/'); // Redirect to home page
+      login(response.data);
+      navigate('/billing');
     } catch (error) {
       toast({
         title: 'Login failed',

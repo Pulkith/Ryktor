@@ -4,17 +4,20 @@ import Landing from './pages/Landing';
 import Login from './pages/Login';
 import BillingHelper from './pages/BillingHelper';
 import BillDetail from './pages/BillDetail';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
-    <Layout>
-      <Routes>
-        <Route path="/landing" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/billing" element={<BillingHelper />} />
-        <Route path="/bills/:id" element={<BillDetail />} />
-      </Routes>
-    </Layout>
+    <AuthProvider>
+      <Layout>
+        <Routes>
+          <Route path="/landing" element={<Landing />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/billing" element={<BillingHelper />} />
+          <Route path="/bills/:id" element={<BillDetail />} />
+        </Routes>
+      </Layout>
+    </AuthProvider>
   );
 }
 

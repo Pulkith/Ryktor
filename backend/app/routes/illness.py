@@ -100,3 +100,26 @@ async def get_ranked_providers(
         providers.append(provider)
 
     return providers
+
+@router.get("/illness/user/{user_id}", response_model=List[IllnessEntry])
+async def get_user_illnesses(
+    user_id: str,
+    db: AsyncIOMotorDatabase = Depends(get_database)
+):
+    # Validate user ID format
+    try:
+        user = await db.users.find_one({"_id": ObjectId(user_id)})
+    except:
+        raise HTTPException(status_code=400, detail="Invalid user ID")
+    
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Fetch all illness entries for the user
+    cursor = db.illness_entries.find({"user_id": user_id})
+    illness_entries = await cursor.to_list(length=None)
+    
+    if not illness_entries:
+        return []
+        
+    return illness_entries

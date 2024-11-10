@@ -18,10 +18,13 @@ import {
   HStack,
   Badge,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { FaUpload, FaFileInvoiceDollar, FaIdCard } from 'react-icons/fa';
 import { Link as RouterLink } from 'react-router-dom';
+import { getUserIllnesses } from '../services/billingService';
+import { useAuth } from '../context/AuthContext';
 
 const BillCard = ({ bill }) => {
   return (
@@ -65,6 +68,7 @@ const BillCard = ({ bill }) => {
 };
 
 function BillingHelper() {
+  const navigate = useNavigate();
   const [insuranceFiles, setInsuranceFiles] = useState({ front: null, back: null });
   const [receiptFile, setReceiptFile] = useState(null);
   const toast = useToast();
@@ -79,6 +83,34 @@ function BillingHelper() {
     },
     // Add more sample bills as needed
   ]);
+  const [illnesses, setIllnesses] = useState([]);
+  const [selectedIllness, setSelectedIllness] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    const fetchIllnesses = async () => {
+      try {
+        if (!user) {
+          navigate('/login');
+          return;
+        }
+        const fetchedIllnesses = await getUserIllnesses(user._id);
+        setIllnesses(fetchedIllnesses);
+      } catch (error) {
+        toast({
+          title: 'Error fetching illnesses',
+          description: error.message,
+          status: 'error',
+          duration: 5000,
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchIllnesses();
+  }, [user, toast, navigate]);
 
   const handleInsuranceUpload = (side) => (event) => {
     const file = event.target.files[0];
@@ -178,10 +210,9 @@ function BillingHelper() {
                 <VStack spacing={4}>
                   <Text>Upload your medical receipt for processing</Text>
                   <Select placeholder="Select illness query">
-                    <option value="cold">Common Cold</option>
-                    <option value="flu">Flu Symptoms</option>
-                    <option value="allergies">Seasonal Allergies</option>
-                    <option value="other">Other</option>
+                    {illnesses.map((illness, index) => (
+                      <option key={index} value={illness}>{illness}</option>
+                    ))}
                   </Select>
                   <Input
                     type="file"

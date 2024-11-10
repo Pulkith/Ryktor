@@ -14,7 +14,7 @@ function App() {
         <Routes>
           <Route path="/landing" element={<Landing />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/map" element={<MapDashboard />} />
+          <Route path="/" element={<MapDashboard />} />
           <Route path="/billing" element={<BillingHelper />} />
           <Route path="/bills/:id" element={<BillDetail />} />
         </Routes>

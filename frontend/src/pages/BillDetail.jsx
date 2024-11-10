@@ -31,7 +31,7 @@ function BillDetail() {
   };
 
   return (
-    <Layout>
+    // <Layout>
       <Container maxW="container.lg" py={8}>
         <VStack spacing={8} align="stretch">
           <HStack>
@@ -94,7 +94,7 @@ function BillDetail() {
           </VStack>
         </VStack>
       </Container>
-    </Layout>
+    // </Layout>
   );
 }
 

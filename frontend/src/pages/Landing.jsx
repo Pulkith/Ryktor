@@ -18,7 +18,7 @@ function Landing() {
   const navigate = useNavigate();
 
   return (
-    <Layout>
+      <>
       {/* Hero Section */}
       <Box 
         bg="brand.500" 
@@ -105,7 +105,7 @@ function Landing() {
           </VStack>
         </Container>
       </Box>
-    </Layout>
+      </>
   );
 }
 

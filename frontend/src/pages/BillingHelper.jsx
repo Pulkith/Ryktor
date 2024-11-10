@@ -179,7 +179,7 @@ function BillingHelper() {
   };
 
   return (
-    <Layout>
+    // <Layout>
       <Container maxW="container.xl" py={8}>
         <VStack spacing={8} align="stretch">
           <Heading size="xl" color="gray.800">
@@ -299,7 +299,7 @@ function BillingHelper() {
           </Box>
         </VStack>
       </Container>
-    </Layout>
+    // </Layout>
   );
 }
 

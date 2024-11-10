@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import BillingHelper from './pages/BillingHelper';
 import BillDetail from './pages/BillDetail';
 import { AuthProvider } from './context/AuthContext';
+import MapDashboard from './pages/MapDashboard';
 
 function App() {
   return (

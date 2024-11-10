@@ -317,7 +317,6 @@ function MapDashboard() {
             // zIndex={2}
             width="80%"
             maxWidth="800px"
-            // round the ed
           >
             <CardBody py={8}>
               <VStack spacing={6}>
@@ -326,17 +325,20 @@ function MapDashboard() {
                   size="lg"
                   transition="all 0.2s"
                   transform={searchTerm ? "scale(1.02)" : "scale(1)"}
-                  borderRadius="full"
+                  borderRadius="3xl"
                   overflow="hidden"
+                  height="120px"
+                  position="relative"
                 >
-                  <InputLeftElement 
+                  {/* <InputLeftElement 
                     pointerEvents='none'
                     transition="all 0.3s"
                     transform={isFocused ? "translateX(-4px)" : "translateX(0)"}
-                    h="100%"
+                    h="auto"
+                    top="20px"
                   >
                     <Icon as={FaNotesMedical} color="gray.400" boxSize={5} />
-                  </InputLeftElement>
+                  </InputLeftElement> */}
                   <Input
                     placeholder="Enter your symptoms..."
                     value={searchTerm}
@@ -344,21 +346,34 @@ function MapDashboard() {
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
                     borderColor="brand.200"
-                    height="60px"
+                    height="100%"
+                    minHeight="120px"
                     fontSize="lg"
+                    as="textarea"
+                    resize="none"
+                    // textAlign="center"
+                    pt="16px"
+                    pl="23px"
+                    pr="45px"
                     _hover={{ 
                       borderColor: "brand.300",
                       transform: "scale(1.01)",
                       boxShadow: "0 0 8px rgba(128, 90, 213, 0.2)"
                     }}
-                    _focus={{ 
+                    _focus={{
+                      textAlign: "left",
+                      pt: "16px",
                       borderColor: "brand.500",
                       boxShadow: "0 0 12px rgba(128, 90, 213, 0.3)",
                       transform: "scale(1.02)"
                     }}
                     transition="all 0.2s"
                   />
-                  <InputRightElement h="100%" pr={2}>
+                  <InputRightElement 
+                    h="auto"
+                    top="2px"
+                    pr={2}
+                  >
                     <IconButton
                       aria-label="Voice search"
                       icon={<FaMicrophone />}

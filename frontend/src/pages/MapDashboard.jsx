@@ -271,6 +271,17 @@ function MapDashboard() {
               mapRef.current = map;
             }}
             onCenterChanged={handleCenterChanged}
+            onClick={(e) => {
+              // Prevent any click events if clicking on InfoWindow
+              if (e.domEvent?.target?.closest('.gm-style-iw')) {
+                return;
+              }
+              setHoveredHospital(null);
+            }}
+            options={{
+              disableDoubleClickZoom: true,
+              clickableIcons: false
+            }}
           >
             {/* User location blue marker (only when using current location) */}
             {userLocation && useCurrentLocation && (
@@ -306,20 +317,31 @@ function MapDashboard() {
                   key={index}
                   position={new window.google.maps.LatLng(lat, lng)}
                   title={name}
-                  onClick={(e) => {
-                    e.domEvent.stopPropagation();
-                    setHoveredHospital({
-                      ...hospital,
-                      name,
-                      address
-                    });
-                  }}
+                  onClick={(() => {
+                    return (e) => {
+                      // Prevent the default behavior
+                      e.stop();
+                      if (e.domEvent) {
+                        e.domEvent.stopPropagation();
+                        e.domEvent.preventDefault();
+                      }
+                      
+                      // Set the hovered hospital
+                      setHoveredHospital({
+                        ...hospital,
+                        name,
+                        address
+                      });
+                    };
+                  })()}
                   options={{
-                    clickable: true
+                    clickable: true,
+                    zIndex: 1000 // Ensure marker is clickable
                   }}
                 />
               );
             })}
+
             {hoveredHospital && (
               <InfoWindow
                 position={new window.google.maps.LatLng(
@@ -327,11 +349,37 @@ function MapDashboard() {
                   parseFloat(hoveredHospital.longitude)
                 )}
                 onCloseClick={() => setHoveredHospital(null)}
+                options={{
+                  pixelOffset: new window.google.maps.Size(0, -30),
+                  maxWidth: 200,
+                  zIndex: 1001,
+                  clickable: true
+                }}
+                onClick={(e) => {
+                  e.domEvent?.stopPropagation();
+                  e.stop?.();
+                }}
               >
-                <div>
-                  <h4>{hoveredHospital.name}</h4>
-                  <p>{hoveredHospital.address}</p>
-                  <button onClick={() => handleGetDirections(hoveredHospital)}>
+                <div 
+                  style={{ padding: '5px' }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.nativeEvent.stopImmediatePropagation();
+                  }}
+                >
+                  <h4 style={{ fontWeight: 'bold', marginBottom: '5px' }}>{hoveredHospital.name}</h4>
+                  <p style={{ marginBottom: '5px' }}>{hoveredHospital.address}</p>
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleGetDirections(hoveredHospital);
+                    }}
+                    style={{
+                      marginTop: '5px',
+                      padding: '5px 10px',
+                      cursor: 'pointer'
+                    }}
+                  >
                     Get Directions
                   </button>
                 </div>

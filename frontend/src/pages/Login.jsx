@@ -45,7 +45,7 @@ function Login() {
       });
 
       login(response.data);
-      navigate('/billing');
+      navigate('/');
     } catch (error) {
       toast({
         title: 'Login failed',

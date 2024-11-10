@@ -31,7 +31,7 @@ const containerStyle = {
 function MapDashboard() {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: 'AIzaSyBiMoWcAB7Kj4vUYvyaA01UnSAWhoyevMM',
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
   });
 
   const [center, setCenter] = useState({ lat: 39.95, lng: -75.1943 }); // Default center
@@ -95,6 +95,7 @@ function MapDashboard() {
           searchTerm: searchTerm || undefined
         });
 
+        console.log("API Response:", response.data); // Debug log
         setNearestHospitals(response.data);
       } catch (error) {
         console.error('Error fetching nearest hospitals:', error);
@@ -271,13 +272,10 @@ function MapDashboard() {
             }}
             onCenterChanged={handleCenterChanged}
           >
-            {/* User location marker */}
+            {/* User location blue marker (only when using current location) */}
             {userLocation && useCurrentLocation && (
               <Marker
-                position={{
-                  lat: Number(userLocation.lat),
-                  lng: Number(userLocation.lng)
-                }}
+                position={userLocation}
                 icon={{
                   url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
                   scaledSize: new window.google.maps.Size(40, 40),
@@ -286,31 +284,59 @@ function MapDashboard() {
               />
             )}
 
-            {/* Hospital markers */}
-            {nearestHospitals && nearestHospitals.map((hospital, index) => (
-              <Marker
-                key={index}
-                position={{
-                  lat: Number(hospital.latitude),
-                  lng: Number(hospital.longitude)
-                }}
-                title={hospital.name}
-                onClick={() => setHoveredHospital(hospital)}
-              />
-            ))}
+            {nearestHospitals.map((hospital, index) => {
+              // Skip if hospital object is undefined or null
+              if (!hospital) {
+                console.warn(`Hospital at index ${index} is undefined or null`);
+                return null;
+              }
+              // Ensure required properties exist
+              const name = hospital.NAME || 'Unknown Hospital';
+              const address = hospital.ADDRESS || 'Address not available';
+              const telephone = hospital.TELEPHONE || 'Phone not available';
+              
+              // Debug log for each hospital
+              console.log(`Processing hospital ${index}:`, {
+                name,
+                lat: hospital.LATITUDE,
+                lng: hospital.LONGITUDE
+              });
 
+              return (
+                <Marker
+                  key={index}
+                  position={new window.google.maps.LatLng(
+                    parseFloat(hospital.LATITUDE),
+                    parseFloat(hospital.LONGITUDE)
+                  )}
+                  title={name}
+                  onClick={(e) => {
+                    e.domEvent.stopPropagation();
+                    setHoveredHospital({
+                      ...hospital,
+                      NAME: name,
+                      ADDRESS: address,
+                      TELEPHONE: telephone
+                    });
+                  }}
+                  options={{
+                    clickable: true
+                  }}
+                />
+              );
+            })}
             {hoveredHospital && (
               <InfoWindow
-                position={{
-                  lat: Number(hoveredHospital.latitude),
-                  lng: Number(hoveredHospital.longitude)
+                position={{ 
+                  lat: parseFloat(hoveredHospital.LATITUDE), 
+                  lng: parseFloat(hoveredHospital.LONGITUDE) 
                 }}
-                onCloseClick={() => setHoveredHospital(null)} // Close InfoWindow on close click
+                onCloseClick={() => setHoveredHospital(null)}
               >
                 <div>
-                  <h4>{hoveredHospital.name}</h4>
-                  <p>{hoveredHospital.address}</p> {/* Adjust these fields as needed */}
-                  <p>{hoveredHospital.telephone}</p> {/* Adjust these fields as needed */}
+                  <h4>{hoveredHospital.NAME}</h4>
+                  <p>{hoveredHospital.ADDRESS}</p>
+                  <p>{hoveredHospital.TELEPHONE}</p>
                   <button onClick={() => handleGetDirections(hoveredHospital)}>
                     Get Directions
                   </button>

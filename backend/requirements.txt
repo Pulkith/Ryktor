@@ -15,3 +15,10 @@ dill==0.3.6
 openai-whisper
 pydub>=0.25.1
 geopy>=2.4.1
+Pillow
+pytesseract
+opencv-python
+torch
+transformers
+python-jose[cryptography]
+passlib[bcrypt]

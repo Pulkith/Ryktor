@@ -6,7 +6,7 @@ import re
 from string import Template
 import json as json_lib
 
-from gen_compute import LLM_INSTANCE
+from .gen_compute import LLM_INSTANCE
 
 def preprocess_image(image_path):
     # Open the image with Pillow

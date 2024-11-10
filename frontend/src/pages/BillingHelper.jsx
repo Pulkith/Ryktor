@@ -25,6 +25,7 @@ import { FaUpload, FaFileInvoiceDollar, FaIdCard } from 'react-icons/fa';
 import { Link as RouterLink } from 'react-router-dom';
 import { getUserIllnesses } from '../services/billingService';
 import { useAuth } from '../context/AuthContext';
+import { uploadInsuranceCard } from '../services/billingService';
 
 const BillCard = ({ bill }) => {
   return (
@@ -125,6 +126,7 @@ function BillingHelper() {
         duration: 3000,
       });
     }
+    console.log(insuranceFiles);
   };
 
   const handleReceiptUpload = (event) => {
@@ -135,6 +137,43 @@ function BillingHelper() {
         title: 'Receipt uploaded',
         status: 'success',
         duration: 3000,
+      });
+    }
+  };
+
+  const handleInsuranceSubmit = async () => {
+    if (!insuranceFiles.front || !insuranceFiles.back) {
+      toast({
+        title: 'Missing files',
+        description: 'Please upload both sides of your insurance card',
+        status: 'error',
+        duration: 3000,
+      });
+      return;
+    }
+
+    try {
+      const result = await uploadInsuranceCard(
+        insuranceFiles.front,
+        insuranceFiles.back,
+        user._id
+      );
+      
+      toast({
+        title: 'Success',
+        description: 'Insurance card processed successfully',
+        status: 'success',
+        duration: 3000,
+      });
+      
+      // Handle the result as needed
+      console.log(result);
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: error.response?.data?.detail || 'Failed to process insurance card',
+        status: 'error',
+        duration: 5000,
       });
     }
   };
@@ -170,7 +209,7 @@ function BillingHelper() {
                     variant="outline"
                     w="full"
                   >
-                    Upload Front Side
+                    {insuranceFiles.front ? 'Edit Front Side' : 'Upload Front Side'}
                   </Button>
                   <Input
                     type="file"
@@ -186,13 +225,13 @@ function BillingHelper() {
                     variant="outline"
                     w="full"
                   >
-                    Upload Back Side
+                    {insuranceFiles.back ? 'Edit Back Side' : 'Upload Back Side'}
                   </Button>
                   <Button
                     colorScheme="brand"
                     variant="solid"
                     w="full"
-                    onClick={()=>{}}
+                    onClick={handleInsuranceSubmit}
                     mt={2}
                   >
                     Submit

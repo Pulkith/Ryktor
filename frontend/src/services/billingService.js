@@ -2,10 +2,13 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:8002/api';
 
-export const uploadInsuranceCard = async (frontFile, backFile) => {
+export const uploadInsuranceCard = async (frontFile, backFile, userId) => {
   const formData = new FormData();
-  formData.append('front', frontFile);
-  formData.append('back', backFile);
+  formData.append('front_image', frontFile);
+  formData.append('back_image', backFile);
+  formData.append('user_id', userId);
+  console.log("upload insurance card", formData.get('user_id'));
+  console.log("user id", userId);
 
   const response = await axios.post(`${API_URL}/insurance/upload`, formData, {
     headers: {

@@ -442,7 +442,7 @@ function MapDashboard() {
                     </Slider>
                   </Box> */}
 
-                  <Center width="100%" justifyContent="center">
+<Center width="100%" justifyContent="center">
                     <HStack spacing={4}>
                       <Checkbox
                         isChecked={useCurrentLocation}
@@ -450,6 +450,7 @@ function MapDashboard() {
                         colorScheme="brand.secondary"
                         color="gray.600"
                         size="lg"
+                        borderColor="gray.500"
                       >
                         Use my location
                       </Checkbox>
@@ -459,7 +460,10 @@ function MapDashboard() {
                           colorScheme="brand"
                           onClick={handleFindNearby}
                           size="lg"
-                          leftIcon={<Icon as={FaSearch} />}
+                          variant="outline"
+                          borderColor="transparent"
+                          fontWeight="normal"
+                          leftIcon={<Icon as={FaSearch} boxSize={4} />}
                           px={8}
                         >
                           Find Nearby

@@ -107,12 +107,12 @@ function Login() {
               <FormLabel>Email</FormLabel>
               <Input
                 type="email"
+                textColor="white"
                 size="lg"
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 borderColor={borderColor}
-                color={useColorModeValue('gray.800', 'white')}
               />
             </FormControl>
 
@@ -122,10 +122,10 @@ function Login() {
                 <Input
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Enter your password"
+                  textColor="white"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   borderColor={borderColor}
-                  color={useColorModeValue('gray.800', 'white')}
                 />
                 <InputRightElement>
                   <IconButton

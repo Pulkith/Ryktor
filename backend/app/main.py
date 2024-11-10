@@ -2,7 +2,7 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from .database import connect_to_mongodb, close_mongodb_connection
 from .config import settings
-from .routes import illness, user, hospitals, billing
+from .routes import illness, user, hospitals, billing, translation
 from .services.query_management import process_audio
 import tempfile
 import os
@@ -45,6 +45,9 @@ app.include_router(hospitals.router, prefix="/api", tags=["Hospitals"])
 # Include the billing router
 app.include_router(billing.router, prefix="/api", tags=["Billing"])
 
+# Include the translation router
+app.include_router(translation.router, prefix="/api", tags=["Translation"])
+
 # Root endpoint
 @app.get("/", tags=["Root"])
 async def root():
@@ -65,8 +68,8 @@ async def transcribe_audio(audio: UploadFile = File(...)):
 
         # Process the audio file
         try:
-            transcription = process_audio(tmp_file_path)
-            return {"text": transcription}
+            transcription_object = process_audio(tmp_file_path)
+            return transcription_object
         finally:
             # Clean up the temporary file
             os.unlink(tmp_file_path)

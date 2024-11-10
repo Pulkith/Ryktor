@@ -28,7 +28,10 @@ def send_transcript(file):
     result = whisper_model.transcribe(file)
     print(result)
     transcription = result["text"]
-    return transcription
+    return {
+        "text": transcription,
+        "language": "en"  # Whisper automatically detects and transcribes to English
+    }
 
 
 def process_text(language, text):

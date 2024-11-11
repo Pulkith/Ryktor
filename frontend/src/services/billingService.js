@@ -30,6 +30,19 @@ export const uploadReceipt = async (receiptFile, illnessId, userId) => {
   return response.data;
 };
 
+export const uploadRecord = async (recordFile, userId) => {
+  const formData = new FormData();
+  formData.append("record", recordFile);
+  formData.append("user_id", userId);
+
+  const response = await axios.post(`${API_URL}/record/upload`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
+};
+
 export const getUserIllnesses = async (userId) => {
   console.log(userId);
   const response = await axios.get(`${API_URL}/illness/user/${userId}`);
@@ -44,6 +57,12 @@ export const getUserIllnesses = async (userId) => {
 
 export const getAllBillingReceptions = async (userId) => {
   const response = await axios.get(`${API_URL}/receipt/user/${userId}`);
+
+  return response.data;
+};
+
+export const getAllBillingRecords = async (userId) => {
+  const response = await axios.get(`${API_URL}/record/user/${userId}`);
 
   return response.data;
 };

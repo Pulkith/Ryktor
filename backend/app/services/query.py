@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 from ..services.gen_compute import LLM_INSTANCE
 import json as json_lib
+import copy
+
 
 hopsital_locs_df = pd.read_csv("/Users/pulkith/Desktop/Development/Ryktor/backend/app/services/projectdata/Hospitals.csv", dtype={"ZIP": "object"})
 cpt_code_to_desc_df1 = pd.read_csv("/Users/pulkith/Desktop/Development/Ryktor/backend/app/services/projectdata/cpt4code_to_desc.csv")
@@ -622,7 +624,9 @@ def query_pipeline(prompt, user_profile, user_plan, docs, user_loc):
         for key, value in hospital.items():
             total_data[name][key] = value
 
-        for tmt in treatments:
+        hospital_treatments = copy.deepcopy(treatments)
+
+        for tmt in hospital_treatments:
             delta = delta_to_medicare[tmt["CPT Code"]]
             unvar_cost = calculate_unvarianced_treatment_cost(hospital, tmt, delta)
             var_cost = calculate_varianced_treatment_cost(unvar_cost, hospital)
@@ -634,7 +638,19 @@ def query_pipeline(prompt, user_profile, user_plan, docs, user_loc):
             total_data[name]["treatments"].append(tmt)
     
     for key, value in total_data.items():
+        # random float between 0 and 100
+        noise1 = np.random.uniform(0, 100) - 50
+        noise2 = np.random.uniform(0, 100) - 50
+
         (total_data[key]["total_cost_overall"],total_data[key]["total_cost_copay"]) = calculate_total_cost(value["treatments"])
+        # total_data[key]["total_cost_overall"] += noise1
+        # total_data[key]["total_cost_copay"] += noise2
+
+        # if(total_data[key]["total_cost_overall"] < 14.82):
+        #     total_data[key]["total_cost_overall"] = 14.82
+        
+        # if(total_data[key]["total_cost_copay"] < 14.82):
+        #     total_data[key]["total_cost_copay"] = 14.93
     
     # sort by total cost
     # total_data = sorted(total_data, key=lambda x: x["total_cost_copay"])

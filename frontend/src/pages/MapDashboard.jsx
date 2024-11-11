@@ -1031,14 +1031,20 @@ function MapDashboard() {
   const statusTexts = [
     'Uploading Data',
     'Crunching the Numbers',
+    'Appyling for Med School',
     'Finding Possible Conditions',
+    'Taking the MCAT',
     'Predicting Potential Treatments',
+    'Failing the MCAT',
     'Analyzing Costs',
     'Checking Insurance Coverage',
+    'Shadowing Dr.Grey',
     'Predicting Copay',
     'Finding Regional Deltas',
+    'Eating my vegetables',
     'Checking Distance to Nearest Hospitals',
     'Checking Deductible',
+    'Curing Cancer',
     'Finding Premiums',
     'Recommending Next Steps',
   ];
@@ -1148,9 +1154,9 @@ function MapDashboard() {
         });
 
         // console.log(response.data)
-        // setNearestHospitals(response.data);
-        setNearestHospitals(json_lst)
-        setShowActuals(true)
+        setNearestHospitals(response.data);
+        // setNearestHospitals(json_lst)
+        // setShowActuals(true)
 
       } catch (error) {
         console.error('Error fetching nearest hospitals:', error);

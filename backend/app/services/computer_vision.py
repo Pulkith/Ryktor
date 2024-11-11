@@ -5,7 +5,7 @@ import numpy as np
 import re
 from string import Template
 import json as json_lib
-# import fitz
+import pdfplumber
 
 from .gen_compute import LLM_INSTANCE
 
@@ -225,6 +225,17 @@ def medical_bill_pipeline(image_paths: list):
 
     return json
 
+
+def pdf_doc_pipeline(pdf_path):
+    # extract all text from pdf to a single string
+    raw_text = ""
+
+    # extract text from each page of the pdf using fitz
+    with pdfplumber.open(pdf_path) as pdf:
+        for page in pdf.pages:
+            raw_text += page.extract_text() + "\n"
+    
+    return raw_text
     
 
 if __name__ == "__main__":

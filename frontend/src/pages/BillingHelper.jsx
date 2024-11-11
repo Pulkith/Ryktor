@@ -400,7 +400,7 @@ function BillingHelper() {
                     value={selectedIllness}
                   >
                     {illnesses.map((illness, index) => (
-                      <option key={index} value={illness}>Default Illness Query</option>
+                      <option key={index} value={illness}>{illness}</option>
                     ))}
                   </Select>
                   <Input

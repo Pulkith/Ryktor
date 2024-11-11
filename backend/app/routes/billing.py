@@ -2,7 +2,7 @@ from fastapi import APIRouter, UploadFile, File, Form, HTTPException, Depends
 from typing import List
 import os
 import tempfile
-from ..services.computer_vision import insurance_card_pipeline, medical_bill_pipeline
+from ..services.computer_vision import insurance_card_pipeline, medical_bill_pipeline, pdf_doc_pipeline
 from ..database import get_database
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from bson import ObjectId
@@ -126,6 +126,73 @@ async def upload_medical_receipt(
         # Clean up temporary file
         # os.unlink(file_path) 
 
+@router.post('/record/upload')
+async def upload_medical_record(
+    record: UploadFile = File(...),
+    user_id: str = Form(...),
+    db: AsyncIOMotorDatabase = Depends(get_database)
+):
+    if not user_id:
+        raise HTTPException(status_code=400, detail="User ID is required")
+        
+    # Get user information
+    try:
+        user = await db.users.find_one({"_id": ObjectId(user_id)})
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+    except:
+        raise HTTPException(status_code=400, detail="Invalid user ID")
+        
+
+    # move the uploaded file to a permanent location
+
+    username = str(ObjectId(user_id))
+
+    parent = str(Path(__file__).parent.parent.parent.parent)
+    dictory_store = parent + f"/frontend/public/uploaded_files/{username}/"
+    # dictory_store = f"../../frontend/public/uploaded_files/{username}/"
+
+    # create the directory if it does not exist
+    if not os.path.exists(dictory_store):
+        os.makedirs(dictory_store)
+
+    # change receipt.filename to a unique name with 8 random characters
+    # move file extension to the end of the filename
+    record.filename = f"{str(uuid.uuid4())[:16]}{Path(record.filename).suffix}"
+
+    # move file to the directory
+    with open(f"{dictory_store}{record.filename}", "wb") as f:
+        f.write(record.file.read())
+    
+    full_path = f"{dictory_store}{record.filename}"
+
+    # Create temporary file for the uploaded image
+    # with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as temp_file:
+        # temp_file.write(await record.read())
+        # file_path = temp_file.name
+
+    try:
+        result_text = pdf_doc_pipeline(full_path)
+
+        # Store the processed receipt in the database
+        record_entry = {
+            "user_id": user_id,
+            "file_name": record.filename,
+            "created_at": datetime.datetime.utcnow(),
+            "text": result_text
+        }
+
+        record_entry["user_id"] = str(record_entry["user_id"])
+        
+        await db.medical_records.insert_one(record_entry)
+        # return record_entry
+        
+    finally:
+        pass
+        # Clean up temporary file
+        # os.unlink(file_path)
+
+
 @router.get("/receipt/user/{user_id}")
 async def get_all_receipts(
     user_id: str,
@@ -144,6 +211,34 @@ async def get_all_receipts(
     
     # Fetch receipts
     receipts_cursor = db.medical_receipts.find({"user_id": user_id})
+    receipts = await receipts_cursor.to_list(length=None)  # Convert cursor to list
+
+    # Convert ObjectId fields to strings for JSON serialization
+    for receipt in receipts:
+        receipt["_id"] = str(receipt["_id"])
+        receipt["user_id"] = str(receipt["user_id"])
+
+    return receipts
+
+
+@router.get("/record/user/{user_id}")
+async def get_all_records(
+    user_id: str,
+    db: AsyncIOMotorDatabase = Depends(get_database)
+):
+    if not user_id:
+        raise HTTPException(status_code=400, detail="User ID is required")
+        
+    # Verify user exists
+    try:
+        user = await db.users.find_one({"_id": ObjectId(user_id)})
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail="Invalid user ID")
+    
+    # Fetch receipts
+    receipts_cursor = db.medical_records.find({"user_id": user_id})
     receipts = await receipts_cursor.to_list(length=None)  # Convert cursor to list
 
     # Convert ObjectId fields to strings for JSON serialization
